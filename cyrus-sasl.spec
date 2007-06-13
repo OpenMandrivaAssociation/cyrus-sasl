@@ -43,12 +43,13 @@
 Summary: SASL is the Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 21
+Release: %mkrel 22
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
 Source3: saslauthd.sysconfig
 Source4: service.conf.example
+Source5: saslauthd.8
 Patch0: cyrus-sasl-doc.patch
 Patch1: cyrus-sasl-2.1.19-no_rpath.patch
 Patch2: cyrus-sasl-2.1.15-lib64.patch
@@ -374,18 +375,14 @@ mkdir -p %{buildroot}/%{_initrddir}
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 mkdir -p %{buildroot}/%{_sysconfdir}/sasl2
 
-
-%{__make} install DESTDIR=%{buildroot}
+%makeinstall_std
 
 install -m 0644 %{SOURCE2} %{buildroot}%{_initrddir}/saslauthd
 install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 install -m 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sasl2/
-# Install man pages in the expected location, even if they are
-# pre-formatted.
-install -m 0755 -d %{buildroot}%{_mandir}/man8/
-install -m 0644 */*.8 %{buildroot}%{_mandir}/man8/
 
-%makeinstall_std
+# install fixed saslauthd.8 manpage
+install -m 0644 %{SOURCE5} %{buildroot}%{_mandir}/man8/
 
 # we don't need these
 rm -f %{buildroot}%{_libdir}/sasl2/*.a
