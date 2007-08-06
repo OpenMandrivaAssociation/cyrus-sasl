@@ -43,7 +43,7 @@
 Summary: SASL is the Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 22
+Release: %mkrel 23
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
@@ -284,6 +284,7 @@ This plugin implements the LDAP auxprop authentication method.
 
 %prep
 %setup -q -n %{up_name}-%{version}
+install -m 0644 %{SOURCE4} .
 %patch0 -p1 -b .sasldoc
 %patch1 -p1 -b .rpath
 %patch2 -p1 -b .lib64
@@ -379,8 +380,6 @@ mkdir -p %{buildroot}/%{_sysconfdir}/sasl2
 
 install -m 0644 %{SOURCE2} %{buildroot}%{_initrddir}/saslauthd
 install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
-install -m 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sasl2/
-
 # install fixed saslauthd.8 manpage
 install -m 0644 %{SOURCE5} %{buildroot}%{_mandir}/man8/
 
@@ -477,16 +476,16 @@ fi
 %defattr(-,root,root)
 %doc COPYING AUTHORS INSTALL NEWS README* ChangeLog
 %doc doc/{TODO,ONEWS,*.txt,*.html}
+%doc service.conf.example
 %dir /var/lib/sasl2
 %attr (755,root,root) %{_initrddir}/saslauthd
+%dir %{_sysconfdir}/sasl2
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
 %{_sbindir}/*
 %{_mandir}/man8/*
 
 %files -n %{libname}
 %defattr(-,root,root)
-%dir %{_sysconfdir}/sasl2
-%{_sysconfdir}/sasl2/service.conf.example
 %dir %{_libdir}/sasl2
 %{_libdir}/libsasl*.so.*
 
