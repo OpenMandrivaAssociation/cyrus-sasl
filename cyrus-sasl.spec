@@ -68,7 +68,8 @@ Requires(pre):   rpm-helper
 Requires(post):  rpm-helper
 Requires(preun): rpm-helper
 BuildRequires:  autoconf
-BuildRequires:  automake1.8
+# 2.1.22 doesn't build with automake 1.8
+BuildRequires:  automake1.7
 BuildRequires:  db4-devel
 BuildRequires:  pam-devel
 BuildRequires:  openssl-devel >= 0.9.6a
@@ -299,15 +300,15 @@ rm -f configure
 
 rm -f config/ltconfig config/libtool.m4
 libtoolize -f -c
-aclocal-1.8 -I config -I cmulocal
-automake-1.8 -a -c -f
+aclocal-1.7 -I config -I cmulocal
+automake-1.7 -a -c -f
 autoheader
 autoconf -f
 pushd saslauthd
 rm -f config/ltconfig
 libtoolize -f -c
-aclocal-1.8 -I ../config -I ../cmulocal
-automake-1.8 -a -c -f
+aclocal-1.7 -I ../config -I ../cmulocal
+automake-1.7 -a -c -f
 autoheader
 autoconf -f
 popd
