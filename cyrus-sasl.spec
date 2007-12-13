@@ -55,8 +55,7 @@ Patch1: cyrus-sasl-2.1.19-no_rpath.patch
 Patch2: cyrus-sasl-2.1.15-lib64.patch
 Patch3: cyrus-sasl-2.1.20-gssapi-dynamic.patch
 Patch4: cyrus-sasl-2.1.19-pic.patch
-# instead of using buildconflicts db4.3-devel
-Patch5: cyrus-sasl-2.1.22-nodb43.patch
+Patch5: cyrus-sasl-latest_bdb.diff
 Patch6: cyrus-sasl-2.1.22-sed_syntax.diff
 License: BSD style
 Group: System/Libraries
@@ -291,7 +290,7 @@ install -m 0644 %{SOURCE4} .
 %patch2 -p1 -b .lib64
 #%patch3 -p1 -b .gssapi
 %patch4 -p1 -b .pic
-%patch5 -p1 -b .nodb43
+%patch5 -p0 -b .latest_bdb
 %patch6 -p0 -b .sed_syntax
 
 # lib64 fix
