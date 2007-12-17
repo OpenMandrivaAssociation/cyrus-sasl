@@ -60,7 +60,6 @@ Patch6: cyrus-sasl-2.1.22-sed_syntax.diff
 License: BSD style
 Group: System/Libraries
 URL: http://asg.web.cmu.edu/cyrus/download/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: %{libname} = %{version}
 #Obsoletes: cyrus-sasl <= 2.1.0
 Requires(pre):   rpm-helper
