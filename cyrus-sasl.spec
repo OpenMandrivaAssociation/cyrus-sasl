@@ -43,7 +43,7 @@
 Summary: SASL is the Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 23
+Release: %mkrel 24
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
@@ -87,6 +87,7 @@ BuildRequires:	sqlite-devel
 %if %{LDAP}
 BuildRequires: openldap-devel
 %endif
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 SASL is the Simple Authentication and Security Layer, 
