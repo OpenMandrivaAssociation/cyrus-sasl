@@ -43,7 +43,7 @@
 Summary: SASL is the Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 24
+Release: %mkrel 25
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
@@ -226,18 +226,19 @@ This plugin implements the SASL OTP mechanism.
 
 
 %package -n %{libname}-plug-sasldb
-Summary: SASL sasldb mechanism plugin
+Summary: SASL sasldb auxprop plugin
 Group: System/Libraries
 # Requirement for %%{name} is due to dbconverter-2 being
 # potentially called in %%post
-Requires(post): %{name} = %{version}
+Requires(post): %{name} >= %{version}
 # That requirement has to be here (in "Requires") also
 # (http://archives.mandrivalinux.com/cooker/2005-06/msg00109.php)
-Requires: %{libname} = %{version}, %{name} = %{version}
+Requires: %{libname} = %{version}, %{name} >= %{version}
 Provides: sasl-plug-sasldb
 
 %description -n %{libname}-plug-sasldb
-This plugin implements the SASL sasldb mechanism.
+This package provides the SASL sasldb auxprop plugin, which stores secrets
+in a Berkeley database file.
 
 %package -n %{libname}-plug-srp
 Summary: SASL srp mechanism plugin
