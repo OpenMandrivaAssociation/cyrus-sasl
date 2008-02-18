@@ -40,7 +40,7 @@
 %{?bootstrap: %{expand: %%global LDAP 0}}
 %{?bootstrap: %{expand: %%global LDAPSTR disabled}}
 
-Summary: SASL is the Simple Authentication and Security Layer
+Summary: The Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
 Release: %mkrel 26
