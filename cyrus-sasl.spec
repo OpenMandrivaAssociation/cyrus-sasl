@@ -43,7 +43,7 @@
 Summary: The Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 28
+Release: %mkrel 29
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
@@ -88,7 +88,7 @@ BuildRequires:	sqlite-devel
 %if %{LDAP}
 BuildRequires: openldap-devel
 %endif
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 SASL is the Simple Authentication and Security Layer, 
@@ -108,7 +108,6 @@ The SQL auxprop plugin can be rebuild with different database backends:
 %package -n %{libname}
 Summary: Libraries for SASL a the Simple Authentication and Security Layer
 Group: System/Libraries
-
 
 %description -n %{libname}
 SASL is the Simple Authentication and Security Layer, 
@@ -182,16 +181,16 @@ PLAIN is useful for transitioning to new security mechanisms, as this
 is the only mechanism which gives the server a copy of the user's
 password.
 
-%package -n %{libname}-plug-scrammd5
-Summary: SASL SCRAM-MD5 mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-scrammd5
-
-%description -n %{libname}-plug-scrammd5
-This plugin implements the SASL SCRAM-MD5 mechanism.  Although
-deprecated (this will be replaced by DIGEST-MD5 at some point), it may
-be useful for the time being.
+#package -n %{libname}-plug-scrammd5
+#Summary: SASL SCRAM-MD5 mechanism plugin
+#Group: System/Libraries
+#Requires: %{libname} = %{version}
+#Provides: sasl-plug-scrammd5
+#
+#description -n %{libname}-plug-scrammd5
+#This plugin implements the SASL SCRAM-MD5 mechanism.  Although
+#deprecated (this will be replaced by DIGEST-MD5 at some point), it may
+#be useful for the time being.
 
 %package -n %{libname}-plug-login
 Summary: SASL LOGIN mechanism plugin
@@ -224,7 +223,6 @@ Provides: sasl-plug-otp
 %description -n %{libname}-plug-otp
 This plugin implements the SASL OTP mechanism.
 
-
 %package -n %{libname}-plug-sasldb
 Summary: SASL sasldb auxprop plugin
 Group: System/Libraries
@@ -240,6 +238,7 @@ Provides: sasl-plug-sasldb
 This package provides the SASL sasldb auxprop plugin, which stores secrets
 in a Berkeley database file.
 
+%if %{SRP}
 %package -n %{libname}-plug-srp
 Summary: SASL srp mechanism plugin
 Group: System/Libraries
@@ -248,7 +247,7 @@ Provides: sasl-plug-srp
 
 %description -n %{libname}-plug-srp
 This plugin implements the srp  mechanism.
-
+%endif
 
 %package -n %{libname}-plug-ntlm
 Summary: SASL ntlm authentication plugin
@@ -259,7 +258,7 @@ Provides: sasl-plug-ntlm
 %description -n %{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
 
-
+%if %{MYSQL} || %{PGSQL} || %{SQLITE}
 %package -n %{libname}-plug-sql
 Summary: SASL sql auxprop plugin
 Group: System/Libraries
@@ -272,8 +271,9 @@ It can be rebuild with different database backends:
 	--with mysql	MySQL support	(%{MYSQLSTR})
 	--with pgsql	Postgres SQL support	(%{PGSQLSTR})
 	--with sqlite	SQLite support	(%{SQLITESTR})
+%endif
 
-
+%if %{LDAP}
 %package -n %{libname}-plug-ldapdb
 Summary: SASL ldapdb auxprop plugin
 Group: System/Libraries
@@ -282,9 +282,10 @@ Provides: sasl-plug-ldapdb
 
 %description -n %{libname}-plug-ldapdb
 This plugin implements the LDAP auxprop authentication method.
-
+%endif
 
 %prep
+
 %setup -q -n %{up_name}-%{version}
 install -m 0644 %{SOURCE4} .
 %patch0 -p1 -b .sasldoc
@@ -548,15 +549,19 @@ fi
 %{_libdir}/sasl2/libntlm*.so*
 %{_libdir}/sasl2/libntlm*.la
 
+%if %{MYSQL} || %{PGSQL} || %{SQLITE}
 %files -n %{libname}-plug-sql
 %defattr(-,root,root)
 %{_libdir}/sasl2/libsql*.so*
 %{_libdir}/sasl2/libsql*.la
+%endif
 
+%if %{LDAP}
 %files -n %{libname}-plug-ldapdb
 %defattr(-,root,root)
 %{_libdir}/sasl2/libldap*.so*
 %{_libdir}/sasl2/libldap*.la
+%endif
 
 %files -n %{libname}-devel
 %defattr(-,root,root)
@@ -564,6 +569,3 @@ fi
 %{_libdir}/*.*so
 %{_libdir}/*.*a
 %{_mandir}/man3/*
- 
-
-
