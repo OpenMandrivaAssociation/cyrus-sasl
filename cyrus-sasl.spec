@@ -57,6 +57,11 @@ Patch3: cyrus-sasl-2.1.20-gssapi-dynamic.patch
 Patch4: cyrus-sasl-2.1.19-pic.patch
 Patch5: cyrus-sasl-latest_bdb.diff
 Patch6: cyrus-sasl-2.1.22-sed_syntax.diff
+Patch7: cyrus-sasl-2.1.21-sizes.patch
+Patch8: cyrus-sasl-2.1.22-digest-commas.patch
+Patch9: cyrus-sasl-2.1.22-automake-1.10.patch
+Patch10: cyrus-sasl-2.1.22-rimap.patch
+Patch11: cyrus-sasl-2.1.22-warnings.patch
 License: BSD style
 Group: System/Libraries
 URL: http://asg.web.cmu.edu/cyrus/download/
@@ -295,6 +300,11 @@ install -m 0644 %{SOURCE4} .
 %patch4 -p1 -b .pic
 %patch5 -p0 -b .latest_bdb
 %patch6 -p0 -b .sed_syntax
+%patch7 -p1 -b .sizes
+%patch8 -p2 -b .digest-commas
+%patch9 -p1 -b .automake-1.10
+%patch10 -p1 -b .rimap
+%patch11 -p1 -b .warnings
 
 # lib64 fix
 perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
