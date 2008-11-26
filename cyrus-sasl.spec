@@ -62,6 +62,8 @@ Patch8: cyrus-sasl-2.1.22-digest-commas.patch
 Patch9: cyrus-sasl-2.1.22-automake-1.10.patch
 Patch10: cyrus-sasl-2.1.22-rimap.patch
 Patch11: cyrus-sasl-2.1.22-warnings.patch
+Patch12: 0006_library_mutexes.dpatch
+Patch13: 0012_xopen_crypt_prototype.dpatch
 License: BSD style
 Group: System/Libraries
 URL: http://asg.web.cmu.edu/cyrus/download/
@@ -305,6 +307,8 @@ install -m 0644 %{SOURCE4} .
 %patch9 -p1 -b .automake-1.10
 %patch10 -p1 -b .rimap
 %patch11 -p1 -b .warnings
+%patch12 -p1 -b .library_mutexes
+%patch13 -p1 -b .xopen_crypt_prototype
 
 # lib64 fix
 perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
