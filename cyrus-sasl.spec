@@ -43,13 +43,15 @@
 Summary: The Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 31
+Release: %mkrel 32
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
 Source3: saslauthd.sysconfig
 Source4: service.conf.example
 Source5: saslauthd.8
+Source7: sasl-mechlist.c
+Source8: sasl-checkpass.c
 Patch0: cyrus-sasl-doc.patch
 Patch1: cyrus-sasl-2.1.19-no_rpath.patch
 Patch2: cyrus-sasl-2.1.15-lib64.patch
@@ -308,6 +310,9 @@ install -m 0644 %{SOURCE4} .
 %patch12 -p1 -b .library_mutexes
 %patch13 -p1 -b .xopen_crypt_prototype
 
+cp %{SOURCE7} sasl-mechlist.c
+cp %{SOURCE8} sasl-checkpass.c
+
 # lib64 fix
 perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
 rm -f configure
@@ -384,6 +389,15 @@ make -C sample
 
 install saslauthd/LDAP_SASLAUTHD README.ldap
 
+
+# Build a small program to list the available mechanisms, because I need it.
+pushd lib
+    ../libtool --tag=CC --mode=link %{__cc} -o sasl2-shared-mechlist \
+	-I../include $CFLAGS ../sasl-mechlist.c $LDFLAGS ./libsasl2.la
+    ../libtool --tag=CC --mode=link %{__cc} -o sasl2-shared-checkpass \
+	-I../include $CFLAGS -DSASL2 ../sasl-checkpass.c $LDFLAGS ./libsasl2.la
+popd
+
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/var/lib/sasl2
@@ -443,6 +457,10 @@ Have fun,
 Mandriva Team.
 
 EOF
+
+# Provide an easy way to query the list of available mechanisms.
+./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
+./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
 
 %clean
 rm -rf %{buildroot}
@@ -577,6 +595,8 @@ fi
 
 %files -n %{libname}-devel
 %defattr(-,root,root)
+%{_sbindir}/sasl2-shared-mechlist
+%{_sbindir}/sasl2-shared-checkpass
 %{_includedir}/*
 %{_libdir}/*.*so
 %{_libdir}/*.*a
