@@ -43,7 +43,7 @@
 Summary: The Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.22
-Release: %mkrel 33
+Release: %mkrel 34
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
@@ -518,6 +518,8 @@ fi
 %attr (755,root,root) %{_initrddir}/saslauthd
 %dir %{_sysconfdir}/sasl2
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
+%exclude %{_sbindir}/sasl2-shared-mechlist
+%exclude %{_sbindir}/sasl2-shared-checkpass
 %{_sbindir}/*
 %{_mandir}/man8/*
 
