@@ -42,8 +42,8 @@
 
 Summary: The Simple Authentication and Security Layer
 Name: %{up_name}
-Version: 2.1.22
-Release: %mkrel 34
+Version: 2.1.23
+Release: %mkrel 1
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
