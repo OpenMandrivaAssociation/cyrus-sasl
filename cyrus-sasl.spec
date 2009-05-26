@@ -66,6 +66,8 @@ Patch10: cyrus-sasl-2.1.22-rimap.patch
 Patch11: cyrus-sasl-2.1.22-warnings.patch
 Patch12: 0006_library_mutexes.dpatch
 Patch13: 0012_xopen_crypt_prototype.dpatch
+#from fedora
+Patch14: cyrus-sasl-2.1.22-bad-elif.patch
 License: BSD style
 Group: System/Libraries
 URL: http://asg.web.cmu.edu/cyrus/download/
@@ -309,6 +311,7 @@ install -m 0644 %{SOURCE4} .
 %patch11 -p1 -b .warnings
 %patch12 -p1 -b .library_mutexes
 %patch13 -p1 -b .xopen_crypt_prototype
+%patch14 -p1 -b .bad_elif
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
