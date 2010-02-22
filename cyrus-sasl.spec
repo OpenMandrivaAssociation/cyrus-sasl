@@ -43,7 +43,7 @@
 Summary: The Simple Authentication and Security Layer
 Name: %{up_name}
 Version: 2.1.23
-Release: %mkrel 5
+Release: %mkrel 6
 Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2: saslauthd.init
@@ -53,22 +53,33 @@ Source5: saslauthd.8
 Source7: sasl-mechlist.c
 Source8: sasl-checkpass.c
 Patch0: cyrus-sasl-doc.patch
-Patch1: cyrus-sasl-2.1.19-no_rpath.patch
-Patch2: cyrus-sasl-2.1.15-lib64.patch
-Patch3: cyrus-sasl-2.1.20-gssapi-dynamic.patch
-Patch4: cyrus-sasl-2.1.19-pic.patch
-Patch5: cyrus-sasl-latest_bdb.diff
-Patch6: cyrus-sasl-2.1.22-sed_syntax.diff
-Patch7: cyrus-sasl-2.1.21-sizes.patch
-Patch8: cyrus-sasl-2.1.22-digest-commas.patch
-Patch9: cyrus-sasl-2.1.22-automake-1.10.patch
-Patch10: cyrus-sasl-2.1.22-rimap.patch
-Patch11: cyrus-sasl-2.1.22-warnings.patch
-Patch12: 0006_library_mutexes.dpatch
-Patch13: 0012_xopen_crypt_prototype.dpatch
-#from fedora
-Patch14: cyrus-sasl-2.1.22-bad-elif.patch
-License: BSD style
+Patch1: cyrus-sasl-2.1.15-lib64.patch
+Patch2: cyrus-sasl-2.1.20-gssapi-dynamic.patch
+Patch3: cyrus-sasl-2.1.19-pic.patch
+Patch4: cyrus-sasl-2.1.22-sed_syntax.diff
+Patch5: 0006_library_mutexes.dpatch
+Patch6: 0012_xopen_crypt_prototype.dpatch
+
+# in sync with fedora
+Patch11: cyrus-sasl-2.1.18-no_rpath.patch
+# already fixed with cyrus-sasl-doc.patch
+#Patch15: cyrus-sasl-2.1.20-saslauthd.conf-path.patch
+Patch23: cyrus-sasl-2.1.23-man.patch
+Patch24: cyrus-sasl-2.1.21-sizes.patch
+Patch25: cyrus-sasl-2.1.22-typo.patch
+Patch26: cyrus-sasl-2.1.22-digest-commas.patch
+Patch27: cyrus-sasl-2.1.22-automake-1.10.patch
+Patch28: cyrus-sasl-2.1.21-keytab.patch
+Patch30: cyrus-sasl-2.1.22-rimap.patch
+Patch31: cyrus-sasl-2.1.22-kerberos4.patch
+Patch32: cyrus-sasl-2.1.22-warnings.patch
+Patch33: cyrus-sasl-2.1.22-current-db.patch
+Patch34: cyrus-sasl-2.1.22-ldap-timeout.patch
+Patch35: cyrus-sasl-2.1.22-bad-elif.patch
+Patch36: cyrus-sasl-ac-quote.patch
+Patch37: cyrus-sasl-2.1.23-race.patch
+
+License: BSD-style
 Group: System/Libraries
 URL: http://asg.web.cmu.edu/cyrus/download/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -297,21 +308,30 @@ This plugin implements the LDAP auxprop authentication method.
 
 %setup -q -n %{up_name}-%{version}
 install -m 0644 %{SOURCE4} .
-%patch0 -p1 -b .sasldoc
-%patch1 -p1 -b .rpath
-%patch2 -p1 -b .lib64
-#%patch3 -p1 -b .gssapi
-%patch4 -p1 -b .pic
-%patch5 -p0 -b .latest_bdb
-%patch6 -p0 -b .sed_syntax
-%patch7 -p1 -b .sizes
-%patch8 -p2 -b .digest-commas
-%patch9 -p1 -b .automake-1.10
-%patch10 -p1 -b .rimap
-%patch11 -p1 -b .warnings
-%patch12 -p1 -b .library_mutexes
-%patch13 -p1 -b .xopen_crypt_prototype
-%patch14 -p1 -b .bad_elif
+%patch0 -p1 -b .sasldoc~
+%patch1 -p1 -b .lib64~
+#%%patch2 -p1 -b .gssapi~
+%patch3 -p1 -b .pic~
+%patch4 -p0 -b .sed_syntax~
+%patch5 -p1 -b .library_mutexes~
+%patch6 -p1 -b .xopen_crypt_prototype~
+
+%patch11 -p1 -b .no_rpath~
+#%%patch15 -p1 -b .path~
+%patch23 -p1 -b .man~
+%patch24 -p1 -b .sizes~
+%patch25 -p1 -b .typo~
+%patch26 -p2 -b .digest-commas~
+%patch27 -p1 -b .automake-1.10~
+%patch28 -p1 -b .keytab~
+%patch30 -p1 -b .rimap~
+%patch31 -p1 -b .krb4~
+%patch32 -p1 -b .warnings~
+%patch33 -p1 -b .current-db~
+%patch34 -p1 -b .ldap-timeout~
+%patch35 -p1 -b .elif~
+%patch36 -p1 -b .ac-quote~
+%patch37 -p1 -b .race~
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
