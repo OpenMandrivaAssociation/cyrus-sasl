@@ -398,7 +398,7 @@ export LDFLAGS="-L%{_libdir}"
 		--enable-ldapdb \
 %endif
 		--with-dbpath=%{sasl2_db_filename} \
-		--with-saslauthd=/var/lib/sasl2 \
+		--with-saslauthd=/var/run/saslauthd \
 		--with-authdaemond=/var/run/authdaemon.courier-imap/socket
 
 # ugly hack: there is an ordering problem introduced in 2.1.21 
@@ -423,7 +423,7 @@ popd
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/var/lib/sasl2
+mkdir -p %{buildroot}/var/lib/sasl2 %{buildroot}/var/run/saslauthd
 mkdir -p %{buildroot}/%{_initrddir}
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 mkdir -p %{buildroot}/%{_sysconfdir}/sasl2
@@ -480,6 +480,8 @@ Have fun,
 Mandriva Team.
 
 EOF
+
+# This is just to "close" vim's syntax misinterpretation.. ;p
 
 # Provide an easy way to query the list of available mechanisms.
 ./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
@@ -538,6 +540,7 @@ fi
 %doc doc/{TODO,ONEWS,*.txt,*.html}
 %doc service.conf.example
 %dir /var/lib/sasl2
+%dir /var/run/saslauthd
 %attr (755,root,root) %{_initrddir}/saslauthd
 %dir %{_sysconfdir}/sasl2
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
