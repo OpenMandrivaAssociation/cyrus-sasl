@@ -40,62 +40,62 @@
 %{?bootstrap: %{expand: %%global LDAP 0}}
 %{?bootstrap: %{expand: %%global LDAPSTR disabled}}
 
-Summary: The Simple Authentication and Security Layer
-Name: %{up_name}
-Version: 2.1.23
-Release: %mkrel 6
-Source0: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
-Source1: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
-Source2: saslauthd.init
-Source3: saslauthd.sysconfig
-Source4: service.conf.example
-Source5: saslauthd.8
-Source7: sasl-mechlist.c
-Source8: sasl-checkpass.c
-Patch0: cyrus-sasl-doc.patch
-Patch1: cyrus-sasl-2.1.15-lib64.patch
-Patch2: cyrus-sasl-2.1.20-gssapi-dynamic.patch
-Patch3: cyrus-sasl-2.1.19-pic.patch
-Patch4: cyrus-sasl-2.1.22-sed_syntax.diff
-Patch5: 0006_library_mutexes.dpatch
-Patch6: 0012_xopen_crypt_prototype.dpatch
+Summary:	The Simple Authentication and Security Layer
+Name:		%{up_name}
+Version:	2.1.23
+Release:	%mkrel 6
+Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
+Source1:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
+Source2:	saslauthd.init
+Source3:	saslauthd.sysconfig
+Source4:	service.conf.example
+Source5:	saslauthd.8
+Source7:	sasl-mechlist.c
+Source8:	sasl-checkpass.c
+Patch0:		cyrus-sasl-doc.patch
+Patch1:		cyrus-sasl-2.1.15-lib64.patch
+Patch2:		cyrus-sasl-2.1.20-gssapi-dynamic.patch
+Patch3:		cyrus-sasl-2.1.19-pic.patch
+Patch4:		cyrus-sasl-2.1.22-sed_syntax.diff
+Patch5:		0006_library_mutexes.dpatch
+Patch6:		0012_xopen_crypt_prototype.dpatch
 
-# in sync with fedora
-Patch11: cyrus-sasl-2.1.18-no_rpath.patch
+# synced with fedora
+Patch11:	cyrus-sasl-2.1.18-no_rpath.patch
 # already fixed with cyrus-sasl-doc.patch
-#Patch15: cyrus-sasl-2.1.20-saslauthd.conf-path.patch
-Patch23: cyrus-sasl-2.1.23-man.patch
-Patch24: cyrus-sasl-2.1.21-sizes.patch
-Patch25: cyrus-sasl-2.1.22-typo.patch
-Patch26: cyrus-sasl-2.1.22-digest-commas.patch
-Patch27: cyrus-sasl-2.1.22-automake-1.10.patch
-Patch28: cyrus-sasl-2.1.21-keytab.patch
-Patch30: cyrus-sasl-2.1.22-rimap.patch
-Patch31: cyrus-sasl-2.1.22-kerberos4.patch
-Patch32: cyrus-sasl-2.1.22-warnings.patch
-Patch33: cyrus-sasl-2.1.22-current-db.patch
-Patch34: cyrus-sasl-2.1.22-ldap-timeout.patch
-Patch35: cyrus-sasl-2.1.22-bad-elif.patch
-Patch36: cyrus-sasl-ac-quote.patch
-Patch37: cyrus-sasl-2.1.23-race.patch
+#Patch15:	cyrus-sasl-2.1.20-saslauthd.conf-path.patch
+Patch23:	cyrus-sasl-2.1.23-man.patch
+Patch24:	cyrus-sasl-2.1.21-sizes.patch
+Patch25:	cyrus-sasl-2.1.22-typo.patch
+Patch26:	cyrus-sasl-2.1.22-digest-commas.patch
+Patch27:	cyrus-sasl-2.1.22-automake-1.10.patch
+Patch28:	cyrus-sasl-2.1.21-keytab.patch
+Patch30:	cyrus-sasl-2.1.22-rimap.patch
+Patch31:	cyrus-sasl-2.1.22-kerberos4.patch
+Patch32:	cyrus-sasl-2.1.22-warnings.patch
+Patch33:	cyrus-sasl-2.1.22-current-db.patch
+Patch34:	cyrus-sasl-2.1.22-ldap-timeout.patch
+Patch35:	cyrus-sasl-2.1.22-bad-elif.patch
+Patch36:	cyrus-sasl-ac-quote.patch
+Patch37:	cyrus-sasl-2.1.23-race.patch
 
-License: BSD-style
-Group: System/Libraries
-URL: http://asg.web.cmu.edu/cyrus/download/
+License:	BSD-style
+Group:		System/Libraries
+URL:		http://asg.web.cmu.edu/cyrus/download/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires: %{libname} = %{version}
-#Obsoletes: cyrus-sasl <= 2.1.0
-Requires(pre):   rpm-helper
-Requires(post):  rpm-helper
+Requires:	%{libname} = %{version}
+#Obsoletes:	cyrus-sasl <= 2.1.0
+Requires(pre):	rpm-helper
+Requires(post):	rpm-helper
 Requires(preun): rpm-helper
-BuildRequires:  autoconf
-BuildRequires:  db4-devel
-BuildRequires:  pam-devel
-BuildRequires:  openssl-devel >= 0.9.6a
-BuildRequires:  libtool >= 1.4
+BuildRequires:	autoconf
+BuildRequires:	db4-devel
+BuildRequires:	pam-devel
+BuildRequires:	openssl-devel >= 0.9.6a
+BuildRequires:	libtool >= 1.4
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
-BuildRequires:  krb5-devel >= 1.4.1
+BuildRequires:	krb5-devel >= 1.4.1
 %if %{MYSQL}
 BuildRequires:	mysql-devel
 %endif
@@ -106,7 +106,7 @@ BuildRequires:	postgresql-devel
 BuildRequires:	sqlite-devel
 %endif
 %if %{LDAP}
-BuildRequires: openldap-devel
+BuildRequires:	openldap-devel
 %endif
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -125,11 +125,11 @@ The SQL auxprop plugin can be rebuild with different database backends:
 	--with pgsql	Postgres SQL support	(%{PGSQLSTR})
 	--with sqlite	SQLite support	(%{SQLITESTR})
 
-%package -n %{libname}
-Summary: Libraries for SASL a the Simple Authentication and Security Layer
-Group: System/Libraries
+%package -n	%{libname}
+Summary:	Libraries for SASL a the Simple Authentication and Security Layer
+Group:		System/Libraries
 
-%description -n %{libname}
+%description -n	%{libname}
 SASL is the Simple Authentication and Security Layer, 
 a method for adding authentication support to connection-based protocols. 
 To use SASL, a protocol includes a command for identifying and authenticating 
@@ -137,17 +137,17 @@ a user to a server and for optionally negotiating protection of subsequent
 protocol interactions. If its use is negotiated, a security layer is inserted 
 between the protocol and the connection. 
 
-%package -n %{libname}-devel
-Summary: Libraries for SASL a the Simple Authentication and Security Layer
-Group: Development/C
+%package -n	%{libname}-devel
+Summary:	Libraries for SASL a the Simple Authentication and Security Layer
+Group:		Development/C
 %if %{_lib} != lib
-Provides: libsasl-devel = %{version}
-Provides: libsasl2-devel = %{version}
+Provides:	libsasl-devel = %{version}
+Provides:	libsasl2-devel = %{version}
 %endif
-Provides: %{mklibname -d sasl} = %{version}
-Requires: %{libname} = %{version}
+Provides:	%{mklibname -d sasl} = %{version}
+Requires:	%{libname} = %{version}
 
-%description -n %{libname}-devel
+%description -n	%{libname}-devel
 SASL is the Simple Authentication and Security Layer, 
 a method for adding authentication support to connection-based protocols. 
 To use SASL, a protocol includes a command for identifying and authenticating 
@@ -155,137 +155,137 @@ a user to a server and for optionally negotiating protection of subsequent
 protocol interactions. If its use is negotiated, a security layer is inserted 
 between the protocol and the connection. 
 
-%package -n %{libname}-plug-anonymous
-Summary: SASL ANONYMOUS mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-anonymous
+%package -n	%{libname}-plug-anonymous
+Summary:	SASL ANONYMOUS mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-anonymous
 
-%description -n %{libname}-plug-anonymous
+%description -n	%{libname}-plug-anonymous
 This plugin implements the SASL ANONYMOUS mechanism,
 used for anonymous authentication.
 
-%package -n %{libname}-plug-crammd5
-Summary: SASL CRAM-MD5 mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-crammd5
+%package -n	%{libname}-plug-crammd5
+Summary:	SASL CRAM-MD5 mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-crammd5
 
-%description -n %{libname}-plug-crammd5
+%description -n	%{libname}-plug-crammd5
 This plugin implements the SASL CRAM-MD5 mechanism.
 CRAM-MD5 is the mandatory-to-implement authentication mechanism for a
 number of protocols; it uses MD5 with a challenge/response system to
 authenticate the user.
 
-%package -n %{libname}-plug-digestmd5
-Summary: SASL DIGEST-MD5 mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-digestmd5
+%package -n	%{libname}-plug-digestmd5
+Summary:	SASL DIGEST-MD5 mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-digestmd5
 
-%description -n %{libname}-plug-digestmd5
+%description -n	%{libname}-plug-digestmd5
 This plugin implements the latest draft of the SASL DIGEST-MD5
 mechanism.  Although not yet finalized, this is likely to become the
 new mandatory-to-implement authentication system in all new protocols.
 It's based on the digest md5 authentication system designed for HTTP.
 
-%package -n %{libname}-plug-plain
-Summary: SASL PLAIN mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-plain
+%package -n	%{libname}-plug-plain
+Summary:	SASL PLAIN mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-plain
 
-%description -n %{libname}-plug-plain
+%description -n	%{libname}-plug-plain
 This plugin implements the SASL PLAIN mechanism.  Although insecure,
 PLAIN is useful for transitioning to new security mechanisms, as this
 is the only mechanism which gives the server a copy of the user's
 password.
 
-#package -n %{libname}-plug-scrammd5
-#Summary: SASL SCRAM-MD5 mechanism plugin
-#Group: System/Libraries
-#Requires: %{libname} = %{version}
-#Provides: sasl-plug-scrammd5
+#package -n	%{libname}-plug-scrammd5
+#Summary:	SASL SCRAM-MD5 mechanism plugin
+#Group:		System/Libraries
+#Requires:	%{libname} = %{version}
+#Provides:	sasl-plug-scrammd5
 #
-#description -n %{libname}-plug-scrammd5
+#description -n	%{libname}-plug-scrammd5
 #This plugin implements the SASL SCRAM-MD5 mechanism.  Although
 #deprecated (this will be replaced by DIGEST-MD5 at some point), it may
 #be useful for the time being.
 
-%package -n %{libname}-plug-login
-Summary: SASL LOGIN mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-login
+%package -n	%{libname}-plug-login
+Summary:	SASL LOGIN mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-login
 
-%description -n %{libname}-plug-login
+%description -n	%{libname}-plug-login
 This plugin implements the SASL LOGIN mechanism.
 THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons 
 and will be dropped soon.
 Please use the plain plugin instead.
 
-%package -n %{libname}-plug-gssapi
-Summary: SASL GSSAPI mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Requires: krb5-libs
-Provides: sasl-plug-gssapi
+%package -n	%{libname}-plug-gssapi
+Summary:	SASL GSSAPI mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Requires:	krb5-libs
+Provides:	sasl-plug-gssapi
 
-%description -n %{libname}-plug-gssapi
+%description -n	%{libname}-plug-gssapi
 This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
 
-%package -n %{libname}-plug-otp
-Summary: SASL OTP mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-otp
+%package -n	%{libname}-plug-otp
+Summary:	SASL OTP mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-otp
 
-%description -n %{libname}-plug-otp
+%description -n	%{libname}-plug-otp
 This plugin implements the SASL OTP mechanism.
 
-%package -n %{libname}-plug-sasldb
-Summary: SASL sasldb auxprop plugin
-Group: System/Libraries
+%package -n	%{libname}-plug-sasldb
+Summary:	SASL sasldb auxprop plugin
+Group:		System/Libraries
 # Requirement for %%{name} is due to dbconverter-2 being
 # potentially called in %%post
-Requires(post): %{name} >= %{version}
+Requires(post):	%{name} >= %{version}
 # That requirement has to be here (in "Requires") also
 # (http://archives.mandrivalinux.com/cooker/2005-06/msg00109.php)
-Requires: %{libname} = %{version}, %{name} >= %{version}
-Provides: sasl-plug-sasldb
+Requires:	%{libname} = %{version}, %{name} >= %{version}
+Provides:	sasl-plug-sasldb
 
-%description -n %{libname}-plug-sasldb
+%description -n	%{libname}-plug-sasldb
 This package provides the SASL sasldb auxprop plugin, which stores secrets
 in a Berkeley database file.
 
 %if %{SRP}
-%package -n %{libname}-plug-srp
-Summary: SASL srp mechanism plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-srp
+%package -n	%{libname}-plug-srp
+Summary:	SASL srp mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-srp
 
-%description -n %{libname}-plug-srp
+%description -n	%{libname}-plug-srp
 This plugin implements the srp  mechanism.
 %endif
 
-%package -n %{libname}-plug-ntlm
-Summary: SASL ntlm authentication plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-ntlm
+%package -n	%{libname}-plug-ntlm
+Summary:	SASL ntlm authentication plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-ntlm
 
-%description -n %{libname}-plug-ntlm
+%description -n	%{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
 
 %if %{MYSQL} || %{PGSQL} || %{SQLITE}
-%package -n %{libname}-plug-sql
-Summary: SASL sql auxprop plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-sql
+%package -n	%{libname}-plug-sql
+Summary:	SASL sql auxprop plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-sql
 
-%description -n %{libname}-plug-sql
+%description -n	%{libname}-plug-sql
 This plugin implements the SQL auxprop authentication method
 It can be rebuild with different database backends:
 	--with mysql	MySQL support	(%{MYSQLSTR})
@@ -294,18 +294,17 @@ It can be rebuild with different database backends:
 %endif
 
 %if %{LDAP}
-%package -n %{libname}-plug-ldapdb
-Summary: SASL ldapdb auxprop plugin
-Group: System/Libraries
-Requires: %{libname} = %{version}
-Provides: sasl-plug-ldapdb
+%package -n	%{libname}-plug-ldapdb
+Summary:	SASL ldapdb auxprop plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-ldapdb
 
-%description -n %{libname}-plug-ldapdb
+%description -n	%{libname}-plug-ldapdb
 This plugin implements the LDAP auxprop authentication method.
 %endif
 
 %prep
-
 %setup -q -n %{up_name}-%{version}
 install -m 0644 %{SOURCE4} .
 %patch0 -p1 -b .sasldoc~
@@ -336,16 +335,14 @@ install -m 0644 %{SOURCE4} .
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
-# lib64 fix
-perl -pi -e "s|/lib\b|/%{_lib}|g" configure.in
-rm -f configure
-
-rm -f config/ltconfig config/libtool.m4
-libtoolize -f -c
+rm -f config/config.guess config/config.sub 
+rm -f config/ltconfig config/ltmain.sh config/libtool.m4
+rm -fr autom4te.cache
+libtoolize -c
 aclocal -I config -I cmulocal
-automake -a -c -f
+automake -a -c
 autoheader
-autoconf -f
+autoconf
 pushd saslauthd
 rm -f config/ltconfig
 libtoolize -f -c
@@ -358,11 +355,6 @@ popd
 %build
 
 %serverbuild
-# i have to trim spaces into CFLAGS or configure will whine
-export CFLAGS=`echo ${CFLAGS} | sed -e 's/  */ /'`
-
-export LDFLAGS="-L%{_libdir}"
-
 %{?__cputoolize: %{__cputoolize} -c saslauthd}
 %configure 	--enable-static --enable-shared \
 		--with-plugindir=%{_libdir}/sasl2 \
@@ -424,16 +416,13 @@ popd
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/var/lib/sasl2 %{buildroot}/var/run/saslauthd
-mkdir -p %{buildroot}/%{_initrddir}
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
-mkdir -p %{buildroot}/%{_sysconfdir}/sasl2
-
+mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 %makeinstall_std
 
-install -m 0644 %{SOURCE2} %{buildroot}%{_initrddir}/saslauthd
-install -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
+install -m644 %{SOURCE2} -D %{buildroot}%{_initrddir}/saslauthd
+install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 # install fixed saslauthd.8 manpage
-install -m 0644 %{SOURCE5} %{buildroot}%{_mandir}/man8/
+install -m644 -D %{SOURCE5} %{buildroot}%{_mandir}/man8/saslauthd.8
 
 # we don't need these
 rm -f %{buildroot}%{_libdir}/sasl2/*.a
@@ -524,15 +513,6 @@ fi
 
 %preun
 %_preun_service saslauthd
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
 
 %files
 %defattr(-,root,root)
