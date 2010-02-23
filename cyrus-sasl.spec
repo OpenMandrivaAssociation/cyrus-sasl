@@ -49,7 +49,6 @@ Source1:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.si
 Source2:	saslauthd.init
 Source3:	saslauthd.sysconfig
 Source4:	service.conf.example
-Source5:	saslauthd.8
 Source7:	sasl-mechlist.c
 Source8:	sasl-checkpass.c
 Patch0:		cyrus-sasl-doc.patch
@@ -421,8 +420,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 
 install -m644 %{SOURCE2} -D %{buildroot}%{_initrddir}/saslauthd
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
-# install fixed saslauthd.8 manpage
-install -m644 -D %{SOURCE5} %{buildroot}%{_mandir}/man8/saslauthd.8
 
 # we don't need these
 rm -f %{buildroot}%{_libdir}/sasl2/*.a
