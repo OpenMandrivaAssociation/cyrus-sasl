@@ -43,7 +43,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		%{up_name}
 Version:	2.1.23
-Release:	%mkrel 12
+Release:	%mkrel 13
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
 Source1:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
 Source2:	saslauthd.init
@@ -58,6 +58,7 @@ Patch3:		cyrus-sasl-2.1.19-pic.patch
 Patch4:		cyrus-sasl-2.1.22-sed_syntax.diff
 Patch5:		0006_library_mutexes.dpatch
 Patch6:		0012_xopen_crypt_prototype.dpatch
+Patch7:		cyrus-sasl-2.1.23-db5.patch
 
 # synced with fedora
 Patch11:	cyrus-sasl-2.1.18-no_rpath.patch
@@ -88,7 +89,7 @@ Requires(pre):	rpm-helper
 Requires(post):	rpm-helper
 Requires(preun): rpm-helper
 BuildRequires:	autoconf
-BuildRequires:	db4-devel
+BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool >= 1.4
@@ -313,6 +314,7 @@ install -m 0644 %{SOURCE4} .
 %patch4 -p0 -b .sed_syntax~
 %patch5 -p1 -b .library_mutexes~
 %patch6 -p1 -b .xopen_crypt_prototype~
+%patch7 -p0 -b .db5
 
 %patch11 -p1 -b .no_rpath~
 #%%patch15 -p1 -b .path~
@@ -355,7 +357,7 @@ popd
 
 %serverbuild
 %{?__cputoolize: %{__cputoolize} -c saslauthd}
-%configure 	--enable-static --enable-shared \
+%configure2_5x 	--enable-static --enable-shared \
 		--with-plugindir=%{_libdir}/sasl2 \
 		--with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
 		--disable-krb4 \
