@@ -3,6 +3,7 @@
 %define up_name cyrus-sasl
 %define sasl2_db_filename /var/lib/sasl2/sasl.db
 
+%define KRB5 0
 %define MYSQL 1
 %define SRP 0
 %define PGSQL 0
@@ -14,6 +15,8 @@
 %define SQLITESTR disabled
 %define LDAPSTR enabled
 
+%{?_with_krb5: %{expand: %%global KRB5 1}}
+%{?_without_krb5: %{expand: %%global KRB5 0}}
 %{?_with_srp: %{expand: %%global SRP 1}}
 %{?_without_srp: %{expand: %%global SRP 0}}
 %{?_with_mysql: %{expand: %%global MYSQL 1}}
@@ -95,7 +98,9 @@ BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool >= 1.4
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
+%if %{KRB5}
 BuildRequires:	krb5-devel >= 1.4.1
+%endif
 %if %{MYSQL}
 BuildRequires:	mysql-devel
 %endif
@@ -224,6 +229,7 @@ THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons
 and will be dropped soon.
 Please use the plain plugin instead.
 
+%if %{KRB5}
 %package -n	%{libname}-plug-gssapi
 Summary:	SASL GSSAPI mechanism plugin
 Group:		System/Libraries
@@ -233,6 +239,7 @@ Provides:	sasl-plug-gssapi
 
 %description -n	%{libname}-plug-gssapi
 This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
+%endif
 
 %package -n	%{libname}-plug-otp
 Summary:	SASL OTP mechanism plugin
@@ -558,10 +565,12 @@ fi
 %{_libdir}/sasl2/libsasldb*.so*
 %{_libdir}/sasl2/libsasldb*.la
 
+%if %{KRB5}
 %files -n %{libname}-plug-gssapi
 %defattr(-,root,root)
 %{_libdir}/sasl2/libgssapi*.so*
 %{_libdir}/sasl2/libgssapi*.la
+%endif
 
 %files -n %{libname}-plug-crammd5
 %defattr(-,root,root)
