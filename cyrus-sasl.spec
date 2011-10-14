@@ -3,16 +3,16 @@
 %define up_name cyrus-sasl
 %define sasl2_db_filename /var/lib/sasl2/sasl.db
 
-%define KRB5 0
+%define KRB5 1
 %define MYSQL 1
-%define SRP 0
-%define PGSQL 0
-%define SQLITE 0
+%define SRP 1
+%define PGSQL 1
+%define SQLITE3 1
 %define LDAP 1
-%define SRPSTR disabled
+%define SRPSTR enabled
 %define MYSQLSTR enabled
-%define PGSQLSTR disabled
-%define SQLITESTR disabled
+%define PGSQLSTR enabled
+%define SQLITE3STR enabled
 %define LDAPSTR enabled
 
 %{?_with_krb5: %{expand: %%global KRB5 1}}
@@ -23,8 +23,8 @@
 %{?_without_mysql: %{expand: %%global MYSQL 0}}
 %{?_with_pgsql: %{expand: %%global PGSQL 1}}
 %{?_without_pgsql: %{expand: %%global PGSQL 0}}
-%{?_with_sqlite: %{expand: %%global SQLITE 1}}
-%{?_without_sqlite: %{expand: %%global SQLITE 0}}
+%{?_with_sqlite3: %{expand: %%global SQLITE3 1}}
+%{?_without_sqlite3: %{expand: %%global SQLITE3 0}}
 %{?_with_ldap: %{expand: %%global LDAP 1}}
 %{?_without_ldap: %{expand: %%global LDAP 0}}
 
@@ -34,8 +34,8 @@
 %{?_without_mysql: %{expand: %%global MYSQLSTR disabled}}
 %{?_with_pgsql: %{expand: %%global PGSQLSTR enabled}}
 %{?_without_pgsql: %{expand: %%global PGSQLSTR disabled}}
-%{?_with_sqlite: %{expand: %%global SQLITESTR enabled}}
-%{?_without_sqlite: %{expand: %%global SQLITESTR disabled}}
+%{?_with_sqlite3: %{expand: %%global SQLITE3STR enabled}}
+%{?_without_sqlite3: %{expand: %%global SQLITE3STR disabled}}
 %{?_with_ldap: %{expand: %%global LDAPSTR enabled}}
 %{?_without_ldap: %{expand: %%global LDAPSTR disabled}}
 
@@ -45,49 +45,42 @@
 
 Summary:	The Simple Authentication and Security Layer
 Name:		%{up_name}
-Version:	2.1.23
-Release:	%mkrel 15
-Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz
-Source1:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{up_name}-%{version}.tar.gz.sig
+Version:	2.1.25
+Release:	%mkrel 1
+License:	BSD-style
+Group:		System/Libraries
+URL:		http://cyrusimap.org/
+Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{up_name}-%{version}.tar.gz
+Source1:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{up_name}-%{version}.tar.gz.sig
 Source2:	saslauthd.init
 Source3:	saslauthd.sysconfig
 Source4:	service.conf.example
 Source7:	sasl-mechlist.c
 Source8:	sasl-checkpass.c
 Patch0:		cyrus-sasl-doc.patch
-Patch1:		cyrus-sasl-2.1.15-lib64.patch
-Patch2:		cyrus-sasl-2.1.20-gssapi-dynamic.patch
 Patch3:		cyrus-sasl-2.1.19-pic.patch
-Patch4:		cyrus-sasl-2.1.22-sed_syntax.diff
-Patch5:		0006_library_mutexes.dpatch
-Patch6:		0012_xopen_crypt_prototype.dpatch
+Patch5:		cyrus-sasl-2.1.25-library_mutexes.diff
+Patch6:		cyrus-sasl-2.1.25-xopen_crypt_prototype.diff
 Patch7:		cyrus-sasl-2.1.23-db5.patch
-
-# synced with fedora
-Patch11:	cyrus-sasl-2.1.18-no_rpath.patch
-# already fixed with cyrus-sasl-doc.patch
-#Patch15:	cyrus-sasl-2.1.20-saslauthd.conf-path.patch
+Patch11:	cyrus-sasl-2.1.25-no_rpath.diff
 Patch23:	cyrus-sasl-2.1.23-man.patch
-Patch24:	cyrus-sasl-2.1.21-sizes.patch
-Patch25:	cyrus-sasl-2.1.22-typo.patch
-Patch26:	cyrus-sasl-2.1.22-digest-commas.patch
-Patch27:	cyrus-sasl-2.1.22-automake-1.10.patch
-Patch28:	cyrus-sasl-2.1.21-keytab.patch
-Patch30:	cyrus-sasl-2.1.22-rimap.patch
+Patch28:	cyrus-sasl-2.1.25-keytab.diff
+Patch30:	cyrus-sasl-2.1.25-rimap.diff
 Patch31:	cyrus-sasl-2.1.22-kerberos4.patch
-Patch32:	cyrus-sasl-2.1.22-warnings.patch
-Patch33:	cyrus-sasl-2.1.22-current-db.patch
+Patch33:	cyrus-sasl-2.1.25-current-db.diff
 Patch34:	cyrus-sasl-2.1.22-ldap-timeout.patch
-Patch35:	cyrus-sasl-2.1.22-bad-elif.patch
-Patch36:	cyrus-sasl-ac-quote.patch
 Patch37:	cyrus-sasl-2.1.23-race.patch
 
-License:	BSD-style
-Group:		System/Libraries
-URL:		http://asg.web.cmu.edu/cyrus/download/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires:	%{libname} = %{version}
-#Obsoletes:	cyrus-sasl <= 2.1.0
+Patch100:	cyrus-sasl-lt.patch
+Patch101:	cyrus-sasl-split-sql.patch
+Patch102:	cyrus-sasl-sizes.patch
+Patch103:	cyrus-sasl-parallel-make.patch
+Patch104:	cyrus-sasl-ac-libs.patch
+Patch105:	cyrus-sasl-pam.patch
+Patch106:	cyrus-sasl-2.1.15-lib64.patch
+Patch107:	cyrus-sasl-2.1.25-no_version-info_for_plugins.diff
+
+Requires:	%{libname} >= %{version}
 Requires(pre):	rpm-helper
 Requires(post):	rpm-helper
 Requires(preun): rpm-helper
@@ -95,6 +88,8 @@ BuildRequires:	autoconf
 BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel >= 0.9.6a
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	libtool >= 1.4
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
@@ -107,8 +102,8 @@ BuildRequires:	mysql-devel
 %if %{PGSQL}
 BuildRequires:	postgresql-devel
 %endif
-%if %{SQLITE}
-BuildRequires:	sqlite-devel
+%if %{SQLITE3}
+BuildRequires:	sqlite3-devel
 %endif
 %if %{LDAP}
 BuildRequires:	openldap-devel
@@ -128,7 +123,7 @@ The SQL auxprop plugin can be rebuild with different database backends:
 	--with srp	SRP support	(%{SRPSTR})
 	--with mysql	MySQL support	(%{MYSQLSTR})
 	--with pgsql	Postgres SQL support	(%{PGSQLSTR})
-	--with sqlite	SQLite support	(%{SQLITESTR})
+	--with sqlite3	SQLite v3 support	(%{SQLITE3STR})
 
 %package -n	%{libname}
 Summary:	Libraries for SASL a the Simple Authentication and Security Layer
@@ -150,7 +145,7 @@ Provides:	libsasl-devel = %{version}
 Provides:	libsasl2-devel = %{version}
 %endif
 Provides:	%{mklibname -d sasl} = %{version}
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 
 %description -n	%{libname}-devel
 SASL is the Simple Authentication and Security Layer, 
@@ -163,7 +158,7 @@ between the protocol and the connection.
 %package -n	%{libname}-plug-anonymous
 Summary:	SASL ANONYMOUS mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-anonymous
 
 %description -n	%{libname}-plug-anonymous
@@ -173,7 +168,7 @@ used for anonymous authentication.
 %package -n	%{libname}-plug-crammd5
 Summary:	SASL CRAM-MD5 mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-crammd5
 
 %description -n	%{libname}-plug-crammd5
@@ -185,7 +180,7 @@ authenticate the user.
 %package -n	%{libname}-plug-digestmd5
 Summary:	SASL DIGEST-MD5 mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-digestmd5
 
 %description -n	%{libname}-plug-digestmd5
@@ -197,7 +192,7 @@ It's based on the digest md5 authentication system designed for HTTP.
 %package -n	%{libname}-plug-plain
 Summary:	SASL PLAIN mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-plain
 
 %description -n	%{libname}-plug-plain
@@ -206,21 +201,19 @@ PLAIN is useful for transitioning to new security mechanisms, as this
 is the only mechanism which gives the server a copy of the user's
 password.
 
-#package -n	%{libname}-plug-scrammd5
-#Summary:	SASL SCRAM-MD5 mechanism plugin
-#Group:		System/Libraries
-#Requires:	%{libname} = %{version}
-#Provides:	sasl-plug-scrammd5
-#
-#description -n	%{libname}-plug-scrammd5
-#This plugin implements the SASL SCRAM-MD5 mechanism.  Although
-#deprecated (this will be replaced by DIGEST-MD5 at some point), it may
-#be useful for the time being.
+%package -n	%{libname}-plug-scram
+Summary:	SASL SCRAM-SHA-1 mechanism plugin
+Group:		System/Libraries
+Requires:	%{libname} = %{version}
+Provides:	sasl-plug-scram
+
+%description -n	%{libname}-plug-scram
+This plugin implements the SASL SCRAM-SHA-1 SASL plugin mechanism.
 
 %package -n	%{libname}-plug-login
 Summary:	SASL LOGIN mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-login
 
 %description -n	%{libname}-plug-login
@@ -233,7 +226,7 @@ Please use the plain plugin instead.
 %package -n	%{libname}-plug-gssapi
 Summary:	SASL GSSAPI mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Requires:	krb5-libs
 Provides:	sasl-plug-gssapi
 
@@ -244,7 +237,7 @@ This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
 %package -n	%{libname}-plug-otp
 Summary:	SASL OTP mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-otp
 
 %description -n	%{libname}-plug-otp
@@ -258,7 +251,7 @@ Group:		System/Libraries
 Requires(post):	%{name} >= %{version}
 # That requirement has to be here (in "Requires") also
 # (http://archives.mandrivalinux.com/cooker/2005-06/msg00109.php)
-Requires:	%{libname} = %{version}, %{name} >= %{version}
+Requires:	%{libname} >= %{version}, %{name} >= %{version}
 Provides:	sasl-plug-sasldb
 
 %description -n	%{libname}-plug-sasldb
@@ -269,7 +262,7 @@ in a Berkeley database file.
 %package -n	%{libname}-plug-srp
 Summary:	SASL srp mechanism plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-srp
 
 %description -n	%{libname}-plug-srp
@@ -279,32 +272,51 @@ This plugin implements the srp  mechanism.
 %package -n	%{libname}-plug-ntlm
 Summary:	SASL ntlm authentication plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-ntlm
 
 %description -n	%{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
 
-%if %{MYSQL} || %{PGSQL} || %{SQLITE}
-%package -n	%{libname}-plug-sql
-Summary:	SASL sql auxprop plugin
+%if %{MYSQL}
+%package -n	%{libname}-plug-mysql
+Summary:	SASL MySQL plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-sql
 
-%description -n	%{libname}-plug-sql
-This plugin implements the SQL auxprop authentication method
-It can be rebuild with different database backends:
-	--with mysql	MySQL support	(%{MYSQLSTR})
-	--with pgsql	Postgres SQL support	(%{PGSQLSTR})
-	--with sqlite	SQLite support	(%{SQLITESTR})
+%description -n	%{libname}-plug-mysql
+This plugin implements the MySQL authentication method
 %endif
+
+%if %{PGSQL}
+%package -n	%{libname}-plug-pgsql
+Summary:	SASL PostgreSQL plugin
+Group:		System/Libraries
+Requires:	%{libname} >= %{version}
+Provides:	sasl-plug-sql
+
+%description -n	%{libname}-plug-pgsql
+This plugin implements the PostgreSQL authentication method
+%endif
+
+%if %{SQLITE3}
+%package -n	%{libname}-plug-sqlite3
+Summary:	SASL SQLite v3 plugin
+Group:		System/Libraries
+Requires:	%{libname} >= %{version}
+Provides:	sasl-plug-sql
+
+%description -n	%{libname}-plug-sqlite3
+This plugin implements the SQLite v3 authentication method
+%endif
+
 
 %if %{LDAP}
 %package -n	%{libname}-plug-ldapdb
 Summary:	SASL ldapdb auxprop plugin
 Group:		System/Libraries
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	sasl-plug-ldapdb
 
 %description -n	%{libname}-plug-ldapdb
@@ -312,106 +324,107 @@ This plugin implements the LDAP auxprop authentication method.
 %endif
 
 %prep
+
 %setup -q -n %{up_name}-%{version}
 install -m 0644 %{SOURCE4} .
 %patch0 -p1 -b .sasldoc~
-%patch1 -p1 -b .lib64~
-#%%patch2 -p1 -b .gssapi~
 %patch3 -p1 -b .pic~
-%patch4 -p0 -b .sed_syntax~
-%patch5 -p1 -b .library_mutexes~
-%patch6 -p1 -b .xopen_crypt_prototype~
+%patch5 -p0 -b .library_mutexes~
+%patch6 -p0 -b .xopen_crypt_prototype~
 %patch7 -p0 -b .db5
 
-%patch11 -p1 -b .no_rpath~
-#%%patch15 -p1 -b .path~
+%patch11 -p0 -b .no_rpath~
 %patch23 -p1 -b .man~
-%patch24 -p1 -b .sizes~
-%patch25 -p1 -b .typo~
-%patch26 -p2 -b .digest-commas~
-%patch27 -p1 -b .automake-1.10~
 %patch28 -p1 -b .keytab~
-%patch30 -p1 -b .rimap~
+%patch30 -p0 -b .rimap~
 %patch31 -p1 -b .krb4~
-%patch32 -p1 -b .warnings~
-%patch33 -p1 -b .current-db~
+%patch33 -p0 -b .current-db~
 %patch34 -p1 -b .ldap-timeout~
-%patch35 -p1 -b .elif~
-%patch36 -p1 -b .ac-quote~
 %patch37 -p1 -b .race~
+
+%patch100 -p1
+%patch101 -p1
+%patch102 -p1
+%patch103 -p1
+%patch104 -p1
+%patch105 -p1
+%patch106 -p1 -b .lib64~
+%patch107 -p0
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
 rm -f config/config.guess config/config.sub 
-rm -f config/ltconfig config/ltmain.sh config/libtool.m4
+rm -f config/ltconfig config/ltmain.sh config/libtool.m4 configure
 rm -fr autom4te.cache
-libtoolize -c
-aclocal -I config -I cmulocal
-automake -a -c
+libtoolize -c -f -i
+aclocal -I cmulocal -I config
 autoheader
 autoconf
+automake -a -c
 pushd saslauthd
 rm -f config/ltconfig
 libtoolize -f -c
-aclocal -I ../config -I ../cmulocal
+aclocal -I ../cmulocal -I ../config
 automake -a -c -f
 autoheader
 autoconf -f
+automake -a -c
 popd
 
 %build
-
 %serverbuild
 %{?__cputoolize: %{__cputoolize} -c saslauthd}
-%configure2_5x 	--enable-static --enable-shared \
-		--with-plugindir=%{_libdir}/sasl2 \
-		--with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
-		--disable-krb4 \
-		--enable-login \
+
+%configure2_5x 	\
+    --enable-static \
+    --enable-shared \
+    --with-plugindir=%{_libdir}/sasl2 \
+    --with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
+    --disable-krb4 \
+    --enable-login \
 %if %{SRP}
-		--enable-srp --enable-srp-setpass \
+    --enable-srp --enable-srp-setpass \
 %else
-		--without-srp --without-srp-srp-setpass \
+    --without-srp --without-srp-srp-setpass \
 %endif
-		--enable-ntlm \
-		--enable-db4 \
-		--enable-gssapi \
-		--disable-gss_mutexes \
+    --enable-ntlm \
+    --enable-db4 \
+    --enable-gssapi \
+    --disable-gss_mutexes \
 %if %{MYSQL}
-		--enable-sql --with-mysql=%{_prefix} \
+    --enable-sql --with-mysql=%{_prefix} \
 %else
-		--without-mysql \
+    --without-mysql \
 %endif
 %if %{PGSQL}
-		--enable-sql --with-pgsql=%{_prefix} \
+    --enable-sql --with-pgsql=%{_prefix} \
 %else
-		--without-pgsql \
+    --without-pgsql \
 %endif
-%if %{SQLITE}
-		--enable-sql --with-sqlite=%{_prefix} \
+%if %{SQLITE3}
+    --enable-sql --with-sqlite3=%{_prefix} \
 %else
-		--without-sqlite \
+    --without-sqlite \
 %endif
 %if %{LDAP}
-		--with-ldap=%{_prefix} \
-		--enable-ldapdb \
+    --with-ldap=%{_prefix} --enable-ldapdb \
 %endif
-		--with-dbpath=%{sasl2_db_filename} \
-		--with-saslauthd=/var/run/saslauthd \
-		--with-authdaemond=/var/run/authdaemon.courier-imap/socket
+    --with-dbpath=%{sasl2_db_filename} \
+    --with-saslauthd=/var/run/saslauthd \
+    --with-authdaemond=/var/run/authdaemon.courier-imap/socket \
+    --with-devrandom=/dev/urandom
 
 # ugly hack: there is an ordering problem introduced in 2.1.21 
 # when --enable-static is given to ./configure which calling 
 # make twice "solves"
 # no parallel make on cluster
-make || :
-make
-make -C saslauthd testsaslauthd
-make -C sample
+%make || :
+%make
+%make -C saslauthd testsaslauthd
+%make -C sample
 
 install saslauthd/LDAP_SASLAUTHD README.ldap
-
 
 # Build a small program to list the available mechanisms, because I need it.
 pushd lib
@@ -423,15 +436,17 @@ popd
 
 %install
 rm -rf %{buildroot}
+
 mkdir -p %{buildroot}/var/lib/sasl2 %{buildroot}/var/run/saslauthd
 mkdir -p %{buildroot}%{_sysconfdir}/sasl2
+
 %makeinstall_std
 
 install -m644 %{SOURCE2} -D %{buildroot}%{_initrddir}/saslauthd
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 
 # we don't need these
-rm -f %{buildroot}%{_libdir}/sasl2/*.a
+rm -f %{buildroot}%{_libdir}/sasl2/*.*a
 
 # dbconverter-2 isn't installed by make install
 
@@ -486,9 +501,6 @@ EOF
 perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/*.la
 %endif
 
-%clean
-rm -rf %{buildroot}
-
 %pre -n %{libname}-plug-sasldb
 %_pre_groupadd sasl
 
@@ -524,6 +536,9 @@ fi
 %preun
 %_preun_service saslauthd
 
+%clean
+rm -rf %{buildroot}
+
 %files
 %defattr(-,root,root)
 %doc COPYING AUTHORS INSTALL NEWS README* ChangeLog
@@ -547,75 +562,80 @@ fi
 %files -n %{libname}
 %defattr(-,root,root)
 %dir %{_libdir}/sasl2
-%{_libdir}/libsasl*.so.*
+%{_libdir}/libsasl*.so.%{major}*
 
 %files -n %{libname}-plug-anonymous
 %defattr(-,root,root)
-%{_libdir}/sasl2/libanonymous*.so*
-%{_libdir}/sasl2/libanonymous*.la
+%{_libdir}/sasl2/libanonymous.so
 
 %files -n %{libname}-plug-otp
 %defattr(-,root,root)
-%{_libdir}/sasl2/libotp*.so*
-%{_libdir}/sasl2/libotp*.la
+%{_libdir}/sasl2/libotp.so
+
+%files -n %{libname}-plug-scram
+%defattr(-,root,root)
+%{_libdir}/sasl2/libscram.so
+
+%files -n %{libname}-plug-crammd5
+%defattr(-,root,root)
+%{_libdir}/sasl2/libcrammd5.so
 
 %files -n %{libname}-plug-sasldb
 %defattr(-,root,root)
 %doc README.Mandriva.sasldb
-%{_libdir}/sasl2/libsasldb*.so*
-%{_libdir}/sasl2/libsasldb*.la
+%{_libdir}/sasl2/libsasldb.so
 
 %if %{KRB5}
 %files -n %{libname}-plug-gssapi
 %defattr(-,root,root)
-%{_libdir}/sasl2/libgssapi*.so*
-%{_libdir}/sasl2/libgssapi*.la
+%{_libdir}/sasl2/libgs2.so
+%{_libdir}/sasl2/libgssapiv2.so
 %endif
-
-%files -n %{libname}-plug-crammd5
-%defattr(-,root,root)
-%{_libdir}/sasl2/libcrammd5*.so*
-%{_libdir}/sasl2/libcrammd5*.la
 
 %files -n %{libname}-plug-digestmd5
 %defattr(-,root,root)
-%{_libdir}/sasl2/libdigestmd5*.so*
-%{_libdir}/sasl2/libdigestmd5*.la
+%{_libdir}/sasl2/libdigestmd5.so
 
 %files -n %{libname}-plug-plain
 %defattr(-,root,root)
-%{_libdir}/sasl2/libplain*.so*
-%{_libdir}/sasl2/libplain*.la
+%{_libdir}/sasl2/libplain.so
 
 %files -n %{libname}-plug-login
 %defattr(-,root,root)
-%{_libdir}/sasl2/liblogin*.so*
-%{_libdir}/sasl2/liblogin*.la
+%{_libdir}/sasl2/liblogin.so
 
 %if %{SRP}
 %files -n %{libname}-plug-srp
 %defattr(-,root,root)
-%{_libdir}/sasl2/libsrp*.so*
-%{_libdir}/sasl2/libsrp*.la
+%{_libdir}/sasl2/libsrp.so
 %endif
 
 %files -n %{libname}-plug-ntlm
 %defattr(-,root,root)
-%{_libdir}/sasl2/libntlm*.so*
-%{_libdir}/sasl2/libntlm*.la
+%{_libdir}/sasl2/libntlm.so
 
-%if %{MYSQL} || %{PGSQL} || %{SQLITE}
-%files -n %{libname}-plug-sql
+%if %{MYSQL}
+%files -n %{libname}-plug-mysql
 %defattr(-,root,root)
-%{_libdir}/sasl2/libsql*.so*
-%{_libdir}/sasl2/libsql*.la
+%{_libdir}/sasl2/libmysql.so
+%endif
+
+%if %{PGSQL}
+%files -n %{libname}-plug-pgsql
+%defattr(-,root,root)
+%{_libdir}/sasl2/libpgsql.so
+%endif
+
+%if %{SQLITE3}
+%files -n %{libname}-plug-sqlite3
+%defattr(-,root,root)
+%{_libdir}/sasl2/libsqlite3.so
 %endif
 
 %if %{LDAP}
 %files -n %{libname}-plug-ldapdb
 %defattr(-,root,root)
-%{_libdir}/sasl2/libldap*.so*
-%{_libdir}/sasl2/libldap*.la
+%{_libdir}/sasl2/libldapdb.so
 %endif
 
 %files -n %{libname}-devel
