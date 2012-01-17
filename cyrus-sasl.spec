@@ -46,7 +46,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		%{up_name}
 Version:	2.1.25
-Release:	%mkrel 2
+Release:	3
 License:	BSD-style
 Group:		System/Libraries
 URL:		http://cyrusimap.org/
@@ -87,10 +87,8 @@ Requires(preun): rpm-helper
 BuildRequires:	autoconf
 BuildRequires:	db-devel
 BuildRequires:	pam-devel
-BuildRequires:	openssl-devel >= 0.9.6a
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	libtool >= 1.4
+BuildRequires:	openssl-devel
+BuildRequires:	autoconf automake libtool
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
 %if %{KRB5}
@@ -108,7 +106,6 @@ BuildRequires:	sqlite3-devel
 %if %{LDAP}
 BuildRequires:	openldap-devel
 %endif
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 SASL is the Simple Authentication and Security Layer, 
@@ -312,7 +309,6 @@ Provides:	sasl-plug-sql
 This plugin implements the SQLite v3 authentication method
 %endif
 
-
 %if %{LDAP}
 %package -n	%{libname}-plug-ldapdb
 Summary:	SASL ldapdb auxprop plugin
@@ -498,9 +494,8 @@ EOF
 ./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
 ./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
 
-%if "%{_lib}" == "lib64"
-perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/*.la
-%endif
+# cleanup
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %pre -n %{libname}-plug-sasldb
 %_pre_groupadd sasl
@@ -537,11 +532,7 @@ fi
 %preun
 %_preun_service saslauthd
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc COPYING AUTHORS INSTALL NEWS README* ChangeLog
 %doc doc/{TODO,ONEWS,*.txt,*.html}
 %doc service.conf.example
@@ -561,90 +552,72 @@ rm -rf %{buildroot}
 %{_mandir}/man8/*
 
 %files -n %{libname}
-%defattr(-,root,root)
 %dir %{_libdir}/sasl2
 %{_libdir}/libsasl*.so.%{major}*
 
 %files -n %{libname}-plug-anonymous
-%defattr(-,root,root)
 %{_libdir}/sasl2/libanonymous.so
 
 %files -n %{libname}-plug-otp
-%defattr(-,root,root)
 %{_libdir}/sasl2/libotp.so
 
 %files -n %{libname}-plug-scram
-%defattr(-,root,root)
 %{_libdir}/sasl2/libscram.so
 
 %files -n %{libname}-plug-crammd5
-%defattr(-,root,root)
 %{_libdir}/sasl2/libcrammd5.so
 
 %files -n %{libname}-plug-sasldb
-%defattr(-,root,root)
 %doc README.Mandriva.sasldb
 %{_libdir}/sasl2/libsasldb.so
 
 %if %{KRB5}
 %files -n %{libname}-plug-gssapi
-%defattr(-,root,root)
 %{_libdir}/sasl2/libgs2.so
 %{_libdir}/sasl2/libgssapiv2.so
 %endif
 
 %files -n %{libname}-plug-digestmd5
-%defattr(-,root,root)
 %{_libdir}/sasl2/libdigestmd5.so
 
 %files -n %{libname}-plug-plain
-%defattr(-,root,root)
 %{_libdir}/sasl2/libplain.so
 
 %files -n %{libname}-plug-login
-%defattr(-,root,root)
 %{_libdir}/sasl2/liblogin.so
 
 %if %{SRP}
 %files -n %{libname}-plug-srp
-%defattr(-,root,root)
 %{_libdir}/sasl2/libsrp.so
 %endif
 
 %files -n %{libname}-plug-ntlm
-%defattr(-,root,root)
 %{_libdir}/sasl2/libntlm.so
 
 %if %{MYSQL}
 %files -n %{libname}-plug-mysql
-%defattr(-,root,root)
 %{_libdir}/sasl2/libmysql.so
 %endif
 
 %if %{PGSQL}
 %files -n %{libname}-plug-pgsql
-%defattr(-,root,root)
 %{_libdir}/sasl2/libpgsql.so
 %endif
 
 %if %{SQLITE3}
 %files -n %{libname}-plug-sqlite3
-%defattr(-,root,root)
 %{_libdir}/sasl2/libsqlite3.so
 %endif
 
 %if %{LDAP}
 %files -n %{libname}-plug-ldapdb
-%defattr(-,root,root)
 %{_libdir}/sasl2/libldapdb.so
 %endif
 
 %files -n %{libname}-devel
-%defattr(-,root,root)
 %{_sbindir}/sasl2-shared-mechlist
 %{_sbindir}/sasl2-shared-checkpass
 %{_includedir}/*
 %{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
-%{_libdir}/*.*a
 %{_mandir}/man3/*
