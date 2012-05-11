@@ -46,7 +46,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		%{up_name}
 Version:	2.1.25
-Release:	3
+Release:	4
 License:	BSD-style
 Group:		System/Libraries
 URL:		http://cyrusimap.org/
