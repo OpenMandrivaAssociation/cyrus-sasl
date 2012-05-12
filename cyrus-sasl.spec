@@ -616,7 +616,7 @@ fi
 %files -n %{libname}-devel
 %{_sbindir}/sasl2-shared-mechlist
 %{_sbindir}/sasl2-shared-checkpass
-%{_includedir}/*
+%{_includedir}/sasl
 %{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
 %{_mandir}/man3/*
