@@ -371,7 +371,6 @@ popd
 
 %build
 %serverbuild
-%{?__cputoolize: %{__cputoolize} -c saslauthd}
 
 %configure2_5x 	\
     --enable-static \
