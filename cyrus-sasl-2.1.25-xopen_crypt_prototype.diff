@@ -1,0 +1,10 @@
+--- saslauthd/auth_shadow.c	2009-12-03 14:07:03.000000000 -0500
++++ saslauthd/auth_shadow.c.oden	2011-10-14 12:10:26.269460477 -0400
+@@ -36,6 +36,7 @@
+ 
+ #ifdef AUTH_SHADOW
+ 
++#define _XOPEN_SOURCE
+ #define PWBUFSZ 256 /***SWB***/
+ 
+ # include <unistd.h>

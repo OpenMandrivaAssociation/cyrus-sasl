@@ -1,0 +1,8 @@
+sources:
+  "cyrus-sasl-2.1.25.tar.gz:"	b6c34426012d9b5d448d5646cbecd818a5eeacbf
+  "cyrus-sasl-2.1.25.tar.gz.sig:"	9e697b0ed3e10a7c7e7d7907d4971f76353bb16a
+  "saslauthd.init:"	168e1d1b7881ab418b46dc321d0c29e5763714db
+  "saslauthd.sysconfig:"	176b2d3add8d187d576958744426b8a69c502e57
+  "sasl-checkpass.c:"	5c3687b181d18d6a8c99f534d7ef81d1948bdcba
+  "sasl-mechlist.c:"	bec68f9de91465746c71df16fb555c79570714b6
+  "service.conf.example:"	358e4a0f4f02ecd9d9acf1b14f451ead2d380599
