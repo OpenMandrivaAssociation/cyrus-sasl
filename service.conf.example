@@ -1,0 +1,32 @@
+# SASL library sample configuration file
+#
+# This file should be called <service>.conf
+# For example, smtpd.conf would be the default name for
+# postfix
+#
+# all parameters are documented into:
+# /usr/share/doc/cyrus-sasl-2.*/options.html
+
+# The mech_list parameters list the sasl mechanisms to use,
+# default being all mechs found.
+#mech_list:     plain login
+
+# To authenticate using the separate saslauthd daemon, (e.g. for
+# system or ldap users). Also see /etc/sysconfig/saslauthd.
+#pwcheck_method: saslauthd
+#saslauthd_path: /var/lib/sasl2/mux
+
+# To authenticate against users stored in sasldb.
+#auxprop_plugin: auxprop
+#sasldb_path:    /var/lib/sasl2/sasl.db
+
+# To authenticate against users stored in MySQL:
+#pwcheck_method: auxprop
+#auxprop_plugin: sql
+#sql_engine:     mysql
+#sql_hostnames:  127.0.0.1
+#sql_user:       sasluser
+#sql_passwd:     secret
+#sql_database:   my_database
+#sql_select:     select password as userPassword from my_table where username='%u@%r'
+

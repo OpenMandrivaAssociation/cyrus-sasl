@@ -1,7 +1,0 @@
-cyrus-sasl-2.1.25.tar.gz
-cyrus-sasl-2.1.25.tar.gz.sig
-saslauthd.init
-saslauthd.sysconfig
-sasl-checkpass.c
-sasl-mechlist.c
-service.conf.example

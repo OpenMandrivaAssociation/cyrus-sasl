@@ -46,7 +46,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		%{up_name}
 Version:	2.1.25
-Release:	4
+Release:	5
 License:	BSD-style
 Group:		System/Libraries
 URL:		http://cyrusimap.org/
@@ -89,6 +89,7 @@ BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
 BuildRequires:	autoconf automake libtool
+BuildRequires:  groff
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
 %if %{KRB5}
@@ -373,7 +374,7 @@ popd
 %serverbuild
 
 %configure2_5x 	\
-    --enable-static \
+    --disable-static \
     --enable-shared \
     --with-plugindir=%{_libdir}/sasl2 \
     --with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
@@ -441,6 +442,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 install -m644 %{SOURCE2} -D %{buildroot}%{_initrddir}/saslauthd
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 
+# to be removed later
 # we don't need these
 rm -f %{buildroot}%{_libdir}/sasl2/*.*a
 
@@ -492,9 +494,6 @@ EOF
 # Provide an easy way to query the list of available mechanisms.
 ./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
 ./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
-
-# cleanup
-rm -f %{buildroot}%{_libdir}/*.*a
 
 %pre -n %{libname}-plug-sasldb
 %_pre_groupadd sasl
@@ -620,3 +619,173 @@ fi
 %{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
 %{_mandir}/man3/*
+
+
+%changelog
+* Sat May 12 2012 Crispin Boylan <crisb@mandriva.org> 2.1.25-4
++ Revision: 798389
+- Remove cputoolize call as it is not longer provided
+- Rebuild
+
+* Tue Jan 17 2012 Oden Eriksson <oeriksson@mandriva.com> 2.1.25-3
++ Revision: 761890
+- various fixes
+
+* Mon Oct 24 2011 Götz Waschk <waschk@mandriva.org> 2.1.25-2
++ Revision: 705837
+- add missing devel dep on pam-devel, it is in  the libtool archive
+
+* Fri Oct 14 2011 Oden Eriksson <oeriksson@mandriva.com> 2.1.25-1
++ Revision: 704729
+- 2.1.25
+- enable all features
+- use sqlite3
+- drop upstream/obsolete patches
+- rediff some of the patches
+- add P100-P105 from pld, various fixes (thanks pld!)
+- P107: the modules are modules and should not need -version-info (use -avoid-version)
+
+  + Matthew Dawkins <mattydaw@mandriva.org>
+    - added condition for krb5 to make it easier to bootstrap
+
+* Mon Jun 20 2011 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-15
++ Revision: 686307
+- avoid pulling 32 bit libraries on 64 bit arch
+
+* Mon May 02 2011 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-14
++ Revision: 661509
+- %%exclude and multiarch fixes
+
+* Mon Apr 11 2011 Funda Wang <fwang@mandriva.org> 2.1.23-13
++ Revision: 652493
+- build with db 5.1
+
+* Thu Mar 17 2011 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-12
++ Revision: 645743
+- relink against libmysqlclient.so.18
+
+* Sat Jan 01 2011 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-11mdv2011.0
++ Revision: 626995
+- rebuilt against mysql-5.5.8 libs, again
+
+* Mon Dec 27 2010 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-10mdv2011.0
++ Revision: 625416
+- rebuilt against mysql-5.5.8 libs
+
+* Tue Nov 30 2010 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-9mdv2011.0
++ Revision: 603882
+- rebuild
+
+* Mon Apr 05 2010 Funda Wang <fwang@mandriva.org> 2.1.23-8mdv2010.1
++ Revision: 531735
+- rebuild for new openssl
+
+* Fri Feb 26 2010 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-7mdv2010.1
++ Revision: 511558
+- rebuilt against openssl-0.9.8m
+
+* Tue Feb 23 2010 Per Øyvind Karlsen <peroyvind@mandriva.org> 2.1.23-6mdv2010.1
++ Revision: 509878
+- don't ship our own version of saslauthd.8 man page, original seems fine now...
+- cleanup spec
+- rewrite init script
+- move socket directory to /var/run/saslauthd for FHS compliance
+- sync patches with fedora and rearrange them for easier maintenance
+
+* Fri Feb 19 2010 Funda Wang <fwang@mandriva.org> 2.1.23-5mdv2010.1
++ Revision: 508394
+- rebuild
+
+* Wed Feb 17 2010 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-4mdv2010.1
++ Revision: 507026
+- rebuild
+
+* Sat Jan 02 2010 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-3mdv2010.1
++ Revision: 485026
+- really link against bdb 4.8
+
+* Fri Jan 01 2010 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-2mdv2010.1
++ Revision: 484723
+- rebuilt against bdb 4.8
+
+  + Christophe Fergeau <cfergeau@mandriva.com>
+    - fix build with gcc 4.4 (patch from fedora)
+
+* Mon May 18 2009 Oden Eriksson <oeriksson@mandriva.com> 2.1.23-1mdv2010.0
++ Revision: 376863
+- 2.1.23 (fixes CVE-2009-0688)
+- rediffed P0
+
+* Fri Dec 19 2008 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-34mdv2009.1
++ Revision: 316161
+- fix file conflicts
+
+* Tue Dec 16 2008 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-33mdv2009.1
++ Revision: 314887
+- bump release
+- rediffed one fuzzy patch
+
+* Sat Dec 06 2008 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-32mdv2009.1
++ Revision: 311373
+- added two tools from fedora
+
+* Sat Dec 06 2008 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-31mdv2009.1
++ Revision: 311197
+- rebuilt against mysql-5.1.30 libs
+
+* Wed Nov 26 2008 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-30mdv2009.1
++ Revision: 307006
+- bump release
+- drop the automake1.7 dep
+- added P2,P3 drom debian
+- added P7-P11 from cyrus-sasl-2.1.22-19.fc10.src.rpm
+- latest bdb is 4.7
+
+* Fri Jul 04 2008 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-29mdv2009.0
++ Revision: 231698
+- fix the conditional stuff
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Mon Feb 18 2008 Thierry Vignaud <tv@mandriva.org> 2.1.22-27mdv2008.1
++ Revision: 170792
+- rebuild
+- fix "foobar is blabla" summary (=> "blabla") so that it looks nice in rpmdrake
+
+* Wed Jan 23 2008 Thierry Vignaud <tv@mandriva.org> 2.1.22-26mdv2008.1
++ Revision: 157245
+- rebuild with fixed %%serverbuild macro
+
+* Tue Jan 08 2008 Andreas Hasenack <andreas@mandriva.com> 2.1.22-25mdv2008.1
++ Revision: 146658
+- relax a bit the sasldb requires cyrus-sasl dependency using according to pixel's email on maintainers@ (libxxx2 should not have strict require...)
+
+  + Olivier Blin <blino@mandriva.org>
+    - restore BuildRoot
+
+* Fri Dec 21 2007 Oden Eriksson <oeriksson@mandriva.com> 2.1.22-24mdv2008.1
++ Revision: 136122
+- rebuilt against openldap-2.4.7 libs
+- prepare for db4.6 (new P5)
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Tue Aug 07 2007 Andreas Hasenack <andreas@mandriva.com> 2.1.22-23mdv2008.0
++ Revision: 59828
+- use automake 1.7 so it builds again (thanks Oden!)
+- rebuild with new serverbuild macro (-fstack-protector-all)
+
+  + David Walluck <walluck@mandriva.org>
+    - %%{_sysconfdir}/sasl2 should be owned by the main package
+    - move %%{_sysconfdir}/sasl2/service.conf.example to %%doc as it is not even a config file
+
+* Wed Jun 13 2007 Andreas Hasenack <andreas@mandriva.com> 2.1.22-22mdv2008.0
++ Revision: 38593
+- install fixed version of saslauthd.8 manpage, taken from Annvix (#31250)
+- don't make install twice
+

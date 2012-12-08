@@ -1,0 +1,10 @@
+# $Id: saslauthd.sysconfig,v 1.1 2001/05/02 10:55:48 wiget Exp $
+# Authentications mechanism (for list see saslauthd -v)
+SASL_AUTHMECH=pam
+
+# Hostname for remote IMAP server (if rimap auth mech is used)
+# Ldap configuration file (if ldap auth mech is used)
+SASL_MECH_OPTIONS=
+
+# Extra options (for list see saslauthd -h)
+SASLAUTHD_OPTS=
