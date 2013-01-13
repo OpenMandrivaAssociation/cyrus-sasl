@@ -46,7 +46,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		%{up_name}
 Version:	2.1.25
-Release:	5
+Release:	6
 License:	BSD-style
 Group:		System/Libraries
 URL:		http://cyrusimap.org/
@@ -102,7 +102,7 @@ BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
 %endif
 %if %{SQLITE3}
-BuildRequires:	sqlite3-devel
+BuildRequires:	pkgconfig(sqlite3)
 %endif
 %if %{LDAP}
 BuildRequires:	openldap-devel
