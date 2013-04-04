@@ -46,7 +46,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.25
-Release:	8
+Release:	9
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -136,7 +136,7 @@ Summary:	Libraries for SASL a the Simple Authentication and Security Layer
 Group:		Development/C
 Provides:	sasl-devel = %{version}
 Requires:	%{libname} >= %{version}
-Obsoletes:	%{_lib}sasl2-devel
+Obsoletes:	%{_lib}sasl2-devel < 2.1.25-9
 
 %description -n	%{devname}
 SASL is the Simple Authentication and Security Layer, 
