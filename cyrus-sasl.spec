@@ -150,6 +150,7 @@ between the protocol and the connection.
 Summary:	SASL ANONYMOUS mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-anonymous
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-anonymous
 This plugin implements the SASL ANONYMOUS mechanism,
@@ -159,6 +160,7 @@ used for anonymous authentication.
 Summary:	SASL CRAM-MD5 mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-crammd5
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-crammd5
 This plugin implements the SASL CRAM-MD5 mechanism.
@@ -170,6 +172,7 @@ authenticate the user.
 Summary:	SASL DIGEST-MD5 mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-digestmd5
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-digestmd5
 This plugin implements the latest draft of the SASL DIGEST-MD5
@@ -181,6 +184,7 @@ It's based on the digest md5 authentication system designed for HTTP.
 Summary:	SASL PLAIN mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-plain
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-plain
 This plugin implements the SASL PLAIN mechanism.  Although insecure,
@@ -192,6 +196,7 @@ password.
 Summary:	SASL SCRAM-SHA-1 mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-scram
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-scram
 This plugin implements the SASL SCRAM-SHA-1 SASL plugin mechanism.
@@ -200,6 +205,7 @@ This plugin implements the SASL SCRAM-SHA-1 SASL plugin mechanism.
 Summary:	SASL LOGIN mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-login
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-login
 This plugin implements the SASL LOGIN mechanism.
@@ -211,8 +217,9 @@ Please use the plain plugin instead.
 %package -n	%{libname}-plug-gssapi
 Summary:	SASL GSSAPI mechanism plugin
 Group:		System/Libraries
-Requires:	krb5-libs
 Provides:	sasl-plug-gssapi
+Requires:	krb5-libs
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-gssapi
 This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
@@ -222,6 +229,7 @@ This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
 Summary:	SASL OTP mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-otp
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-otp
 This plugin implements the SASL OTP mechanism.
@@ -229,12 +237,8 @@ This plugin implements the SASL OTP mechanism.
 %package -n	%{libname}-plug-sasldb
 Summary:	SASL sasldb auxprop plugin
 Group:		System/Libraries
-# Requirement for %%{name} is due to dbconverter-2 being
-# potentially called in %%post
-Requires(post):	%{name} >= %{version}
-# That requirement has to be here (in "Requires") also
-# (http://archives.mandrivalinux.com/cooker/2005-06/msg00109.php)
 Provides:	sasl-plug-sasldb
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-sasldb
 This package provides the SASL sasldb auxprop plugin, which stores secrets
@@ -245,6 +249,7 @@ in a Berkeley database file.
 Summary:	SASL srp mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-srp
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-srp
 This plugin implements the srp  mechanism.
@@ -254,6 +259,7 @@ This plugin implements the srp  mechanism.
 Summary:	SASL ntlm authentication plugin
 Group:		System/Libraries
 Provides:	sasl-plug-ntlm
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
@@ -263,6 +269,7 @@ This plugin implements the (unsupported) ntlm authentication.
 Summary:	SASL MySQL plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sql
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-mysql
 This plugin implements the MySQL authentication method
@@ -273,6 +280,7 @@ This plugin implements the MySQL authentication method
 Summary:	SASL PostgreSQL plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sql
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-pgsql
 This plugin implements the PostgreSQL authentication method
@@ -283,6 +291,7 @@ This plugin implements the PostgreSQL authentication method
 Summary:	SASL SQLite v3 plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sql
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-sqlite3
 This plugin implements the SQLite v3 authentication method
@@ -293,6 +302,7 @@ This plugin implements the SQLite v3 authentication method
 Summary:	SASL ldapdb auxprop plugin
 Group:		System/Libraries
 Provides:	sasl-plug-ldapdb
+Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-ldapdb
 This plugin implements the LDAP auxprop authentication method.
