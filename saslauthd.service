@@ -1,0 +1,13 @@
+[Unit]
+Description=SASL authentication daemon.
+Before=postfix.service
+
+[Service]
+Type=forking
+PIDFile=/run/saslauthd/saslauthd.pid
+Environment=SASL_AUTHMECH=pam
+EnvironmentFile=/etc/sysconfig/saslauthd
+ExecStart=/usr/sbin/saslauthd -m /run/saslauthd -a $SASL_AUTHMECH $SASLAUTHD_OPTS
+
+[Install]
+WantedBy=multi-user.target

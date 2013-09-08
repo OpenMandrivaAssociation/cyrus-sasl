@@ -46,13 +46,13 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.25
-Release:	9
+Release:	10
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
 Source1:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz.sig
-Source2:	saslauthd.init
+Source2:	saslauthd.service
 Source3:	saslauthd.sysconfig
 Source4:	service.conf.example
 Source7:	sasl-mechlist.c
@@ -430,7 +430,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 
 %makeinstall_std
 
-install -m644 %{SOURCE2} -D %{buildroot}%{_initrddir}/saslauthd
+install -m644 %{SOURCE2} -D %{buildroot}%{_unitdir}/saslauthd.service
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 
 # to be removed later
@@ -527,7 +527,7 @@ fi
 %doc service.conf.example
 %dir /var/lib/sasl2
 %dir /var/run/saslauthd
-%attr (755,root,root) %{_initrddir}/saslauthd
+%attr (755,root,root) %{_unitdir}/saslauthd.service
 %dir %{_sysconfdir}/sasl2
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
 %{_sbindir}/dbconverter-2
