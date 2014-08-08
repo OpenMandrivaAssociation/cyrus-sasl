@@ -79,6 +79,7 @@ Patch104:	cyrus-sasl-ac-libs.patch
 Patch105:	cyrus-sasl-pam.patch
 Patch106:	cyrus-sasl-2.1.15-lib64.patch
 Patch107:	cyrus-sasl-2.1.25-no_version-info_for_plugins.diff
+Patch108:	clang-build.patch
 
 BuildRequires:	groff
 BuildRequires:	libtool
@@ -334,6 +335,7 @@ install -m 0644 %{SOURCE4} .
 %patch105 -p1
 %patch106 -p1 -b .lib64~
 %patch107 -p0
+%patch108 -p1
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
