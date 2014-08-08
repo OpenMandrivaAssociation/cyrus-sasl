@@ -361,8 +361,9 @@ automake -a -c
 popd
 
 %build
+export CC=gcc
 %serverbuild
-%configure2_5x 	\
+%configure 	\
 	--disable-static \
 	--enable-shared \
 	--with-plugindir=%{_libdir}/sasl2 \
