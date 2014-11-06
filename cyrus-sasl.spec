@@ -46,7 +46,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.25
-Release:	16
+Release:	17
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -519,10 +519,10 @@ if [ ! -f %{sasl2_db_filename} ]; then
 fi
 
 %post
-%_post_service saslauthd
+%systemd_post saslauthd
 
 %preun
-%_preun_service saslauthd
+%systemd_preun saslauthd
 
 %files
 %doc COPYING AUTHORS INSTALL NEWS README* ChangeLog
@@ -530,7 +530,6 @@ fi
 %doc service.conf.example
 %dir /var/lib/sasl2
 %dir /var/run/saslauthd
-%attr (755,root,root) %{_unitdir}/saslauthd.service
 %dir %{_sysconfdir}/sasl2
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
 %{_sbindir}/dbconverter-2
@@ -541,6 +540,7 @@ fi
 %{_sbindir}/sasldblistusers2
 %{_sbindir}/saslpasswd2
 %{_sbindir}/testsaslauthd
+%{_unitdir}/saslauthd.service
 %{_mandir}/man8/*
 
 %files -n %{libname}
