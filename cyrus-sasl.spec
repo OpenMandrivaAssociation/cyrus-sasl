@@ -4,6 +4,7 @@
 %define sasl2_db_filename /var/lib/sasl2/sasl.db
 
 %define _disable_lto 1
+%define _disable_rebuild_configure 1
 
 %define KRB5 1
 %define MYSQL 1
