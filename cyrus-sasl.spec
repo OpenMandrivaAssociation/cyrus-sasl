@@ -3,6 +3,8 @@
 %define devname %mklibname sasl -d
 %define sasl2_db_filename /var/lib/sasl2/sasl.db
 
+%define _disable_lto 1
+
 %define KRB5 1
 %define MYSQL 1
 %define SRP 1
