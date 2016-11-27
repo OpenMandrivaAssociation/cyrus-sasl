@@ -328,7 +328,6 @@ install -m 0644 %{SOURCE4} .
 %patch11 -p0 -b .no_rpath~
 %patch23 -p1 -b .man~
 %patch28 -p1 -b .keytab~
-%patch30 -p0 -b .rimap~
 %patch31 -p1 -b .krb4~
 %patch34 -p1 -b .ldap-timeout~
 
@@ -343,7 +342,7 @@ install -m 0644 %{SOURCE4} .
 %patch108 -p1
 %if %mdvver > 3000000
 %patch200 -p1
-%patch201 -p1
+#%patch201 -p1
 %endif
 
 cp %{SOURCE7} sasl-mechlist.c
