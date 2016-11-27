@@ -48,8 +48,8 @@
 
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
-Version:	2.1.25
-Release:	22
+Version:	2.1.26
+Release:	1
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -64,16 +64,17 @@ Patch0:		cyrus-sasl-doc.patch
 Patch3:		cyrus-sasl-2.1.19-pic.patch
 Patch5:		cyrus-sasl-2.1.25-library_mutexes.diff
 Patch6:		cyrus-sasl-2.1.25-xopen_crypt_prototype.diff
-Patch7:		cyrus-sasl-2.1.23-db5.patch
 Patch11:	cyrus-sasl-2.1.25-no_rpath.diff
 Patch23:	cyrus-sasl-2.1.23-man.patch
 Patch28:	cyrus-sasl-2.1.25-keytab.diff
-Patch30:	cyrus-sasl-2.1.25-rimap.diff
 Patch31:	cyrus-sasl-2.1.22-kerberos4.patch
-Patch33:	cyrus-sasl-2.1.25-current-db.diff
+Patch32:	cyrus-sasl-2.1.26-warnings.patch
 Patch34:	cyrus-sasl-2.1.22-ldap-timeout.patch
-Patch37:	cyrus-sasl-2.1.23-race.patch
-
+Patch43:	cyrus-sasl-2.1.26-null-crypt.patch
+Patch44:	cyrus-sasl-2.1.26-release-server_creds.patch
+Patch45:	cyrus-sasl-2.1.26-obsolete-macro.patch
+Patch46:	cyrus-sasl-2.1.26-size_t.patch
+Patch48:	cyrus-sasl-2.1.26-keytab.patch
 Patch100:	cyrus-sasl-lt.patch
 Patch101:	cyrus-sasl-split-sql.patch
 Patch102:	cyrus-sasl-sizes.patch
@@ -81,7 +82,7 @@ Patch103:	cyrus-sasl-parallel-make.patch
 Patch104:	cyrus-sasl-ac-libs.patch
 Patch105:	cyrus-sasl-pam.patch
 Patch106:	cyrus-sasl-2.1.15-lib64.patch
-Patch107:	cyrus-sasl-2.1.25-no_version-info_for_plugins.diff
+Patch107:	cyrus-sasl-2.1.26-no_version-info_for_plugins.diff
 Patch108:	clang-build.patch
 
 BuildRequires:	groff
@@ -319,16 +320,13 @@ install -m 0644 %{SOURCE4} .
 %patch3 -p1 -b .pic~
 %patch5 -p0 -b .library_mutexes~
 %patch6 -p0 -b .xopen_crypt_prototype~
-%patch7 -p0 -b .db5
 
 %patch11 -p0 -b .no_rpath~
 %patch23 -p1 -b .man~
 %patch28 -p1 -b .keytab~
 %patch30 -p0 -b .rimap~
 %patch31 -p1 -b .krb4~
-%patch33 -p0 -b .current-db~
 %patch34 -p1 -b .ldap-timeout~
-%patch37 -p1 -b .race~
 
 %patch100 -p1
 %patch101 -p1
@@ -343,7 +341,7 @@ install -m 0644 %{SOURCE4} .
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
-rm -f config/config.guess config/config.sub 
+rm -f config/config.guess config/config.sub
 rm -f config/ltconfig config/ltmain.sh config/libtool.m4 configure
 rm -fr autom4te.cache
 
@@ -386,19 +384,19 @@ export CC=gcc
 	--disable-gss_mutexes \
 %if %{MYSQL}
 	--enable-sql \
-	--with-mysql=%{_prefix} \
+	--with-mysql=%{_libdir} \
 %else
 	--without-mysql \
 %endif
 %if %{PGSQL}
 	--enable-sql \
-	--with-pgsql=%{_prefix} \
+	--with-pgsql=%{_libdir} \
 %else
 	--without-pgsql \
 %endif
 %if %{SQLITE3}
 	--enable-sql \
-	--with-sqlite3=%{_prefix} \
+	--with-sqlite3=%{_libdir} \
 %else
 	--without-sqlite \
 %endif
@@ -407,6 +405,7 @@ export CC=gcc
 	--enable-ldapdb \
 %endif
 	--with-dbpath=%{sasl2_db_filename} \
+	--with-bdb=db \
 	--with-saslauthd=/var/run/saslauthd \
 	--with-authdaemond=/var/run/authdaemon.courier-imap/socket \
 	--with-devrandom=/dev/urandom
@@ -424,9 +423,9 @@ install saslauthd/LDAP_SASLAUTHD README.ldap
 
 # Build a small program to list the available mechanisms, because I need it.
 pushd lib
-    ../libtool --tag=CC --mode=link %{__cc} -o sasl2-shared-mechlist \
+    ../libtool --mode=link %{__cc} -o sasl2-shared-mechlist \
 	-I../include $CFLAGS ../sasl-mechlist.c $LDFLAGS ./libsasl2.la
-    ../libtool --tag=CC --mode=link %{__cc} -o sasl2-shared-checkpass \
+    ../libtool --mode=link %{__cc} -o sasl2-shared-checkpass \
 	-I../include $CFLAGS -DSASL2 ../sasl-checkpass.c $LDFLAGS ./libsasl2.la
 popd
 
@@ -489,8 +488,8 @@ EOF
 # This is just to "close" vim's syntax misinterpretation.. ;p
 
 # Provide an easy way to query the list of available mechanisms.
-./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
-./libtool --tag=CC --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
+./libtool --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
+./libtool --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
 
 %pre -n %{libname}-plug-sasldb
 %_pre_groupadd sasl
@@ -499,36 +498,30 @@ EOF
 #convert old sasldb
 # XXX - what about berkeley db versions? - andreas
 if [ -f /var/lib/sasl/sasl.db -a ! -f %{sasl2_db_filename} ]; then
-	echo "" | /usr/sbin/dbconverter-2 /var/lib/sasl/sasl.db %{sasl2_db_filename}
-	if [ -f %{sasl2_db_filename} ]; then
-		# conversion was successfull
-		chmod 0640 %{sasl2_db_filename}
-		chown root:sasl %{sasl2_db_filename}
-	fi
-fi
-if [ -f /var/lib/sasl/sasl.db.rpmsave -a ! -f %{sasl2_db_filename} ]; then
-	echo "" | /usr/sbin/dbconverter-2 /var/lib/sasl/sasl.db.rpmsave %{sasl2_db_filename}
-	if [ -f %{sasl2_db_filename} ]; then
-		# conversion was successfull
-		chmod 0640 %{sasl2_db_filename}
-		chown root:sasl %{sasl2_db_filename}
-	fi
-fi
-if [ ! -f %{sasl2_db_filename} ]; then
-	# the file was never created before nor converted from sasl1
-	touch %{sasl2_db_filename}
+    echo "" | /usr/sbin/dbconverter-2 /var/lib/sasl/sasl.db %{sasl2_db_filename}
+    if [ -f %{sasl2_db_filename} ]; then
+# conversion was successfull
 	chmod 0640 %{sasl2_db_filename}
 	chown root:sasl %{sasl2_db_filename}
+    fi
+fi
+if [ -f /var/lib/sasl/sasl.db.rpmsave -a ! -f %{sasl2_db_filename} ]; then
+    echo "" | /usr/sbin/dbconverter-2 /var/lib/sasl/sasl.db.rpmsave %{sasl2_db_filename}
+    if [ -f %{sasl2_db_filename} ]; then
+# conversion was successfull
+	chmod 0640 %{sasl2_db_filename}
+	chown root:sasl %{sasl2_db_filename}
+    fi
+fi
+if [ ! -f %{sasl2_db_filename} ]; then
+# the file was never created before nor converted from sasl1
+    touch %{sasl2_db_filename}
+    chmod 0640 %{sasl2_db_filename}
+    chown root:sasl %{sasl2_db_filename}
 fi
 
-%post
-%systemd_post saslauthd
-
-%preun
-%systemd_preun saslauthd
-
 %files
-%doc COPYING AUTHORS INSTALL NEWS README* ChangeLog
+%doc COPYING AUTHORS INSTALL NEWS README*
 %doc doc/{TODO,ONEWS,*.txt,*.html}
 %doc service.conf.example
 %dir /var/lib/sasl2
@@ -615,5 +608,6 @@ fi
 %{_includedir}/sasl
 %{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
+%{_libdir}/pkgconfig/*.pc
 %{_mandir}/man3/*
 
