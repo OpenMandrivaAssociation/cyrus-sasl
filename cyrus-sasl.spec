@@ -83,7 +83,12 @@ Patch105:	cyrus-sasl-pam.patch
 Patch106:	cyrus-sasl-2.1.15-lib64.patch
 Patch107:	cyrus-sasl-2.1.26-no_version-info_for_plugins.diff
 Patch108:	clang-build.patch
-
+# (tpg) add patches to support OpenSSL 1.1.0
+# patches from upstream git https://github.com/cyrusimap/cyrus-sasl
+%if %mdvver > 3000000
+Patch200:	0000-ntlm.c-otp.c-support-OpenSSL-1.1.patch
+Patch201:	0001-Add-OpenSSL-1.1.0-support-in-saslauthd.patch
+%endif
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	db-devel
@@ -336,6 +341,10 @@ install -m 0644 %{SOURCE4} .
 %patch106 -p1 -b .lib64~
 %patch107 -p0
 %patch108 -p1
+%if %mdvver > 3000000
+%patch200 -p1
+%patch201 -p1
+%endif
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
