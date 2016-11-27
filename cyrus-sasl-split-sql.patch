@@ -8,7 +8,7 @@
    if test "$enable_static" = yes; then
 -    SASL_STATIC_SRCS="$SASL_STATIC_SRCS \$(top_srcdir)/plugins/sql.c"
 -    SASL_STATIC_OBJS="$SASL_STATIC_OBJS sql.o"
-     AC_DEFINE(STATIC_SQL,[],[Link SQL plugin staticly])
+     AC_DEFINE(STATIC_SQL,[],[Link SQL plugin statically])
    fi
  else
 @@ -741,6 +738,8 @@
@@ -58,7 +58,7 @@
  
  libplain_la_SOURCES = plain.c plain_init.c $(common_sources)
  libplain_la_DEPENDENCIES = $(COMPAT_OBJS)
-@@ -129,18 +129,51 @@
+@@ -129,18 +129,52 @@
  libldapdb_la_DEPENDENCIES = $(COMPAT_OBJS)
  libldapdb_la_LIBADD = $(LIB_LDAP) $(COMPAT_OBJS)
  
@@ -91,6 +91,7 @@
 +mysql.c:
 +	sed -e 's#HAVE_PGSQL#HAVE_NO_PGSQL#g' -e 's#HAVE_SQLITE#HAVE_NO_SQLITE#g' \
 +		-e 's#sql_auxprop_plug_init#mysql_auxprop_plug_init#g' \
++		-e 's#mysql.h#mysql/mysql.h#' \
 +		sql.c > mysql.c
 +
 +pgsql.c:
