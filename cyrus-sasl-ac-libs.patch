@@ -50,7 +50,7 @@ diff -Naur cyrus-sasl-2.1.25/configure.in cyrus-sasl-2.1.25.oden/configure.in
 -  fi
    AC_CHECK_HEADERS(security/pam_appl.h pam/pam_appl.h)
    cmu_save_LIBS="$LIBS"
-   AC_CHECK_FUNC(pam_start, :, 
+   AC_CHECK_FUNC(pam_start, :,
 @@ -728,16 +721,6 @@
      no) true;;
      notfound) AC_WARN([MySQL Library not found]); true;;
