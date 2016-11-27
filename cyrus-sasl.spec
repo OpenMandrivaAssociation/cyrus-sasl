@@ -54,7 +54,6 @@ License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
-Source1:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz.sig
 Source2:	saslauthd.service
 Source3:	saslauthd.sysconfig
 Source4:	service.conf.example
