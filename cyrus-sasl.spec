@@ -556,5 +556,6 @@ fi
 %{_includedir}/sasl
 %{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
+%{_libdir}/sasl2/*.*so
 %{_libdir}/pkgconfig/*.pc
 %{_mandir}/man3/*
