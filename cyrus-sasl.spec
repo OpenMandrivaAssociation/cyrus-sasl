@@ -284,36 +284,18 @@ Requires:	%{name} = %{version}
 This plugin implements the (unsupported) ntlm authentication.
 
 %if %{MYSQL}
-%package -n	%{libname}-plug-mysql
+%package -n	%{libname}-plug-sql
 Summary:	SASL MySQL plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sql
 Requires:	%{name} = %{version}
+%rename		%{_lib}sasl2-plug-mysql
+%rename		%{_lib}sasl2-plug-pgsql
+%rename		%{_lib}sasl2-plug-sqlite3
 
-%description -n	%{libname}-plug-mysql
-This plugin implements the MySQL authentication method
-%endif
-
-%if %{PGSQL}
-%package -n	%{libname}-plug-pgsql
-Summary:	SASL PostgreSQL plugin
-Group:		System/Libraries
-Provides:	sasl-plug-sql
-Requires:	%{name} = %{version}
-
-%description -n	%{libname}-plug-pgsql
-This plugin implements the PostgreSQL authentication method
-%endif
-
-%if %{SQLITE3}
-%package -n	%{libname}-plug-sqlite3
-Summary:	SASL SQLite v3 plugin
-Group:		System/Libraries
-Provides:	sasl-plug-sql
-Requires:	%{name} = %{version}
-
-%description -n	%{libname}-plug-sqlite3
-This plugin implements the SQLite v3 authentication method
+%description -n	%{libname}-plug-sql
+This plugin implements the SQL authentication method based
+on MySQL, PGSQL and SQLITE3.
 %endif
 
 %if %{LDAP}
@@ -439,7 +421,7 @@ cd ..
 # quick README about the sasl.db file permissions
 cat > README.OpenMandriva.sasldb <<EOF
 Starting with %{libname}-plug-sasldb-2.1.22-6mdk, OpenMandriva by default 
-creates a system group called "sasl" and installs an empty 
+creates a system group called "sasl" and installs an empty
 %{sasl2_db_filename} file with the following permissions:
 mode 0640, ownership root:sasl.
 
@@ -520,62 +502,52 @@ fi
 %{_libdir}/libsasl*.so.%{major}*
 
 %files -n %{libname}-plug-anonymous
-%{_libdir}/sasl2/libanonymous.so
+%{_libdir}/sasl2/libanonymous.so.%{major}*
 
 %files -n %{libname}-plug-otp
-%{_libdir}/sasl2/libotp.so
+%{_libdir}/sasl2/libotp.so.%{major}*
 
 %files -n %{libname}-plug-scram
-%{_libdir}/sasl2/libscram.so
+%{_libdir}/sasl2/libscram.so.%{major}*
 
 %files -n %{libname}-plug-crammd5
-%{_libdir}/sasl2/libcrammd5.so
+%{_libdir}/sasl2/libcrammd5.so.%{major}*
 
 %files -n %{libname}-plug-sasldb
 %doc README.OpenMandriva.sasldb
-%{_libdir}/sasl2/libsasldb.so
+%{_libdir}/sasl2/libsasldb.so.%{major}*
 
 %if %{KRB5}
 %files -n %{libname}-plug-gssapi
-%{_libdir}/sasl2/libgs2.so
-%{_libdir}/sasl2/libgssapiv2.so
+%{_libdir}/sasl2/libgs2.so.%{major}*
+%{_libdir}/sasl2/libgssapiv2.so.%{major}*
 %endif
 
 %files -n %{libname}-plug-digestmd5
-%{_libdir}/sasl2/libdigestmd5.so
+%{_libdir}/sasl2/libdigestmd5.so.%{major}*
 
 %files -n %{libname}-plug-plain
-%{_libdir}/sasl2/libplain.so
+%{_libdir}/sasl2/libplain.so.%{major}*
 
 %files -n %{libname}-plug-login
-%{_libdir}/sasl2/liblogin.so
+%{_libdir}/sasl2/liblogin.so.%{major}*
 
 %if %{SRP}
 %files -n %{libname}-plug-srp
-%{_libdir}/sasl2/libsrp.so
+%{_libdir}/sasl2/libsrp.so.%{major}*
 %endif
 
 %files -n %{libname}-plug-ntlm
-%{_libdir}/sasl2/libntlm.so
+%{_libdir}/sasl2/libntlm.so.%{major}*
 
 %if %{MYSQL}
-%files -n %{libname}-plug-mysql
-%{_libdir}/sasl2/libmysql.so
-%endif
-
-%if %{PGSQL}
-%files -n %{libname}-plug-pgsql
-%{_libdir}/sasl2/libpgsql.so
-%endif
-
-%if %{SQLITE3}
-%files -n %{libname}-plug-sqlite3
-%{_libdir}/sasl2/libsqlite3.so
+%files -n %{libname}-plug-sql
+%{_libdir}/sasl2/libsql.so.%{major}*
 %endif
 
 %if %{LDAP}
 %files -n %{libname}-plug-ldapdb
-%{_libdir}/sasl2/libldapdb.so
+%{_libdir}/sasl2/libldapdb.so.%{major}*
 %endif
 
 %files -n %{devname}
