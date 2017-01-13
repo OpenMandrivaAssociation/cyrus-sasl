@@ -1,0 +1,26 @@
+From: Debian Cyrus SASL Team
+ <pkg-cyrus-sasl2-debian-devel@lists.alioth.debian.org>
+Date: Thu, 24 Mar 2016 11:35:04 +0100
+Subject: Revert 1.103 revision to unbreak GSSAPI
+
+---
+ plugins/gssapi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/plugins/gssapi.c b/plugins/gssapi.c
+index 5204e54..a33f8a3 100644
+--- a/plugins/gssapi.c
++++ b/plugins/gssapi.c
+@@ -1624,10 +1624,10 @@ static int gssapi_client_mech_step(void *conn_context,
+ 	}
+ 
+ 	/* Setup req_flags properly */
+-	req_flags = GSS_C_INTEG_FLAG;
++	req_flags = GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG;
+ 	if (params->props.max_ssf > params->external_ssf) {
+ 	    /* We are requesting a security layer */
+-	    req_flags |= GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG;
++	    req_flags |= GSS_C_INTEG_FLAG;
+ 	    /* Any SSF bigger than 1 is confidentiality. */
+ 	    /* Let's check if the client of the API requires confidentiality,
+ 	       and it wasn't already provided by an external layer */

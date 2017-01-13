@@ -1,9 +1,8 @@
-%define major	2
+%define major 2
 %define libname %mklibname sasl %{major}
 %define devname %mklibname sasl -d
 %define sasl2_db_filename /var/lib/sasl2/sasl.db
 
-%define _disable_lto 1
 %define _disable_rebuild_configure 1
 
 %define KRB5 1
@@ -46,49 +45,58 @@
 %{?bootstrap: %{expand: %%global LDAP 0}}
 %{?bootstrap: %{expand: %%global LDAPSTR disabled}}
 
+%define snap 20170113
+
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
-Version:	2.1.26
-Release:	1
+Version:	2.1.27
+Release:	0.%{snap}.1
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
-Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
+# git clone https://github.com/cyrusimap/cyrus-sasl.git
+# git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
+Source0:	%{name}-%{version}-%{snap}.tar.xz
+#Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
 Source2:	saslauthd.service
 Source3:	saslauthd.sysconfig
 Source4:	service.conf.example
 Source7:	sasl-mechlist.c
 Source8:	sasl-checkpass.c
-Patch0:		cyrus-sasl-doc.patch
-Patch3:		cyrus-sasl-2.1.19-pic.patch
-Patch5:		cyrus-sasl-2.1.25-library_mutexes.diff
-Patch6:		cyrus-sasl-2.1.25-xopen_crypt_prototype.diff
-Patch11:	cyrus-sasl-2.1.25-no_rpath.diff
-Patch23:	cyrus-sasl-2.1.23-man.patch
-Patch28:	cyrus-sasl-2.1.25-keytab.diff
-Patch31:	cyrus-sasl-2.1.22-kerberos4.patch
-Patch32:	cyrus-sasl-2.1.26-warnings.patch
-Patch34:	cyrus-sasl-2.1.22-ldap-timeout.patch
-Patch43:	cyrus-sasl-2.1.26-null-crypt.patch
-Patch44:	cyrus-sasl-2.1.26-release-server_creds.patch
-Patch45:	cyrus-sasl-2.1.26-obsolete-macro.patch
-Patch46:	cyrus-sasl-2.1.26-size_t.patch
-Patch48:	cyrus-sasl-2.1.26-keytab.patch
-Patch100:	cyrus-sasl-lt.patch
-Patch101:	cyrus-sasl-split-sql.patch
-Patch102:	cyrus-sasl-sizes.patch
-Patch103:	cyrus-sasl-parallel-make.patch
-Patch104:	cyrus-sasl-ac-libs.patch
-Patch105:	cyrus-sasl-pam.patch
-Patch106:	cyrus-sasl-2.1.15-lib64.patch
-Patch107:	cyrus-sasl-2.1.26-no_version-info_for_plugins.diff
-Patch108:	clang-build.patch
-# (tpg) add patches to support OpenSSL 1.1.0
-# patches from upstream git https://github.com/cyrusimap/cyrus-sasl
-%if %mdvver > 3000000
-Patch200:	0000-ntlm.c-otp.c-support-OpenSSL-1.1.patch
-Patch201:	0001-Add-OpenSSL-1.1.0-support-in-saslauthd.patch
-%endif
+# (tpg) patches from Debian
+Patch0:		0001-Make-the-libsasl2-symbols-versioned.patch
+Patch1:		0002-Use-etc-sasldb2-instead-of-.-sasldb-in-the-testsuite.patch
+Patch2:		0003-Update-saslauthd.conf-location-in-documentation.patch
+Patch3:		0004-Include-dbconverter-2-in-sbin_PROGRAMS-and-set-defau.patch
+Patch4:		0005-Fixes-in-library-mutexes.patch
+Patch5:		0006-Enable-autoconf-maintainer-mode.patch
+Patch6:		0007-Define-_XOPEN_SOURCE-in-auth_shadow.c-to-get-proper-.patch
+Patch7:		0008-Don-t-overwrite-PIC-objects-with-non-PIC-variant.patch
+Patch8:		0009-Look-for-generic-Berkeley-DB-first.patch
+Patch9:		0010-Update-required-libraries-when-ld-as-needed-is-used.patch
+Patch10:	0011-Drop-krb5support-dependency.patch
+Patch11:	0012-LDAP-fixes.patch
+Patch12:	0013-Don-t-use-la-files-for-opening-plugins.patch
+Patch13:	0014-Don-t-use-R-when-searching-for-SQLite-libraries.patch
+Patch14:	0015-Revert-1.103-revision-to-unbreak-GSSAPI.patch
+Patch15:	0016-Fix-segfault-in-GSSAPI.patch
+Patch16:	0017-Fix-dovecot-authentication.patch
+Patch17:	0018-Temporary-multiarch-fixes.patch
+Patch18:	0019-Add-reference-to-LDAP_SASLAUTHD-file-to-the-saslauth.patch
+Patch19:	0020-Send-IMAP-logout.patch
+Patch20:	0021-Fix-canonuser-ldapdb-garbage-in-out-buffer.patch
+Patch21:	0022-Fix-keytab-option-for-MIT-Kerberos.patch
+Patch22:	0023-Release-server-creds-when-they-are-no-longer-needed.patch
+Patch23:	0024-Fix-typo-in-debugging-logs.patch
+Patch24:	0025-Revert-upstream-soname-bump.patch
+Patch25:	0026-Fix-return-SASL_FAIL-in-void-sasl_dispose.patch
+Patch26:	0027-properly-create-libsasl2.pc.patch
+Patch27:	0028-2.1.26-Allow-CAPABILITY-lines-in-IMAP-login-reply-v4.patch
+Patch28:	0029-Fix-early-hangup-in-ipc_unix.c.patch
+Patch29:	0030-Change-linking-from-sasldb-.libs-libsasldb.al-to-sas.patch
+Patch30:	0031-Cleanup-for-modern-autotools.patch
+Patch31:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
+
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	db-devel
@@ -318,77 +326,42 @@ This plugin implements the LDAP auxprop authentication method.
 %endif
 
 %prep
-%setup -q
+%setup -qn %{name}-%{version}-%{snap}
 install -m 0644 %{SOURCE4} .
-%patch0 -p1 -b .sasldoc~
-%patch3 -p1 -b .pic~
-%patch5 -p0 -b .library_mutexes~
-%patch6 -p0 -b .xopen_crypt_prototype~
-
-%patch11 -p0 -b .no_rpath~
-%patch23 -p1 -b .man~
-%patch28 -p1 -b .keytab~
-%patch31 -p1 -b .krb4~
-%patch34 -p1 -b .ldap-timeout~
-
-%patch100 -p1
-%patch101 -p1
-%patch102 -p1
-%patch103 -p1
-%patch104 -p1
-%patch105 -p1
-%patch106 -p1 -b .lib64~
-%patch107 -p0
-%patch108 -p1
-%if %mdvver > 3000000
-%patch200 -p1
-#%patch201 -p1
-%endif
+%apply_patches
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
-rm -f config/config.guess config/config.sub
-rm -f config/ltconfig config/ltmain.sh config/libtool.m4 configure
-rm -fr autom4te.cache
-
-libtoolize -c -f -i
-aclocal -I cmulocal -I config
-autoheader
-autoconf
-automake -a -c
-
-pushd saslauthd
-rm -f config/ltconfig
-libtoolize -f -c
-aclocal -I ../cmulocal -I ../config
-automake -a -c -f
-autoheader
-autoconf -f
-automake -a -c
-popd
+./autogen.sh
 
 %build
-export CC=gcc
 %serverbuild
-%configure 	\
+%configure \
 	--disable-static \
 	--enable-shared \
 	--with-plugindir=%{_libdir}/sasl2 \
 	--with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
+	--enable-checkapop \
+	--enable-cram \
+	--enable-digest \
+	--enable-otp \
 	--disable-krb4 \
 	--enable-login \
+	--enable-auth-sasldb \
+	--enable-plain \
+	--enable-anon \
+	--disable-passdss \
+	--enable-ntlm \
+	--enable-gssapi \
+	--disable-gss_mutexes \
 %if %{SRP}
 	--enable-srp \
 	--enable-srp-setpass \
 %else
-	--without-srp \
-	--without-srp-srp-setpass \
+	--disable-srp \
+	--disable-srp-setpass \
 %endif
-	--enable-ntlm \
-	--enable-db4 \
-	--enable-gssapi \
-	--disable-gss_mutexes \
 %if %{MYSQL}
 	--enable-sql \
 	--with-mysql=%{_libdir} \
@@ -411,17 +384,11 @@ export CC=gcc
 	--with-ldap=%{_prefix} \
 	--enable-ldapdb \
 %endif
-	--with-dbpath=%{sasl2_db_filename} \
-	--with-bdb=db \
+	--disable-macos-framework \
 	--with-saslauthd=/var/run/saslauthd \
 	--with-authdaemond=/var/run/authdaemon.courier-imap/socket \
 	--with-devrandom=/dev/urandom
 
-# ugly hack: there is an ordering problem introduced in 2.1.21 
-# when --enable-static is given to ./configure which calling 
-# make twice "solves"
-# no parallel make on cluster
-%make || :
 %make
 %make -C saslauthd testsaslauthd
 %make -C sample
@@ -617,4 +584,3 @@ fi
 %{_libdir}/*.*so
 %{_libdir}/pkgconfig/*.pc
 %{_mandir}/man3/*
-
