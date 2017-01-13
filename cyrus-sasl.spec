@@ -97,6 +97,8 @@ Patch29:	0030-Change-linking-from-sasldb-.libs-libsasldb.al-to-sas.patch
 Patch30:	0031-Cleanup-for-modern-autotools.patch
 Patch31:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 
+# (tpg) OpenMandriva patches
+Patch50:	cyrus-sasl-2.1.15-lib64.patch
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	db-devel
@@ -340,7 +342,7 @@ cp %{SOURCE8} sasl-checkpass.c
 %configure \
 	--disable-static \
 	--enable-shared \
-	--with-plugindir=%{_libdir}/sasl2 \
+	--with-plugindir="%{_libdir}/sasl2" \
 	--with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
 	--enable-checkapop \
 	--enable-cram \
@@ -354,7 +356,7 @@ cp %{SOURCE8} sasl-checkpass.c
 	--disable-passdss \
 	--enable-ntlm \
 	--enable-gssapi \
-	--disable-gss_mutexes \
+	--enable-gss_mutexes \
 %if %{SRP}
 	--enable-srp \
 	--enable-srp-setpass \
@@ -409,7 +411,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 
 %makeinstall_std
 
-install -m644 %{SOURCE2} -D %{buildroot}%{_unitdir}/saslauthd.service
+install -m644 %{SOURCE2} -D %{buildroot}%{_systemunitdir}/saslauthd.service
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 
 # to be removed later
@@ -435,8 +437,8 @@ cd ..
 %multiarch_includes %{buildroot}%{_includedir}/sasl/md5global.h
 
 # quick README about the sasl.db file permissions
-cat > README.Mandriva.sasldb <<EOF
-Starting with %{libname}-plug-sasldb-2.1.22-6mdk, Mandriva by default 
+cat > README.OpenMandriva.sasldb <<EOF
+Starting with %{libname}-plug-sasldb-2.1.22-6mdk, OpenMandriva by default 
 creates a system group called "sasl" and installs an empty 
 %{sasl2_db_filename} file with the following permissions:
 mode 0640, ownership root:sasl.
@@ -455,7 +457,7 @@ details regarding Postfix's chroot setup.
 For other applications in general, just add their user to the "sasl" group.
 
 Have fun,
-Mandriva Team.
+OpenMandriva Team.
 
 EOF
 
@@ -530,7 +532,7 @@ fi
 %{_libdir}/sasl2/libcrammd5.so
 
 %files -n %{libname}-plug-sasldb
-%doc README.Mandriva.sasldb
+%doc README.OpenMandriva.sasldb
 %{_libdir}/sasl2/libsasldb.so
 
 %if %{KRB5}
