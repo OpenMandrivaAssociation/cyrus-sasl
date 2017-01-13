@@ -7,7 +7,7 @@
 
 %define KRB5 1
 %define MYSQL 1
-%define SRP 1
+%define SRP 0
 %define PGSQL 1
 %define SQLITE3 1
 %define LDAP 1
@@ -333,8 +333,6 @@ install -m 0644 %{SOURCE4} .
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
-export CC=gcc
-export CXX=g++
 ./autogen.sh
 
 %build
