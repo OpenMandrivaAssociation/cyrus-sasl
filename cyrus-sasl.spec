@@ -333,6 +333,8 @@ install -m 0644 %{SOURCE4} .
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
+export CC=gcc
+export CXX=g++
 ./autogen.sh
 
 %build
