@@ -1,0 +1,23 @@
+From: Debian Cyrus SASL Team
+ <pkg-cyrus-sasl2-debian-devel@lists.alioth.debian.org>
+Date: Thu, 24 Mar 2016 11:35:04 +0100
+Subject: Drop krb5support dependency
+
+---
+ m4/sasl2.m4 | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/m4/sasl2.m4 b/m4/sasl2.m4
+index dd0ec69..3fdba93 100644
+--- a/m4/sasl2.m4
++++ b/m4/sasl2.m4
+@@ -110,9 +110,6 @@ if test "$gssapi" != no; then
+   fi
+ 
+   if test "$gss_impl" = "auto" -o "$gss_impl" = "mit"; then
+-    # check for libkrb5support first
+-    AC_CHECK_LIB(krb5support,krb5int_getspecific,K5SUP=-lkrb5support K5SUPSTATIC=$gssapi_dir/libkrb5support.a,,${LIB_SOCKET})
+-
+     gss_failed=0
+     AC_CHECK_LIB(gssapi_krb5,gss_unwrap,gss_impl="mit",gss_failed=1,
+                  ${GSSAPIBASE_LIBS} -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err ${K5SUP} ${LIB_SOCKET})
