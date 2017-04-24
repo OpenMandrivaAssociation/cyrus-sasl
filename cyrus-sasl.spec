@@ -45,7 +45,7 @@
 %{?bootstrap: %{expand: %%global LDAP 0}}
 %{?bootstrap: %{expand: %%global LDAPSTR disabled}}
 
-%define snap 20170113
+%define snap 20170422
 
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
@@ -55,7 +55,7 @@ License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
 # git clone https://github.com/cyrusimap/cyrus-sasl.git
-# git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
+# git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf9 > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
 Source0:	%{name}-%{version}-%{snap}.tar.xz
 #Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
 Source2:	saslauthd.service
