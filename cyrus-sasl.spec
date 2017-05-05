@@ -50,7 +50,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	0.%{snap}.2
+Release:	0.%{snap}.3
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -317,9 +317,17 @@ install -m 0644 %{SOURCE4} .
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
+export CC=%{__cc}
+export CXX=%{__cxx}
+export ac_ct_CC_FOR_BUILD=%{__cc}
+export ac_ct_CC=%{__cc}
 ./autogen.sh
 
 %build
+export ac_cv_prog_ac_ct_CC_FOR_BUILD=%{__cc}
+export ac_ct_CC_FOR_BUILD=%{__cc}
+export ac_ct_CC=%{__cc}
+
 %serverbuild
 %configure \
 	--disable-static \
@@ -375,7 +383,6 @@ cp %{SOURCE8} sasl-checkpass.c
 
 %make
 %make -C saslauthd testsaslauthd
-%make -C sample
 
 install saslauthd/LDAP_SASLAUTHD README.ldap
 
@@ -408,12 +415,6 @@ cd utils
 
 cd ..
 cp saslauthd/testsaslauthd %{buildroot}%{_sbindir}
-cd sample
-/bin/sh ../libtool --mode=install /usr/bin/install -c client \
-  %{buildroot}/%{_sbindir}/sasl-sample-client
-/bin/sh ../libtool --mode=install /usr/bin/install -c server \
-  %{buildroot}/%{_sbindir}/sasl-sample-server
-cd ..
 
 # multiarch policy
 %multiarch_includes %{buildroot}%{_includedir}/sasl/md5global.h
@@ -488,8 +489,6 @@ fi
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
 %{_sbindir}/dbconverter-2
 %{_sbindir}/pluginviewer
-%{_sbindir}/sasl-sample-client
-%{_sbindir}/sasl-sample-server
 %{_sbindir}/saslauthd
 %{_sbindir}/sasldblistusers2
 %{_sbindir}/saslpasswd2
