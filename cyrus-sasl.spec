@@ -50,7 +50,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	0.%{snap}.1
+Release:	0.%{snap}.2
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -124,12 +124,12 @@ BuildRequires:	openldap-devel
 Requires(pre,post,preun):	rpm-helper
 
 %description
-SASL is the Simple Authentication and Security Layer, 
-a method for adding authentication support to connection-based protocols. 
-To use SASL, a protocol includes a command for identifying and authenticating 
-a user to a server and for optionally negotiating protection of subsequent 
-protocol interactions. If its use is negotiated, a security layer is inserted 
-between the protocol and the connection. 
+SASL is the Simple Authentication and Security Layer,
+a method for adding authentication support to connection-based protocols.
+To use SASL, a protocol includes a command for identifying and authenticating
+a user to a server and for optionally negotiating protection of subsequent
+protocol interactions. If its use is negotiated, a security layer is inserted
+between the protocol and the connection.
 To actually use SASL you must install at least one of the %{libname}-plug-XXXX
 authentication plugin, such as %{libname}-plug-plain.
 The SQL auxprop plugin can be rebuild with different database backends:
@@ -143,12 +143,12 @@ Summary:	Libraries for SASL a the Simple Authentication and Security Layer
 Group:		System/Libraries
 
 %description -n	%{libname}
-SASL is the Simple Authentication and Security Layer, 
-a method for adding authentication support to connection-based protocols. 
-To use SASL, a protocol includes a command for identifying and authenticating 
-a user to a server and for optionally negotiating protection of subsequent 
-protocol interactions. If its use is negotiated, a security layer is inserted 
-between the protocol and the connection. 
+SASL is the Simple Authentication and Security Layer,
+a method for adding authentication support to connection-based protocols.
+To use SASL, a protocol includes a command for identifying and authenticating
+a user to a server and for optionally negotiating protection of subsequent
+protocol interactions. If its use is negotiated, a security layer is inserted
+between the protocol and the connection.
 
 %package -n	%{devname}
 Summary:	Libraries for SASL a the Simple Authentication and Security Layer
@@ -158,12 +158,12 @@ Requires:	%{libname} >= %{version}
 Obsoletes:	%{_lib}sasl2-devel < 2.1.25-9
 
 %description -n	%{devname}
-SASL is the Simple Authentication and Security Layer, 
-a method for adding authentication support to connection-based protocols. 
-To use SASL, a protocol includes a command for identifying and authenticating 
-a user to a server and for optionally negotiating protection of subsequent 
-protocol interactions. If its use is negotiated, a security layer is inserted 
-between the protocol and the connection. 
+SASL is the Simple Authentication and Security Layer,
+a method for adding authentication support to connection-based protocols.
+To use SASL, a protocol includes a command for identifying and authenticating
+a user to a server and for optionally negotiating protection of subsequent
+protocol interactions. If its use is negotiated, a security layer is inserted
+between the protocol and the connection.
 
 %package -n	%{libname}-plug-anonymous
 Summary:	SASL ANONYMOUS mechanism plugin
@@ -228,7 +228,7 @@ Requires:	%{name} = %{version}
 
 %description -n	%{libname}-plug-login
 This plugin implements the SASL LOGIN mechanism.
-THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons 
+THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons
 and will be dropped soon.
 Please use the plain plugin instead.
 
@@ -420,7 +420,7 @@ cd ..
 
 # quick README about the sasl.db file permissions
 cat > README.OpenMandriva.sasldb <<EOF
-Starting with %{libname}-plug-sasldb-2.1.22-6mdk, OpenMandriva by default 
+Starting with %{libname}-plug-sasldb-2.1.22-6mdk, OpenMandriva by default
 creates a system group called "sasl" and installs an empty
 %{sasl2_db_filename} file with the following permissions:
 mode 0640, ownership root:sasl.
@@ -433,7 +433,7 @@ application users to the "sasl" group if access to this database is needed.
 
 For example, to permit the Postfix SMTP to authenticate users via the sasldb
 auxprop plugin, add the "postfix" user to the "sasl" group and read the
-"SMTP Authentication" section of the README.MDK documentation file for 
+"SMTP Authentication" section of the README.MDK documentation file for
 details regarding Postfix's chroot setup.
 
 For other applications in general, just add their user to the "sasl" group.
