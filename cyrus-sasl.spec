@@ -541,7 +541,7 @@ fi
 
 %if %{MYSQL}
 %files -n %{libname}-plug-sql
-%{_libdir}/sasl2/libsql.so.%{major}*
+%{_libdir}/sasl2/libsql.so*
 %endif
 
 %if %{LDAP}
