@@ -57,6 +57,7 @@ Url:		http://cyrusimap.org/
 # git clone https://github.com/cyrusimap/cyrus-sasl.git
 # git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf9 > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
 Source0:	%{name}-%{version}-%{snap}.tar.xz
+Source1:	%{name}.rpmlintrc
 #Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
 Source2:	saslauthd.service
 Source3:	saslauthd.sysconfig
@@ -258,6 +259,7 @@ Summary:	SASL sasldb auxprop plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sasldb
 Requires:	%{name} = %{version}
+Requires(pre,post,preun): rpm-helper
 
 %description -n	%{libname}-plug-sasldb
 This package provides the SASL sasldb auxprop plugin, which stores secrets
