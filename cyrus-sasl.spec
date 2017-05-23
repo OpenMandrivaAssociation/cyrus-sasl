@@ -50,7 +50,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	0.%{snap}.3
+Release:	0.%{snap}.4
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -501,43 +501,43 @@ fi
 %{_libdir}/libsasl*.so.%{major}*
 
 %files -n %{libname}-plug-anonymous
-%{_libdir}/sasl2/libanonymous.so.%{major}*
+%{_libdir}/sasl2/libanonymous.so*
 
 %files -n %{libname}-plug-otp
-%{_libdir}/sasl2/libotp.so.%{major}*
+%{_libdir}/sasl2/libotp.so*
 
 %files -n %{libname}-plug-scram
-%{_libdir}/sasl2/libscram.so.%{major}*
+%{_libdir}/sasl2/libscram.so*
 
 %files -n %{libname}-plug-crammd5
-%{_libdir}/sasl2/libcrammd5.so.%{major}*
+%{_libdir}/sasl2/libcrammd5.so*
 
 %files -n %{libname}-plug-sasldb
 %doc README.OpenMandriva.sasldb
-%{_libdir}/sasl2/libsasldb.so.%{major}*
+%{_libdir}/sasl2/libsasldb.so*
 
 %if %{KRB5}
 %files -n %{libname}-plug-gssapi
-%{_libdir}/sasl2/libgs2.so.%{major}*
-%{_libdir}/sasl2/libgssapiv2.so.%{major}*
+%{_libdir}/sasl2/libgs2.so*
+%{_libdir}/sasl2/libgssapiv2.so*
 %endif
 
 %files -n %{libname}-plug-digestmd5
-%{_libdir}/sasl2/libdigestmd5.so.%{major}*
+%{_libdir}/sasl2/libdigestmd5.so*
 
 %files -n %{libname}-plug-plain
-%{_libdir}/sasl2/libplain.so.%{major}*
+%{_libdir}/sasl2/libplain.so*
 
 %files -n %{libname}-plug-login
-%{_libdir}/sasl2/liblogin.so.%{major}*
+%{_libdir}/sasl2/liblogin.so*
 
 %if %{SRP}
 %files -n %{libname}-plug-srp
-%{_libdir}/sasl2/libsrp.so.%{major}*
+%{_libdir}/sasl2/libsrp.so*
 %endif
 
 %files -n %{libname}-plug-ntlm
-%{_libdir}/sasl2/libntlm.so.%{major}*
+%{_libdir}/sasl2/libntlm.so*
 
 %if %{MYSQL}
 %files -n %{libname}-plug-sql
@@ -546,7 +546,7 @@ fi
 
 %if %{LDAP}
 %files -n %{libname}-plug-ldapdb
-%{_libdir}/sasl2/libldapdb.so.%{major}*
+%{_libdir}/sasl2/libldapdb.so*
 %endif
 
 %files -n %{devname}
@@ -555,6 +555,5 @@ fi
 %{_includedir}/sasl
 %{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
-%{_libdir}/sasl2/*.*so
 %{_libdir}/pkgconfig/*.pc
 %{_mandir}/man3/*
