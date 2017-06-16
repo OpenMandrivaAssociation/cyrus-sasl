@@ -45,12 +45,12 @@
 %{?bootstrap: %{expand: %%global LDAP 0}}
 %{?bootstrap: %{expand: %%global LDAPSTR disabled}}
 
-%define snap 20170422
+%define snap 20170616
 
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	0.%{snap}.4
+Release:	0.%{snap}.1
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -418,9 +418,6 @@ cd utils
 cd ..
 cp saslauthd/testsaslauthd %{buildroot}%{_sbindir}
 
-# multiarch policy
-%multiarch_includes %{buildroot}%{_includedir}/sasl/md5global.h
-
 # quick README about the sasl.db file permissions
 cat > README.OpenMandriva.sasldb <<EOF
 Starting with %{libname}-plug-sasldb-2.1.22-6mdk, OpenMandriva by default
@@ -555,7 +552,6 @@ fi
 %{_sbindir}/sasl2-shared-mechlist
 %{_sbindir}/sasl2-shared-checkpass
 %{_includedir}/sasl
-%{multiarch_includedir}/sasl/md5global.h
 %{_libdir}/*.*so
 %{_libdir}/pkgconfig/*.pc
 %{_mandir}/man3/*
