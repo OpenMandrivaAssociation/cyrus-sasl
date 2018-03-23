@@ -109,6 +109,7 @@ BuildRequires:	pkgconfig(libssl)
 # further below)
 %if %{KRB5}
 BuildRequires:	krb5-devel >= 1.4.1
+BuildRequires:	pkgconfig(krb5-gssapi)
 %endif
 %if %{MYSQL}
 BuildRequires:	mysql-devel
