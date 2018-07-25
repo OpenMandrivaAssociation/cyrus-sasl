@@ -482,7 +482,6 @@ fi
 %files
 %doc COPYING AUTHORS INSTALL NEWS README*
 %doc doc/{TODO,ONEWS,*.txt,*.html}
-%doc service.conf.example
 %dir /var/lib/sasl2
 %dir /var/run/saslauthd
 %dir %{_sysconfdir}/sasl2
