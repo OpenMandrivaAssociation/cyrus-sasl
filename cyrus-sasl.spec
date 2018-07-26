@@ -325,6 +325,8 @@ export CC=%{__cc}
 export CXX=%{__cxx}
 export ac_ct_CC_FOR_BUILD=%{__cc}
 export ac_ct_CC=%{__cc}
+rm configure aclocal.m4 config/ltmain.sh Makefile.in
+export NOCONFIGURE=yes
 ./autogen.sh
 
 %build
