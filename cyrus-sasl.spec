@@ -103,6 +103,7 @@ Patch50:	cyrus-sasl-2.1.15-lib64.patch
 
 BuildRequires:	groff
 BuildRequires:	libtool
+BuildRequires:	m4
 BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libssl)
@@ -327,6 +328,16 @@ export CC=%{__cc}
 export CXX=%{__cxx}
 export ac_ct_CC_FOR_BUILD=%{__cc}
 export ac_ct_CC=%{__cc}
+
+rm -f config/config.guess config/config.sub
+rm -f config/ltconfig config/ltmain.sh config/libtool.m4 configure
+rm -fr autom4te.cache
+libtoolize -c -f -i
+aclocal -I config
+autoheader
+autoconf
+automake -a -c
+
 ./autogen.sh
 
 %build
