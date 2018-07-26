@@ -100,12 +100,14 @@ Patch31:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 
 # (tpg) OpenMandriva patches
 Patch50:	cyrus-sasl-2.1.15-lib64.patch
+
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libssl)
 BuildRequires:	pkgconfig(libgcrypt)
+BuildRequires:	systemd-macros
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
 %if %{KRB5}
@@ -325,8 +327,6 @@ export CC=%{__cc}
 export CXX=%{__cxx}
 export ac_ct_CC_FOR_BUILD=%{__cc}
 export ac_ct_CC=%{__cc}
-rm configure aclocal.m4 config/ltmain.sh Makefile.in
-export NOCONFIGURE=yes
 ./autogen.sh
 
 %build
