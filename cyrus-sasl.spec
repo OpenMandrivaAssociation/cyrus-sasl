@@ -50,7 +50,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	0.%{snap}.1
+Release:	0.%{snap}.2
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -105,6 +105,7 @@ BuildRequires:	libtool
 BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libssl)
+BuildRequires:	pkgconfig(libgcrypt)
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
 %if %{KRB5}
