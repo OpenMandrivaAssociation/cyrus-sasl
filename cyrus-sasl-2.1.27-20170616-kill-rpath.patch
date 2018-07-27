@@ -1,6 +1,89 @@
+diff -Naur cyrus-sasl-2.1.27-20170616/configure.ac cyrus-sasl-2.1.27-20170616.tpg/configure.ac
+--- cyrus-sasl-2.1.27-20170616/configure.ac	2018-07-27 17:14:05.530621000 +0000
++++ cyrus-sasl-2.1.27-20170616.tpg/configure.ac	2018-07-27 17:17:36.951629291 +0000
+@@ -101,9 +101,6 @@
+ AC_USE_SYSTEM_EXTENSIONS
+ CMU_C___ATTRIBUTE__
+ 
+-dnl check for -R, etc. switch
+-CMU_GUESS_RUNPATH_SWITCH
+-
+ dnl xxx compatibility
+ AC_ARG_WITH(staticsasl)
+ if test "$with_staticsasl" = yes; then
+@@ -280,10 +277,6 @@
+ 	with_pam=$withval,
+ 	with_pam=yes)
+ if test "$with_pam" != no; then
+-  if test -d $with_pam; then
+-    CPPFLAGS="$CPPFLAGS -I${with_pam}/include"
+-    LDFLAGS="$LDFLAGS -L${with_pam}/${LIBDIR}"
+-  fi
+   AC_CHECK_HEADERS(security/pam_appl.h pam/pam_appl.h)
+   cmu_save_LIBS="$LIBS"
+   AC_CHECK_FUNC(pam_start, :,
+@@ -830,16 +823,6 @@
+      LDFLAGS=$save_LDFLAGS
+      ;;
+     *)
+-     if test -d ${with_mysql}/lib/mysql; then
+-	CMU_ADD_LIBPATH_TO(${with_mysql}/lib/mysql, LIB_MYSQL)
+-     elif test -d ${with_mysql}/mysql/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_mysql}/mysql/lib, LIB_MYSQL)
+-     elif test -d ${with_mysql}/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_mysql}/lib, LIB_MYSQL)
+-     else
+-	CMU_ADD_LIBPATH_TO(${with_mysql}, LIB_MYSQL)
+-     fi
+-
+      LIB_MYSQL_DIR=$LIB_MYSQL
+      LIB_MYSQL="$LIB_MYSQL -lmysqlclient"
+ 
+@@ -906,16 +889,6 @@
+      LDFLAGS=$save_LDFLAGS
+      ;;
+     *)
+-     if test -d ${with_pgsql}/lib/pgsql; then
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}/lib/pgsql, LIB_PGSQL)
+-     elif test -d ${with_pgsql}/pgsql/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}/pgsql/lib, LIB_PGSQL)
+-     elif test -d ${with_pgsql}/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}/lib, LIB_PGSQL)
+-     else
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}, LIB_PGSQL)
+-     fi
+-
+      LIB_PGSQL_DIR=$LIB_PGSQL
+      LIB_PGSQL="$LIB_PGSQL -lpq"
+ 
+@@ -975,12 +948,6 @@
+     no) true;;
+     notfound) AC_WARN([SQLite Library not found]); true;;
+     *)
+-     if test -d ${with_sqlite}/lib; then
+-         LIB_SQLITE="-L${with_sqlite}/lib"
+-     else
+-         LIB_SQLITE="-L${with_sqlite}"
+-     fi
+-
+      LIB_SQLITE_DIR=$LIB_SQLITE
+      LIB_SQLITE="$LIB_SQLITE -lsqlite"
+ 
+@@ -1072,11 +1039,6 @@
+     save_CPPFLAGS=$CPPFLAGS
+     save_LDFLAGS=$LDFLAGS
+ 
+-    if test -d $with_ldap; then
+-        CPPFLAGS="${CPPFLAGS} -I${with_ldap}/include"
+-        CMU_ADD_LIBPATH(${with_ldap}/lib)
+-    fi
+-
+     AC_CHECK_HEADERS(ldap.h lber.h)
+ 
+     if test $ac_cv_header_ldap_h = yes -a $ac_cv_header_lber_h = yes; then
 diff -Naur cyrus-sasl-2.1.27-20170616/m4/cyrus.m4 cyrus-sasl-2.1.27-20170616.tpg/m4/cyrus.m4
 --- cyrus-sasl-2.1.27-20170616/m4/cyrus.m4	2017-03-03 14:12:10.000000000 +0000
-+++ cyrus-sasl-2.1.27-20170616.tpg/m4/cyrus.m4	2018-07-27 16:41:39.957547089 +0000
++++ cyrus-sasl-2.1.27-20170616.tpg/m4/cyrus.m4	2018-07-27 17:14:30.121622171 +0000
 @@ -31,14 +31,5 @@
  dnl runpath initialization
  AC_DEFUN([CMU_GUESS_RUNPATH_SWITCH], [
