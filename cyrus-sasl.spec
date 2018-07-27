@@ -100,9 +100,7 @@ Patch31:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 
 # (tpg) OpenMandriva patches
 Patch50:	cyrus-sasl-2.1.15-lib64.patch
-%ifnarch %{ix86} i686 armv7hl armv7hnl
-Patch51:	cyrus-sasl-2.1.27-20170616-fix-build-on-lib64.patch
-%endif
+Patch51:	cyrus-sasl-2.1.27-20170616-kill-rpath.patch
 
 BuildRequires:	groff
 BuildRequires:	libtool
