@@ -317,7 +317,7 @@ This plugin implements the LDAP auxprop authentication method.
 %endif
 
 %prep
-%setup -qn %{name}-%{version}-%{snap}
+%setup -q
 install -m 0644 %{SOURCE4} .
 %apply_patches
 
