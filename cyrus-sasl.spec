@@ -45,20 +45,18 @@
 %{?bootstrap: %{expand: %%global LDAP 0}}
 %{?bootstrap: %{expand: %%global LDAPSTR disabled}}
 
-%define snap 20170616
 
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	0.%{snap}.2
+Release:	1
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
 # git clone https://github.com/cyrusimap/cyrus-sasl.git
 # git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf9 > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
-Source0:	%{name}-%{version}-%{snap}.tar.xz
+Source0:	https://www.cyrusimap.org/releases/%{name}-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
-#Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
 Source2:	saslauthd.service
 Source3:	saslauthd.sysconfig
 Source4:	service.conf.example
@@ -110,6 +108,7 @@ BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libssl)
 BuildRequires:	pkgconfig(libgcrypt)
 BuildRequires:	systemd-macros
+BuildRequires:	rpm-helper
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
 %if %{KRB5}
@@ -145,11 +144,11 @@ The SQL auxprop plugin can be rebuild with different database backends:
 	--with pgsql	Postgres SQL support	(%{PGSQLSTR})
 	--with sqlite3	SQLite v3 support	(%{SQLITE3STR})
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Libraries for SASL a the Simple Authentication and Security Layer
 Group:		System/Libraries
 
-%description -n	%{libname}
+%description -n %{libname}
 SASL is the Simple Authentication and Security Layer,
 a method for adding authentication support to connection-based protocols.
 To use SASL, a protocol includes a command for identifying and authenticating
@@ -157,14 +156,14 @@ a user to a server and for optionally negotiating protection of subsequent
 protocol interactions. If its use is negotiated, a security layer is inserted
 between the protocol and the connection.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Libraries for SASL a the Simple Authentication and Security Layer
 Group:		Development/C
 Provides:	sasl-devel = %{version}
 Requires:	%{libname} >= %{version}
 Obsoletes:	%{_lib}sasl2-devel < 2.1.25-9
 
-%description -n	%{devname}
+%description -n %{devname}
 SASL is the Simple Authentication and Security Layer,
 a method for adding authentication support to connection-based protocols.
 To use SASL, a protocol includes a command for identifying and authenticating
@@ -172,127 +171,127 @@ a user to a server and for optionally negotiating protection of subsequent
 protocol interactions. If its use is negotiated, a security layer is inserted
 between the protocol and the connection.
 
-%package -n	%{libname}-plug-anonymous
+%package -n %{libname}-plug-anonymous
 Summary:	SASL ANONYMOUS mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-anonymous
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-anonymous
+%description -n %{libname}-plug-anonymous
 This plugin implements the SASL ANONYMOUS mechanism,
 used for anonymous authentication.
 
-%package -n	%{libname}-plug-crammd5
+%package -n %{libname}-plug-crammd5
 Summary:	SASL CRAM-MD5 mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-crammd5
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-crammd5
+%description -n %{libname}-plug-crammd5
 This plugin implements the SASL CRAM-MD5 mechanism.
 CRAM-MD5 is the mandatory-to-implement authentication mechanism for a
 number of protocols; it uses MD5 with a challenge/response system to
 authenticate the user.
 
-%package -n	%{libname}-plug-digestmd5
+%package -n %{libname}-plug-digestmd5
 Summary:	SASL DIGEST-MD5 mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-digestmd5
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-digestmd5
+%description -n %{libname}-plug-digestmd5
 This plugin implements the latest draft of the SASL DIGEST-MD5
 mechanism.  Although not yet finalized, this is likely to become the
 new mandatory-to-implement authentication system in all new protocols.
 It's based on the digest md5 authentication system designed for HTTP.
 
-%package -n	%{libname}-plug-plain
+%package -n %{libname}-plug-plain
 Summary:	SASL PLAIN mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-plain
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-plain
+%description -n %{libname}-plug-plain
 This plugin implements the SASL PLAIN mechanism.  Although insecure,
 PLAIN is useful for transitioning to new security mechanisms, as this
 is the only mechanism which gives the server a copy of the user's
 password.
 
-%package -n	%{libname}-plug-scram
+%package -n %{libname}-plug-scram
 Summary:	SASL SCRAM-SHA-1 mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-scram
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-scram
+%description -n %{libname}-plug-scram
 This plugin implements the SASL SCRAM-SHA-1 SASL plugin mechanism.
 
-%package -n	%{libname}-plug-login
+%package -n %{libname}-plug-login
 Summary:	SASL LOGIN mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-login
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-login
+%description -n %{libname}-plug-login
 This plugin implements the SASL LOGIN mechanism.
 THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons
 and will be dropped soon.
 Please use the plain plugin instead.
 
 %if %{KRB5}
-%package -n	%{libname}-plug-gssapi
+%package -n %{libname}-plug-gssapi
 Summary:	SASL GSSAPI mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-gssapi
 Requires:	krb5-libs
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-gssapi
+%description -n %{libname}-plug-gssapi
 This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
 %endif
 
-%package -n	%{libname}-plug-otp
+%package -n %{libname}-plug-otp
 Summary:	SASL OTP mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-otp
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-otp
+%description -n %{libname}-plug-otp
 This plugin implements the SASL OTP mechanism.
 
-%package -n	%{libname}-plug-sasldb
+%package -n %{libname}-plug-sasldb
 Summary:	SASL sasldb auxprop plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sasldb
 Requires:	%{name} = %{version}
 Requires(pre,post,preun): rpm-helper
 
-%description -n	%{libname}-plug-sasldb
+%description -n %{libname}-plug-sasldb
 This package provides the SASL sasldb auxprop plugin, which stores secrets
 in a Berkeley database file.
 
 %if %{SRP}
-%package -n	%{libname}-plug-srp
+%package -n %{libname}-plug-srp
 Summary:	SASL srp mechanism plugin
 Group:		System/Libraries
 Provides:	sasl-plug-srp
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-srp
+%description -n %{libname}-plug-srp
 This plugin implements the srp  mechanism.
 %endif
 
-%package -n	%{libname}-plug-ntlm
+%package -n %{libname}-plug-ntlm
 Summary:	SASL ntlm authentication plugin
 Group:		System/Libraries
 Provides:	sasl-plug-ntlm
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-ntlm
+%description -n %{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
 
 %if %{MYSQL}
-%package -n	%{libname}-plug-sql
+%package -n %{libname}-plug-sql
 Summary:	SASL MySQL plugin
 Group:		System/Libraries
 Provides:	sasl-plug-sql
@@ -301,19 +300,19 @@ Requires:	%{name} = %{version}
 %rename		%{_lib}sasl2-plug-pgsql
 %rename		%{_lib}sasl2-plug-sqlite3
 
-%description -n	%{libname}-plug-sql
+%description -n %{libname}-plug-sql
 This plugin implements the SQL authentication method based
 on MySQL, PGSQL and SQLITE3.
 %endif
 
 %if %{LDAP}
-%package -n	%{libname}-plug-ldapdb
+%package -n %{libname}-plug-ldapdb
 Summary:	SASL ldapdb auxprop plugin
 Group:		System/Libraries
 Provides:	sasl-plug-ldapdb
 Requires:	%{name} = %{version}
 
-%description -n	%{libname}-plug-ldapdb
+%description -n %{libname}-plug-ldapdb
 This plugin implements the LDAP auxprop authentication method.
 %endif
 
@@ -399,8 +398,8 @@ export ac_ct_CC=%{__cc}
 	--with-authdaemond=/var/run/authdaemon.courier-imap/socket \
 	--with-devrandom=/dev/urandom
 
-%make
-%make -C saslauthd testsaslauthd
+%make_build
+%make_build -C saslauthd testsaslauthd
 
 install saslauthd/LDAP_SASLAUTHD README.ldap
 
@@ -416,7 +415,7 @@ popd
 mkdir -p %{buildroot}/var/lib/sasl2 %{buildroot}/var/run/saslauthd
 mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 
-%makeinstall_std
+%make_install
 
 install -m644 %{SOURCE2} -D %{buildroot}%{_systemunitdir}/saslauthd.service
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
