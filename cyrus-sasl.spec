@@ -86,7 +86,6 @@ Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 #Patch50:	cyrus-sasl-2.1.15-lib64.patch
 #Patch51:	cyrus-sasl-2.1.27-20170616-kill-rpath.patch
 
-%if 0
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
@@ -115,7 +114,6 @@ BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	openldap-devel
 %endif
 Requires(pre,post,preun):	rpm-helper
-%endif
 
 %description
 SASL is the Simple Authentication and Security Layer,
@@ -325,8 +323,6 @@ aclocal -I config
 autoheader
 autoconf
 automake -a -c
-
-./autogen.sh
 
 %build
 export ac_cv_prog_ac_ct_CC_FOR_BUILD=%{__cc}
