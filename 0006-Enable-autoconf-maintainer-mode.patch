@@ -8,12 +8,12 @@ Subject: Enable autoconf maintainer mode
  1 file changed, 2 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 7dbe02d..770e45c 100644
+index ac59f14..a9c5e11 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -69,6 +69,8 @@ AC_CANONICAL_TARGET
  
- AM_INIT_AUTOMAKE([1.11 tar-ustar dist-bzip2 -Wno-portability subdir-objects])
+ AM_INIT_AUTOMAKE([1.11 tar-ustar dist-bzip2 foreign -Wno-portability subdir-objects])
  
 +AM_MAINTAINER_MODE
 +

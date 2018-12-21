@@ -4,14 +4,14 @@ Date: Thu, 24 Mar 2016 11:35:04 +0100
 Subject: Don't use la files for opening plugins
 
 ---
- lib/dlopen.c | 113 ++++-------------------------------------------------------
- 1 file changed, 7 insertions(+), 106 deletions(-)
+ lib/dlopen.c | 115 ++++-------------------------------------------------------
+ 1 file changed, 7 insertions(+), 108 deletions(-)
 
 diff --git a/lib/dlopen.c b/lib/dlopen.c
-index b9c1c80..8561bef 100644
+index 2032f94..9cb1ce7 100644
 --- a/lib/dlopen.c
 +++ b/lib/dlopen.c
-@@ -247,105 +247,6 @@ static int _sasl_plugin_load(char *plugin, void *library,
+@@ -247,107 +247,6 @@ static int _sasl_plugin_load(char *plugin, void *library,
      return result;
  }
  
@@ -71,6 +71,7 @@ index b9c1c80..8561bef 100644
 -	if(line[strlen(line) - 1] != '\n') {
 -	    _sasl_log(NULL, SASL_LOG_WARN,
 -		      "LA file has too long of a line: %s", in);
+-	    fclose(file);
 -	    return SASL_BUFOVER;
 -	}
 -	if(line[0] == '\n' || line[0] == '#') continue;
@@ -90,6 +91,7 @@ index b9c1c80..8561bef 100644
 -		if(ntmp == end) {
 -		    _sasl_log(NULL, SASL_LOG_DEBUG,
 -			      "dlname is empty in .la file: %s", in);
+-		    fclose(file);
 -		    return SASL_FAIL;
 -		}
 -		strcpy(out, prefix);
@@ -117,7 +119,7 @@ index b9c1c80..8561bef 100644
  #endif /* DO_DLOPEN */
  
  /* loads a plugin library */
-@@ -499,18 +400,18 @@ int _sasl_load_plugins(const add_plugin_list_t *entrypoints,
+@@ -501,18 +400,18 @@ int _sasl_load_plugins(const add_plugin_list_t *entrypoints,
  		if (length + pos>=PATH_MAX) continue; /* too big */
  
  		if (strcmp(dir->d_name + (length - strlen(SO_SUFFIX)),

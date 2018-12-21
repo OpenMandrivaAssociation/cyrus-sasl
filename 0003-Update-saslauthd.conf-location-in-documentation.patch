@@ -9,7 +9,7 @@ date format (cosmetic).
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/saslauthd/saslauthd.mdoc b/saslauthd/saslauthd.mdoc
-index 50f7dbf..5b0230d 100644
+index 0c2209e..17c9284 100644
 --- a/saslauthd/saslauthd.mdoc
 +++ b/saslauthd/saslauthd.mdoc
 @@ -10,7 +10,7 @@
@@ -21,7 +21,7 @@ index 50f7dbf..5b0230d 100644
  .Dt SASLAUTHD 8
  .Os "CMU-SASL"
  .Sh NAME
-@@ -221,7 +221,7 @@ instead.
+@@ -245,7 +245,7 @@ instead.
  .Em (All platforms that support OpenLDAP 2.0 or higher)
  .Pp
  Authenticate against an ldap server.  The ldap configuration parameters are
@@ -30,7 +30,7 @@ index 50f7dbf..5b0230d 100644
  changed with the -O parameter. See the LDAP_SASLAUTHD file included with the
  distribution for the list of available parameters.
  .It Li sia
-@@ -254,7 +254,7 @@ was never intended to be used in this manner, anyway.)
+@@ -278,7 +278,7 @@ was never intended to be used in this manner, anyway.)
  .Bl -tag -width "/var/run/saslauthd/mux"
  .It Pa /var/run/saslauthd/mux
  The default communications socket.

@@ -9,10 +9,10 @@ Subject: Fix keytab option for MIT Kerberos
  2 files changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/m4/sasl2.m4 b/m4/sasl2.m4
-index 3fdba93..922d072 100644
+index 56e0504..a90f7b4 100644
 --- a/m4/sasl2.m4
 +++ b/m4/sasl2.m4
-@@ -275,6 +275,7 @@ if test "$gssapi" != no; then
+@@ -282,6 +282,7 @@ if test "$gssapi" != no; then
                      ])
      fi
    fi
@@ -21,10 +21,10 @@ index 3fdba93..922d072 100644
    AC_CHECK_FUNCS(gss_encapsulate_token)
    AC_CHECK_FUNCS(gss_oid_equal)
 diff --git a/plugins/gssapi.c b/plugins/gssapi.c
-index da94663..9c4aa79 100644
+index cf3fc64..7aab703 100644
 --- a/plugins/gssapi.c
 +++ b/plugins/gssapi.c
-@@ -1406,7 +1406,7 @@ static sasl_server_plug_t gssapi_server_plugins[] =
+@@ -1545,7 +1545,7 @@ static sasl_server_plug_t gssapi_server_plugins[] =
  };
  
  int gssapiv2_server_plug_init(
@@ -33,7 +33,7 @@ index da94663..9c4aa79 100644
      const sasl_utils_t *utils __attribute__((unused)),
  #else
      const sasl_utils_t *utils,
-@@ -1416,7 +1416,7 @@ int gssapiv2_server_plug_init(
+@@ -1555,7 +1555,7 @@ int gssapiv2_server_plug_init(
      sasl_server_plug_t **pluglist,
      int *plugcount)
  {
@@ -42,7 +42,7 @@ index da94663..9c4aa79 100644
      const char *keytab = NULL;
      char keytab_path[1024];
      unsigned int rl;
-@@ -1426,7 +1426,7 @@ int gssapiv2_server_plug_init(
+@@ -1565,7 +1565,7 @@ int gssapiv2_server_plug_init(
  	return SASL_BADVERS;
      }
      
@@ -51,7 +51,7 @@ index da94663..9c4aa79 100644
      /* unfortunately, we don't check for readability of keytab if it's
         the standard one, since we don't know where it is */
      
-@@ -1449,7 +1449,12 @@ int gssapiv2_server_plug_init(
+@@ -1587,7 +1587,12 @@ int gssapiv2_server_plug_init(
  	
  	strncpy(keytab_path, keytab, 1024);
  	

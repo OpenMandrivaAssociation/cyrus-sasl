@@ -63,43 +63,30 @@ Source4:	service.conf.example
 Source7:	sasl-mechlist.c
 Source8:	sasl-checkpass.c
 # (tpg) patches from Debian
-Patch0:		0001-Make-the-libsasl2-symbols-versioned.patch
-Patch1:		0002-Use-etc-sasldb2-instead-of-.-sasldb-in-the-testsuite.patch
-Patch2:		0003-Update-saslauthd.conf-location-in-documentation.patch
-Patch3:		0004-Include-dbconverter-2-in-sbin_PROGRAMS-and-set-defau.patch
-Patch4:		0005-Fixes-in-library-mutexes.patch
-Patch5:		0006-Enable-autoconf-maintainer-mode.patch
-Patch6:		0007-Define-_XOPEN_SOURCE-in-auth_shadow.c-to-get-proper-.patch
-Patch7:		0008-Don-t-overwrite-PIC-objects-with-non-PIC-variant.patch
-Patch8:		0009-Look-for-generic-Berkeley-DB-first.patch
-Patch9:		0010-Update-required-libraries-when-ld-as-needed-is-used.patch
-Patch10:	0011-Drop-krb5support-dependency.patch
-Patch11:	0012-LDAP-fixes.patch
-Patch12:	0013-Don-t-use-la-files-for-opening-plugins.patch
-Patch13:	0014-Don-t-use-R-when-searching-for-SQLite-libraries.patch
-Patch14:	0015-Revert-1.103-revision-to-unbreak-GSSAPI.patch
-Patch15:	0016-Fix-segfault-in-GSSAPI.patch
-Patch16:	0017-Fix-dovecot-authentication.patch
-Patch17:	0018-Temporary-multiarch-fixes.patch
-Patch18:	0019-Add-reference-to-LDAP_SASLAUTHD-file-to-the-saslauth.patch
-Patch19:	0020-Send-IMAP-logout.patch
-Patch20:	0021-Fix-canonuser-ldapdb-garbage-in-out-buffer.patch
-Patch21:	0022-Fix-keytab-option-for-MIT-Kerberos.patch
-Patch22:	0023-Release-server-creds-when-they-are-no-longer-needed.patch
-Patch23:	0024-Fix-typo-in-debugging-logs.patch
-Patch24:	0025-Revert-upstream-soname-bump.patch
-Patch25:	0026-Fix-return-SASL_FAIL-in-void-sasl_dispose.patch
-Patch26:	0027-properly-create-libsasl2.pc.patch
-Patch27:	0028-2.1.26-Allow-CAPABILITY-lines-in-IMAP-login-reply-v4.patch
-Patch28:	0029-Fix-early-hangup-in-ipc_unix.c.patch
-Patch29:	0030-Change-linking-from-sasldb-.libs-libsasldb.al-to-sas.patch
-Patch30:	0031-Cleanup-for-modern-autotools.patch
-Patch31:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
+Patch10:	0001-Make-the-libsasl2-symbols-versioned.patch
+Patch11:	0002-Use-etc-sasldb2-instead-of-.-sasldb-in-the-testsuite.patch
+Patch12:	0003-Update-saslauthd.conf-location-in-documentation.patch
+Patch13:	0004-Include-dbconverter-2-in-sbin_PROGRAMS-and-set-defau.patch
+Patch14:	0005-Fixes-in-library-mutexes.patch
+Patch15:	0006-Enable-autoconf-maintainer-mode.patch
+Patch16:	0008-Don-t-overwrite-PIC-objects-with-non-PIC-variant.patch
+Patch17:	0009-Look-for-generic-Berkeley-DB-first.patch
+Patch18:	0010-Update-required-libraries-when-ld-as-needed-is-used.patch
+#Patch19:	0013-Don-t-use-la-files-for-opening-plugins.patch
+#Patch20:	0018-Temporary-multiarch-fixes.patch
+Patch21:	0019-Add-reference-to-LDAP_SASLAUTHD-file-to-the-saslauth.patch
+Patch22:	0022-Fix-keytab-option-for-MIT-Kerberos.patch
+#Patch23:	0025-Revert-upstream-soname-bump.patch
+Patch24:	0027-properly-create-libsasl2.pc.patch
+Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
+#Patch26:	0017-Just-completely-remove-libobj-from-autotools-files.patch
+#Patch27:	0018-We-need-to-look-for-compat-crypto.h-in-top_srcdir-as.patch
 
 # (tpg) OpenMandriva patches
-Patch50:	cyrus-sasl-2.1.15-lib64.patch
-Patch51:	cyrus-sasl-2.1.27-20170616-kill-rpath.patch
+#Patch50:	cyrus-sasl-2.1.15-lib64.patch
+#Patch51:	cyrus-sasl-2.1.27-20170616-kill-rpath.patch
 
+%if 0
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
@@ -128,6 +115,7 @@ BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	openldap-devel
 %endif
 Requires(pre,post,preun):	rpm-helper
+%endif
 
 %description
 SASL is the Simple Authentication and Security Layer,

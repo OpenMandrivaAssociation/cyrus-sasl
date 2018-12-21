@@ -1,4 +1,4 @@
-From: =?utf-8?q?Ond=C5=99ej_Sur=C3=BD?= <ondrej@debian.org>
+From: =?utf-8?b?T25kxZllaiBTdXLDvQ==?= <ondrej@debian.org>
 Date: Thu, 24 Mar 2016 11:35:05 +0100
 Subject: Revert upstream soname bump
 
@@ -8,7 +8,7 @@ Subject: Revert upstream soname bump
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/Makefile.am b/lib/Makefile.am
-index 2402557..7eac924 100644
+index 9344606..a747335 100644
 --- a/lib/Makefile.am
 +++ b/lib/Makefile.am
 @@ -43,7 +43,7 @@
@@ -18,10 +18,10 @@ index 2402557..7eac924 100644
 -sasl_version = 3:0:0
 +sasl_version = 2:25:0
  
- AM_CPPFLAGS=-DLIBSASL_EXPORTS=1 -I$(top_srcdir)/include -I$(top_srcdir)/plugins -I$(top_builddir)/include -I$(top_srcdir)/sasldb
- 
+ AM_CPPFLAGS=-DLIBSASL_EXPORTS=1 -I$(top_srcdir)/include -I$(top_srcdir)/plugins \
+             -I$(top_builddir)/include -I$(top_srcdir)/sasldb -I$(top_srcdir)/common
 diff --git a/plugins/Makefile.am b/plugins/Makefile.am
-index 452596e..6f755e1 100644
+index 2b02a52..24a3571 100644
 --- a/plugins/Makefile.am
 +++ b/plugins/Makefile.am
 @@ -47,7 +47,7 @@
@@ -31,5 +31,5 @@ index 452596e..6f755e1 100644
 -plugin_version = 3:0:0
 +plugin_version = 2:25:0
  
- AM_CPPFLAGS=-I$(top_srcdir)/include -I$(top_srcdir)/lib -I$(top_srcdir)/sasldb -I$(top_builddir)/include
+ AM_CPPFLAGS=-I$(top_srcdir)/include -I$(top_srcdir)/lib -I$(top_srcdir)/sasldb -I$(top_srcdir)/common -I$(top_builddir)/include
  AM_LDFLAGS = -module -export-dynamic -rpath $(plugindir) -version-info $(plugin_version) -no-undefined

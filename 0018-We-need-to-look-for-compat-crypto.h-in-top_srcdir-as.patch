@@ -1,0 +1,21 @@
+From: =?utf-8?b?T25kxZllaiBTdXLDvQ==?= <ondrej@sury.org>
+Date: Tue, 2 Oct 2018 08:42:04 +0000
+Subject: We need to look for compat-crypto.h in top_srcdir as well
+
+---
+ saslauthd/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/saslauthd/Makefile.am b/saslauthd/Makefile.am
+index 43a9a9a..452ed83 100644
+--- a/saslauthd/Makefile.am
++++ b/saslauthd/Makefile.am
+@@ -32,7 +32,7 @@ saslcache_SOURCES = saslcache.c
+ 
+ EXTRA_DIST	= saslauthd.8 saslauthd.mdoc include \
+ 		  getnameinfo.c getaddrinfo.c LDAP_SASLAUTHD
+-AM_CPPFLAGS	= -I$(top_srcdir)/include -I$(top_builddir)/include -I$(top_srcdir)/../include -I$(top_builddir)/common
++AM_CPPFLAGS	= -I$(top_srcdir)/include -I$(top_builddir)/include -I$(top_srcdir)/../include -I$(top_srcdir)/common -I$(top_builddir)/common
+ DEFS            = @DEFS@ -DSASLAUTHD_CONF_FILE_DEFAULT=\"@sysconfdir@/saslauthd.conf\" -I. -I$(srcdir) -I..
+ 
+ 

@@ -1,4 +1,4 @@
-From: =?utf-8?q?Ond=C5=99ej_Sur=C3=BD?= <ondrej@sury.org>
+From: =?utf-8?b?T25kxZllaiBTdXLDvQ==?= <ondrej@sury.org>
 Date: Tue, 25 Oct 2016 12:33:27 +0200
 Subject: Add ${with_pgsql}include/postgresql/ to include path
 
@@ -7,10 +7,10 @@ Subject: Add ${with_pgsql}include/postgresql/ to include path
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index 708cfca..e9f451d 100644
+index 049382e..aa9e059 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -919,7 +919,9 @@ case "$with_pgsql" in
+@@ -926,7 +926,9 @@ case "$with_pgsql" in
       LIB_PGSQL_DIR=$LIB_PGSQL
       LIB_PGSQL="$LIB_PGSQL -lpq"
  

@@ -12,15 +12,15 @@ and PIC versions are available in the correct locations.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/lib/Makefile.am b/lib/Makefile.am
-index 36f18fa..2402557 100644
+index 43345f4..9344606 100644
 --- a/lib/Makefile.am
 +++ b/lib/Makefile.am
-@@ -89,7 +89,7 @@ endif
+@@ -100,7 +100,7 @@ endif
  
  libsasl2.a: libsasl2.la $(SASL_STATIC_OBJS)
  	@echo adding static plugins and dependencies
 -	$(AR) cru .libs/$@ $(SASL_STATIC_OBJS)
 +	$(AR) cru $@ $(SASL_STATIC_OBJS)
- 	@for i in ./libsasl2.la ../sasldb/libsasldb.la ../plugins/lib*.la; do \
+ 	@for i in ./libsasl2.la ../common/libplugin_common.la ../sasldb/libsasldb.la ../plugins/lib*.la; do \
  	if test ! -f $$i; then continue; fi; . $$i; \
  	for j in $$dependency_libs foo; do \

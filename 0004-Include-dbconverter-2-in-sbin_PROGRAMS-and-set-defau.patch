@@ -28,7 +28,7 @@ index cce413b..17f0457 100644
  if NO_SASL_DB_MANS
  man_MANS = 
 diff --git a/utils/dbconverter-2.c b/utils/dbconverter-2.c
-index 33e18fb..06c2e9a 100644
+index c53d403..958aac8 100644
 --- a/utils/dbconverter-2.c
 +++ b/utils/dbconverter-2.c
 @@ -382,7 +382,7 @@ static struct sasl_callback goodsasl_cb[] = {

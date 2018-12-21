@@ -8,10 +8,10 @@ Subject: Use /etc/sasldb2 instead of ./sasldb in the testsuite
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/utils/testsuite.c b/utils/testsuite.c
-index 7e4e852..b687e96 100644
+index 12da7f7..9b2a6a7 100644
 --- a/utils/testsuite.c
 +++ b/utils/testsuite.c
-@@ -462,9 +462,9 @@ int good_getopt(void *context __attribute__((unused)),
+@@ -461,9 +461,9 @@ int good_getopt(void *context __attribute__((unused)),
  	    *len = (unsigned) strlen("sasldb");
  	return SASL_OK;
      } else if (!strcmp(option, "sasldb_path")) {
@@ -23,7 +23,7 @@ index 7e4e852..b687e96 100644
  	return SASL_OK;
      } else if (!strcmp(option, "canon_user_plugin")) {
  	*result = cu_plugin;
-@@ -2924,7 +2924,7 @@ void notes(void)
+@@ -2925,7 +2925,7 @@ void notes(void)
  void usage(void)
  {
      printf("Usage:\n" \

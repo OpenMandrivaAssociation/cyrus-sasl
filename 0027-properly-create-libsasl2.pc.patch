@@ -9,7 +9,7 @@ Subject: properly create libsasl2.pc
  2 files changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index f72bb26..b84342e 100644
+index 04fc82d..a4fed1e 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -44,6 +44,15 @@ ACLOCAL_AMFLAGS = -I m4
@@ -28,22 +28,22 @@ index f72bb26..b84342e 100644
  if SASLAUTHD
  SAD = saslauthd
  else
-@@ -77,6 +86,10 @@ EXTRA_DIST=config win32 mac dlcompat-20010505 NTMakefile INSTALL.TXT \
- pkgconfigdir = $(libdir)/pkgconfig
- pkgconfig_DATA = libsasl2.pc
+@@ -141,6 +150,10 @@ pkgconfig_DATA = libsasl2.pc
+ ## define this unconditionally because dist-hook references it
+ SPHINX_CACHE = docsrc/.doctrees
  
 +libsasl2.pc:	$(srcdir)/libsasl2.pc.in Makefile
 +	rm -f $@
 +	$(do_subst) < $(srcdir)/libsasl2.pc.in > $@
 +
  dist-hook:
- 	@find $(distdir) -exec chmod o+w {} ';'
+ 	@find $(distdir) -exec chmod u+w {} ';'
  	@find $(distdir) -name CVS -print | xargs -t rm -rf
 diff --git a/configure.ac b/configure.ac
-index 39c0240..fce5075 100644
+index 7019686..049382e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1563,7 +1563,6 @@ extern int asprintf(char **str, const char *fmt, ...);
+@@ -1592,7 +1592,6 @@ AH_BOTTOM([#if defined __GNUC__ &&  __GNUC__ > 6
  AC_CONFIG_HEADERS(config.h)
  
  AC_OUTPUT(Makefile
