@@ -402,7 +402,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/sasl2
 
 %make_install
 
-install -m644 %{SOURCE2} -D %{buildroot}%{_systemunitdir}/saslauthd.service
+install -m644 %{SOURCE2} -D %{buildroot}%{_unitdir}/saslauthd.service
 install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 
 # to be removed later
