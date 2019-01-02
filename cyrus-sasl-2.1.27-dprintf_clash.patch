@@ -1,0 +1,132 @@
+diff -ur cyrus-sasl-2.1.27.orig/sample/client.c cyrus-sasl-2.1.27/sample/client.c
+--- cyrus-sasl-2.1.27.orig/sample/client.c	2016-12-10 16:38:18.000000000 +0000
++++ cyrus-sasl-2.1.27/sample/client.c	2019-01-02 10:12:32.053407380 +0000
+@@ -241,9 +241,9 @@
+     int r, c;
+ 
+     /* get the capability list */
+-    dprintf(0, "receiving capability list... ");
++    dprintf_sasl(0, "receiving capability list... ");
+     len = recv_string(in, buf, sizeof buf);
+-    dprintf(0, "%s\n", buf);
++    dprintf_sasl(0, "%s\n", buf);
+ 
+     if (mech) {
+ 	/* make sure that 'mech' appears in 'buf' */
+@@ -262,7 +262,7 @@
+ 	return -1;
+     }
+     
+-    dprintf(1, "using mechanism %s\n", chosenmech);
++    dprintf_sasl(1, "using mechanism %s\n", chosenmech);
+ 
+     /* we send up to 3 strings;
+        the mechanism chosen, the presence of initial response,
+@@ -276,7 +276,7 @@
+     }
+ 
+     for (;;) {
+-	dprintf(2, "waiting for server reply...\n");
++	dprintf_sasl(2, "waiting for server reply...\n");
+ 
+ 	c = fgetc(in);
+ 	switch (c) {
+@@ -303,10 +303,10 @@
+ 	}
+ 
+ 	if (data) {
+-	    dprintf(2, "sending response length %d...\n", len);
++	    dprintf_sasl(2, "sending response length %d...\n", len);
+ 	    send_string(out, data, len);
+ 	} else {
+-	    dprintf(2, "sending null response...\n");
++	    dprintf_sasl(2, "sending null response...\n");
+ 	    send_string(out, "", 0);
+ 	}
+     }
+diff -ur cyrus-sasl-2.1.27.orig/sample/common.c cyrus-sasl-2.1.27/sample/common.c
+--- cyrus-sasl-2.1.27.orig/sample/common.c	2016-12-10 16:37:46.000000000 +0000
++++ cyrus-sasl-2.1.27/sample/common.c	2019-01-02 10:12:32.053407380 +0000
+@@ -127,7 +127,7 @@
+ 
+ int debuglevel = 0;
+ 
+-int dprintf(int lvl, const char *fmt, ...)
++int dprintf_sasl(int lvl, const char *fmt, ...)
+ {
+     va_list ap;
+     int ret = 0;
+diff -ur cyrus-sasl-2.1.27.orig/sample/common.h cyrus-sasl-2.1.27/sample/common.h
+--- cyrus-sasl-2.1.27.orig/sample/common.h	2016-12-10 16:37:33.000000000 +0000
++++ cyrus-sasl-2.1.27/sample/common.h	2019-01-02 10:12:32.053407380 +0000
+@@ -43,7 +43,7 @@
+ extern int recv_string(FILE *f, char *buf, int buflen);
+ 
+ extern int debuglevel;
+-extern int dprintf(int lvl, const char *fmt, ...);
++extern int dprintf_sasl(int lvl, const char *fmt, ...);
+ 
+ extern void saslerr(int why, const char *what);
+ extern void saslfail(int why, const char *what);
+diff -ur cyrus-sasl-2.1.27.orig/sample/server.c cyrus-sasl-2.1.27/sample/server.c
+--- cyrus-sasl-2.1.27.orig/sample/server.c	2018-09-20 16:29:16.000000000 +0100
++++ cyrus-sasl-2.1.27/sample/server.c	2019-01-02 10:12:32.054407380 +0000
+@@ -216,17 +216,17 @@
+     
+     /* generate the capability list */
+     if (mech) {
+-	dprintf(2, "forcing use of mechanism %s\n", mech);
++	dprintf_sasl(2, "forcing use of mechanism %s\n", mech);
+ 	data = strdup(mech);
+ 	len = strlen(data);
+     } else {
+ 	int count;
+ 
+-	dprintf(1, "generating client mechanism list... ");
++	dprintf_sasl(1, "generating client mechanism list... ");
+ 	r = sasl_listmech(conn, NULL, NULL, " ", NULL,
+ 			  &data, (unsigned int *) &len, &count);
+ 	if (r != SASL_OK) saslfail(r, "generating mechanism list");
+-	dprintf(1, "%d mechanisms\n", count);
++	dprintf_sasl(1, "%d mechanisms\n", count);
+     }
+ 
+     /* send capability list to client */
+@@ -234,7 +234,7 @@
+     if (mech)
+ 	free((void *) data);
+ 
+-    dprintf(1, "waiting for client mechanism...\n");
++    dprintf_sasl(1, "waiting for client mechanism...\n");
+     len = recv_string(in, chosenmech, sizeof chosenmech);
+     if (len <= 0) {
+ 	printf("client didn't choose mechanism\n");
+@@ -279,16 +279,16 @@
+ 
+     while (r == SASL_CONTINUE) {
+ 	if (data) {
+-	    dprintf(2, "sending response length %d...\n", len);
++	    dprintf_sasl(2, "sending response length %d...\n", len);
+ 	    fputc('C', out); /* send CONTINUE to client */
+ 	    send_string(out, data, len);
+ 	} else {
+-	    dprintf(2, "sending null response...\n");
++	    dprintf_sasl(2, "sending null response...\n");
+ 	    fputc('C', out); /* send CONTINUE to client */
+ 	    send_string(out, "", 0);
+ 	}
+ 
+-	dprintf(1, "waiting for client reply...\n");
++	dprintf_sasl(1, "waiting for client reply...\n");
+ 	len = recv_string(in, buf, sizeof buf);
+ 	if (len < 0) {
+ 	    printf("client disconnected\n");
+@@ -313,7 +313,7 @@
+ 
+     fputc('O', out); /* send OK to client */
+     fflush(out);
+-    dprintf(1, "negotiation complete\n");
++    dprintf_sasl(1, "negotiation complete\n");
+ 
+     r = sasl_getprop(conn, SASL_USERNAME, (const void **) &userid);
+     printf("successful authentication '%s'\n", userid);

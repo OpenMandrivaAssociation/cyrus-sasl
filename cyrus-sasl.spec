@@ -76,7 +76,7 @@ Patch18:	0010-Update-required-libraries-when-ld-as-needed-is-used.patch
 #Patch20:	0018-Temporary-multiarch-fixes.patch
 Patch21:	0019-Add-reference-to-LDAP_SASLAUTHD-file-to-the-saslauth.patch
 Patch22:	0022-Fix-keytab-option-for-MIT-Kerberos.patch
-#Patch23:	0025-Revert-upstream-soname-bump.patch
+Patch23:	0025-Revert-upstream-soname-bump.patch
 Patch24:	0027-properly-create-libsasl2.pc.patch
 Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 #Patch26:	0017-Just-completely-remove-libobj-from-autotools-files.patch
@@ -85,7 +85,8 @@ Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 # (tpg) OpenMandriva patches
 #Patch50:	cyrus-sasl-2.1.15-lib64.patch
 #Patch51:	cyrus-sasl-2.1.27-20170616-kill-rpath.patch
-
+# fix clashing function name
+Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
@@ -478,8 +479,7 @@ if [ ! -f %{sasl2_db_filename} ]; then
 fi
 
 %files
-%doc COPYING AUTHORS INSTALL NEWS README*
-%doc doc/{TODO,ONEWS,*.txt,*.html}
+%doc COPYING AUTHORS INSTALL ChangeLog README*
 %dir /var/lib/sasl2
 %dir /var/run/saslauthd
 %dir %{_sysconfdir}/sasl2

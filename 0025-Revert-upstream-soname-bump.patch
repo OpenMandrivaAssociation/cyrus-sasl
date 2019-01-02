@@ -19,7 +19,7 @@ index 9344606..a747335 100644
 +sasl_version = 2:25:0
  
  AM_CPPFLAGS=-DLIBSASL_EXPORTS=1 -I$(top_srcdir)/include -I$(top_srcdir)/plugins \
-             -I$(top_builddir)/include -I$(top_srcdir)/sasldb -I$(top_srcdir)/common
+                -I$(top_builddir)/include -I$(top_srcdir)/sasldb -I$(top_srcdir)/common -DCONFIGDIR='"${configdir}"' -DPLUGINDIR='"${plugindir}"'
 diff --git a/plugins/Makefile.am b/plugins/Makefile.am
 index 2b02a52..24a3571 100644
 --- a/plugins/Makefile.am
