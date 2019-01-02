@@ -490,7 +490,7 @@ fi
 %{_sbindir}/sasldblistusers2
 %{_sbindir}/saslpasswd2
 %{_sbindir}/testsaslauthd
-%{_systemunitdir}/saslauthd.service
+%{_unitdir}/saslauthd.service
 %{_mandir}/man8/*
 
 %files -n %{libname}
