@@ -49,7 +49,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	1
+Release:	2
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -90,7 +90,7 @@ Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
-BuildRequires:	db-devel
+BuildRequires:	db-devel >= 18.1
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libssl)
 BuildRequires:	pkgconfig(libgcrypt)
