@@ -306,7 +306,7 @@ This plugin implements the LDAP auxprop authentication method.
 %prep
 %setup -q
 install -m 0644 %{SOURCE4} .
-%apply_patches
+%autopatch -p1
 
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
