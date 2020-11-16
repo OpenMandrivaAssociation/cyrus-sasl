@@ -375,7 +375,7 @@ export ac_ct_CC=%{__cc}
 	--without-sqlite \
 %endif
 %if %{LDAP}
-	--with-ldap=%{_prefix} \
+	--with-ldap=%{_libdir} \
 	--enable-ldapdb \
 %endif
 	--disable-macos-framework \
