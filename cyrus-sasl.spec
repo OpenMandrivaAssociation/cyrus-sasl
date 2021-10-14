@@ -49,7 +49,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.27
-Release:	3
+Release:	4
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -491,7 +491,7 @@ fi
 %{_sbindir}/saslpasswd2
 %{_sbindir}/testsaslauthd
 %{_unitdir}/saslauthd.service
-%{_mandir}/man8/*
+%doc %{_mandir}/man8/*
 
 %files -n %{libname}
 %dir %{_libdir}/sasl2
@@ -552,4 +552,4 @@ fi
 %{_includedir}/sasl
 %{_libdir}/*.*so
 %{_libdir}/pkgconfig/*.pc
-%{_mandir}/man3/*
+%doc %{_mandir}/man3/*
