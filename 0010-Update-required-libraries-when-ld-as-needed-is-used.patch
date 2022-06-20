@@ -1,19 +1,7 @@
-From: Debian Cyrus SASL Team
- <pkg-cyrus-sasl2-debian-devel@lists.alioth.debian.org>
-Date: Thu, 24 Mar 2016 11:35:04 +0100
-Subject: Update required libraries when ld --as-needed is used
-
-it.
----
- saslauthd/Makefile.am | 2 +-
- sasldb/Makefile.am    | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/saslauthd/Makefile.am b/saslauthd/Makefile.am
-index d7244be..a5a4dfd 100644
---- a/saslauthd/Makefile.am
-+++ b/saslauthd/Makefile.am
-@@ -25,7 +25,7 @@ EXTRA_saslauthd_sources = getaddrinfo.c getnameinfo.c
+diff -up cyrus-sasl-2.1.28/saslauthd/Makefile.am.9~ cyrus-sasl-2.1.28/saslauthd/Makefile.am
+--- cyrus-sasl-2.1.28/saslauthd/Makefile.am.9~	2022-02-18 22:50:42.000000000 +0100
++++ cyrus-sasl-2.1.28/saslauthd/Makefile.am	2022-06-20 02:49:44.004931658 +0200
+@@ -25,7 +25,7 @@ EXTRA_saslauthd_sources = getaddrinfo.c
  saslauthd_DEPENDENCIES = saslauthd-main.o $(LTLIBOBJS_FULL)
  saslauthd_LDADD	= @SASL_KRB_LIB@ \
  		  @GSSAPIBASE_LIBS@ @LIB_CRYPT@ @LIB_SIA@ \
@@ -22,16 +10,14 @@ index d7244be..a5a4dfd 100644
  
  testsaslauthd_SOURCES = testsaslauthd.c utils.c
  testsaslauthd_LDADD = @LIB_SOCKET@
-diff --git a/sasldb/Makefile.am b/sasldb/Makefile.am
-index 497ee25..a27645f 100644
---- a/sasldb/Makefile.am
-+++ b/sasldb/Makefile.am
+diff -up cyrus-sasl-2.1.28/sasldb/Makefile.am.9~ cyrus-sasl-2.1.28/sasldb/Makefile.am
+--- cyrus-sasl-2.1.28/sasldb/Makefile.am.9~	2022-06-20 02:49:44.004931658 +0200
++++ cyrus-sasl-2.1.28/sasldb/Makefile.am	2022-06-20 03:24:19.408068225 +0200
 @@ -54,6 +54,6 @@ noinst_LTLIBRARIES = libsasldb.la
  
  libsasldb_la_SOURCES = allockey.c sasldb.h
  EXTRA_libsasldb_la_SOURCES = $(extra_common_sources)
 -libsasldb_la_DEPENDENCIES = $(SASL_DB_BACKEND)
--libsasldb_la_LIBADD = $(SASL_DB_BACKEND)
 +libsasldb_la_DEPENDENCIES = $(SASL_DB_BACKEND) $(SASL_DB_LIB)
-+libsasldb_la_LIBADD = $(SASL_DB_BACKEND) $(SASL_DB_LIB)
+ libsasldb_la_LIBADD = $(SASL_DB_BACKEND) $(SASL_DB_LIB)
  libsasldb_la_LDFLAGS = -no-undefined

@@ -1,17 +1,17 @@
-From: Debian Cyrus SASL Team
- <pkg-cyrus-sasl2-debian-devel@lists.alioth.debian.org>
-Date: Thu, 24 Mar 2016 11:35:05 +0100
-Subject: properly create libsasl2.pc
-
----
- Makefile.am  | 13 +++++++++++++
- configure.ac |  1 -
- 2 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/Makefile.am b/Makefile.am
-index 04fc82d..a4fed1e 100644
---- a/Makefile.am
-+++ b/Makefile.am
+diff -up cyrus-sasl-2.1.28/configure.ac.13~ cyrus-sasl-2.1.28/configure.ac
+--- cyrus-sasl-2.1.28/configure.ac.13~	2022-06-20 03:29:18.486624162 +0200
++++ cyrus-sasl-2.1.28/configure.ac	2022-06-20 03:29:59.770218277 +0200
+@@ -1497,7 +1497,6 @@ AH_BOTTOM([#if defined __GNUC__ &&  __GN
+ AC_CONFIG_HEADERS(config.h)
+ 
+ AC_CONFIG_FILES([Makefile
+-libsasl2.pc
+ include/Makefile
+ saslauthd/Makefile
+ sasldb/Makefile
+diff -up cyrus-sasl-2.1.28/Makefile.am.13~ cyrus-sasl-2.1.28/Makefile.am
+--- cyrus-sasl-2.1.28/Makefile.am.13~	2022-02-18 22:53:25.000000000 +0100
++++ cyrus-sasl-2.1.28/Makefile.am	2022-06-20 03:29:18.483290807 +0200
 @@ -44,6 +44,15 @@ ACLOCAL_AMFLAGS = -I m4
  #
  ################################################################
@@ -28,7 +28,7 @@ index 04fc82d..a4fed1e 100644
  if SASLAUTHD
  SAD = saslauthd
  else
-@@ -141,6 +150,10 @@ pkgconfig_DATA = libsasl2.pc
+@@ -136,6 +145,10 @@ pkgconfig_DATA = libsasl2.pc
  ## define this unconditionally because dist-hook references it
  SPHINX_CACHE = docsrc/.doctrees
  
@@ -39,15 +39,3 @@ index 04fc82d..a4fed1e 100644
  dist-hook:
  	@find $(distdir) -exec chmod u+w {} ';'
  	@find $(distdir) -name CVS -print | xargs -t rm -rf
-diff --git a/configure.ac b/configure.ac
-index 7019686..049382e 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -1592,7 +1592,6 @@ AH_BOTTOM([#if defined __GNUC__ &&  __GNUC__ > 6
- AC_CONFIG_HEADERS(config.h)
- 
- AC_OUTPUT(Makefile
--libsasl2.pc
- include/Makefile
- saslauthd/Makefile
- sasldb/Makefile

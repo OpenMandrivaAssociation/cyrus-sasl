@@ -48,14 +48,14 @@
 
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
-Version:	2.1.27
-Release:	4
+Version:	2.1.28
+Release:	1
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
 # git clone https://github.com/cyrusimap/cyrus-sasl.git
 # git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf9 > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
-Source0:	https://www.cyrusimap.org/releases/%{name}-%{version}.tar.gz
+Source0:	https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-%{version}/cyrus-sasl-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 Source2:	saslauthd.service
 Source3:	saslauthd.sysconfig
@@ -479,7 +479,7 @@ if [ ! -f %{sasl2_db_filename} ]; then
 fi
 
 %files
-%doc COPYING AUTHORS INSTALL ChangeLog README*
+%doc COPYING AUTHORS ChangeLog README*
 %dir /var/lib/sasl2
 %dir /var/run/saslauthd
 %dir %{_sysconfdir}/sasl2
