@@ -49,7 +49,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	1
+Release:	2
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -90,11 +90,11 @@ Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
-BuildRequires:	db-devel >= 18.1
+BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libssl)
 BuildRequires:	pkgconfig(libgcrypt)
-BuildRequires:	systemd-macros
+BuildRequires:	systemd-rpm-macros
 BuildRequires:	rpm-helper
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
@@ -336,6 +336,8 @@ export ac_ct_CC=%{__cc}
 	--enable-shared \
 	--with-plugindir="%{_libdir}/sasl2" \
 	--with-configdir=%{_sysconfdir}/sasl2:%{_libdir}/sasl2 \
+	--with-dblib=gdbm \
+	--with-dbpath=%{_sysconfdir}/sasl2/sasldb2 \
 	--enable-checkapop \
 	--enable-cram \
 	--enable-digest \
@@ -494,6 +496,7 @@ fi
 %doc %{_mandir}/man8/*
 
 %files -n %{libname}
+%dir %{_sysconfdir}/sasl2
 %dir %{_libdir}/sasl2
 %{_libdir}/libsasl*.so.%{major}*
 
