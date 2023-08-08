@@ -1,4 +1,5 @@
 #include "sasl.h"
+#include "include/saslplug.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +34,7 @@ main(int argc, char **argv)
 	int ret, i;
 	const char *mechs, **globals;
 	sasl_callback_t callbacks[] = {
-		{SASL_CB_GETOPT, my_getopt, NULL},
+		{SASL_CB_GETOPT, (sasl_callback_ft)my_getopt, NULL},
 		{SASL_CB_LIST_END},
 	};
 	sasl_conn_t *connection;

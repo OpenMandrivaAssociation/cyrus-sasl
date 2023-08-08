@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "sasl.h"
+#include "include/saslplug.h"
 #ifdef SASL2
 static int main_requested_sasl_version = 2;
 #else
@@ -63,7 +64,7 @@ main(int argc, char **argv)
 	const char *user, *realm, *passwd, *service, *mechs, **globals, *err;
 	int c, ret;
 	sasl_callback_t callbacks[] = {
-		{SASL_CB_GETOPT, my_getopt, NULL},
+		{SASL_CB_GETOPT, (sasl_callback_ft)my_getopt, NULL},
 		{SASL_CB_LIST_END},
 	};
 	sasl_conn_t *connection;

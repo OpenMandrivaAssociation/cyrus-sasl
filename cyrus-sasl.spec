@@ -5,51 +5,27 @@
 
 %define _disable_rebuild_configure 1
 
-%define KRB5 1
-%define MYSQL 1
-%define SRP 0
-%define PGSQL 1
-%define SQLITE3 1
-%define LDAP 1
-%define SRPSTR enabled
-%define MYSQLSTR enabled
-%define PGSQLSTR enabled
-%define SQLITE3STR enabled
-%define LDAPSTR enabled
-
-%{?_with_krb5: %{expand: %%global KRB5 1}}
-%{?_without_krb5: %{expand: %%global KRB5 0}}
-%{?_with_srp: %{expand: %%global SRP 1}}
-%{?_without_srp: %{expand: %%global SRP 0}}
-%{?_with_mysql: %{expand: %%global MYSQL 1}}
-%{?_without_mysql: %{expand: %%global MYSQL 0}}
-%{?_with_pgsql: %{expand: %%global PGSQL 1}}
-%{?_without_pgsql: %{expand: %%global PGSQL 0}}
-%{?_with_sqlite3: %{expand: %%global SQLITE3 1}}
-%{?_without_sqlite3: %{expand: %%global SQLITE3 0}}
-%{?_with_ldap: %{expand: %%global LDAP 1}}
-%{?_without_ldap: %{expand: %%global LDAP 0}}
-
-%{?_with_srp: %{expand: %%global SRPSTR enabled}}
-%{?_without_srp: %{expand: %%global SRPSTR disabled}}
-%{?_with_mysql: %{expand: %%global MYSQLSTR enabled}}
-%{?_without_mysql: %{expand: %%global MYSQLSTR disabled}}
-%{?_with_pgsql: %{expand: %%global PGSQLSTR enabled}}
-%{?_without_pgsql: %{expand: %%global PGSQLSTR disabled}}
-%{?_with_sqlite3: %{expand: %%global SQLITE3STR enabled}}
-%{?_without_sqlite3: %{expand: %%global SQLITE3STR disabled}}
-%{?_with_ldap: %{expand: %%global LDAPSTR enabled}}
-%{?_without_ldap: %{expand: %%global LDAPSTR disabled}}
-
-# bootstrapping overrides the above LDAP defines
-%{?bootstrap: %{expand: %%global LDAP 0}}
-%{?bootstrap: %{expand: %%global LDAPSTR disabled}}
-
+%bcond_with bootstrap
+%if %{with bootstrap}
+%bcond_with ldap
+%else
+%bcond_without ldap
+%endif
+%bcond_without krb5
+%bcond_without mysql
+%bcond_with srp
+%bcond_without pgsql
+%bcond_without sqlite3
+%define SRPSTR %{with srp:en}%{!with srp:dis}abled
+%define MYSQLSTR %{with mysql:en}%{!with mysql:dis}abled
+%define PGSQLSTR %{with pgsql:en}%{!with pgsql:dis}enabled
+%define SQLITE3STR %{with sqlite3:en}%{!with sqlite3:dis}enabled
+%define LDAPSTR %{with ldap:en}%{!with ldap:dis}enabled
 
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	3
+Release:	4
 License:	BSD-style
 Group:		System/Libraries
 Url:		http://cyrusimap.org/
@@ -87,6 +63,8 @@ Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 #Patch51:	cyrus-sasl-2.1.27-20170616-kill-rpath.patch
 # fix clashing function name
 Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
+# Make it build with newer toolchains
+Patch53:	cyrus-sasl-2.1.28-missing-includes.patch
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
@@ -98,21 +76,21 @@ BuildRequires:	systemd-rpm-macros
 BuildRequires:	rpm-helper
 # 1.4.x is thread safe, which means we can disable sasl mutexes (see ./configure
 # further below)
-%if %{KRB5}
+%if %{with krb5}
 BuildRequires:	krb5-devel >= 1.4.1
 BuildRequires:	pkgconfig(krb5-gssapi)
 %endif
-%if %{MYSQL}
+%if %{with mysql}
 BuildRequires:	mysql-devel
 %endif
-%if %{PGSQL}
+%if %{with pgsql}
 BuildRequires:	postgresql-devel
 %endif
-%if %{SQLITE3}
+%if %{with sqlite3}
 BuildRequires:	pkgconfig(sqlite3)
 %endif
-%if %{LDAP}
-BuildRequires:	openldap-devel
+%if %{with ldap}
+BuildRequires:	pkgconfig(ldap)
 %endif
 Requires(pre,post,preun):	rpm-helper
 
@@ -225,7 +203,7 @@ THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons
 and will be dropped soon.
 Please use the plain plugin instead.
 
-%if %{KRB5}
+%if %{with krb5}
 %package -n %{libname}-plug-gssapi
 Summary:	SASL GSSAPI mechanism plugin
 Group:		System/Libraries
@@ -257,7 +235,7 @@ Requires(pre,post,preun): rpm-helper
 This package provides the SASL sasldb auxprop plugin, which stores secrets
 in a Berkeley database file.
 
-%if %{SRP}
+%if %{with srp}
 %package -n %{libname}-plug-srp
 Summary:	SASL srp mechanism plugin
 Group:		System/Libraries
@@ -277,7 +255,7 @@ Requires:	%{name} = %{version}
 %description -n %{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
 
-%if %{MYSQL}
+%if %{with mysql}
 %package -n %{libname}-plug-sql
 Summary:	SASL MySQL plugin
 Group:		System/Libraries
@@ -292,7 +270,7 @@ This plugin implements the SQL authentication method based
 on MySQL, PGSQL and SQLITE3.
 %endif
 
-%if %{LDAP}
+%if %{with ldap}
 %package -n %{libname}-plug-ldapdb
 Summary:	SASL ldapdb auxprop plugin
 Group:		System/Libraries
@@ -351,32 +329,32 @@ export ac_ct_CC=%{__cc}
 	--enable-ntlm \
 	--enable-gssapi \
 	--enable-gss_mutexes \
-%if %{SRP}
+%if %{with srp}
 	--enable-srp \
 	--enable-srp-setpass \
 %else
 	--disable-srp \
 	--disable-srp-setpass \
 %endif
-%if %{MYSQL}
+%if %{with mysql}
 	--enable-sql \
 	--with-mysql=%{_libdir} \
 %else
 	--without-mysql \
 %endif
-%if %{PGSQL}
+%if %{with pgsql}
 	--enable-sql \
 	--with-pgsql=%{_libdir} \
 %else
 	--without-pgsql \
 %endif
-%if %{SQLITE3}
+%if %{with sqlite3}
 	--enable-sql \
 	--with-sqlite3=%{_libdir} \
 %else
 	--without-sqlite \
 %endif
-%if %{LDAP}
+%if %{with ldap}
 	--with-ldap=%{_libdir} \
 	--enable-ldapdb \
 %endif
@@ -516,7 +494,7 @@ fi
 %doc README.OpenMandriva.sasldb
 %{_libdir}/sasl2/libsasldb.so*
 
-%if %{KRB5}
+%if %{with krb5}
 %files -n %{libname}-plug-gssapi
 %{_libdir}/sasl2/libgs2.so*
 %{_libdir}/sasl2/libgssapiv2.so*
@@ -531,7 +509,7 @@ fi
 %files -n %{libname}-plug-login
 %{_libdir}/sasl2/liblogin.so*
 
-%if %{SRP}
+%if %{with srp}
 %files -n %{libname}-plug-srp
 %{_libdir}/sasl2/libsrp.so*
 %endif
@@ -539,12 +517,12 @@ fi
 %files -n %{libname}-plug-ntlm
 %{_libdir}/sasl2/libntlm.so*
 
-%if %{MYSQL}
+%if %{with mysql}
 %files -n %{libname}-plug-sql
 %{_libdir}/sasl2/libsql.so*
 %endif
 
-%if %{LDAP}
+%if %{with ldap}
 %files -n %{libname}-plug-ldapdb
 %{_libdir}/sasl2/libldapdb.so*
 %endif
