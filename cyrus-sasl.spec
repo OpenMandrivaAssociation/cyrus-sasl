@@ -3,6 +3,14 @@
 %define devname %mklibname sasl -d
 %define sasl2_db_filename /var/lib/sasl2/sasl.db
 
+%if %{cross_compiling}
+# Work around libtool being a mess that can't
+# handle spaces inside "$CC"
+%define prefer_gcc 1
+# gcc is more picky than clang about aliasing
+%global optflags %{optflags} -fno-strict-aliasing
+%endif
+
 %define _disable_rebuild_configure 1
 
 %bcond_with bootstrap
@@ -203,7 +211,6 @@ THIS PLUGIN IS DEPRECATED, is maintained only for compatibility reasons
 and will be dropped soon.
 Please use the plain plugin instead.
 
-%if %{with krb5}
 %package -n %{libname}-plug-gssapi
 Summary:	SASL GSSAPI mechanism plugin
 Group:		System/Libraries
@@ -213,7 +220,6 @@ Requires:	%{name} = %{version}
 
 %description -n %{libname}-plug-gssapi
 This plugin implements the SASL GSSAPI (kerberos 5)mechanism.
-%endif
 
 %package -n %{libname}-plug-otp
 Summary:	SASL OTP mechanism plugin
@@ -235,7 +241,6 @@ Requires(pre,post,preun): rpm-helper
 This package provides the SASL sasldb auxprop plugin, which stores secrets
 in a Berkeley database file.
 
-%if %{with srp}
 %package -n %{libname}-plug-srp
 Summary:	SASL srp mechanism plugin
 Group:		System/Libraries
@@ -244,7 +249,6 @@ Requires:	%{name} = %{version}
 
 %description -n %{libname}-plug-srp
 This plugin implements the srp  mechanism.
-%endif
 
 %package -n %{libname}-plug-ntlm
 Summary:	SASL ntlm authentication plugin
@@ -255,7 +259,6 @@ Requires:	%{name} = %{version}
 %description -n %{libname}-plug-ntlm
 This plugin implements the (unsupported) ntlm authentication.
 
-%if %{with mysql}
 %package -n %{libname}-plug-sql
 Summary:	SASL MySQL plugin
 Group:		System/Libraries
@@ -268,9 +271,7 @@ Requires:	%{name} = %{version}
 %description -n %{libname}-plug-sql
 This plugin implements the SQL authentication method based
 on MySQL, PGSQL and SQLITE3.
-%endif
 
-%if %{with ldap}
 %package -n %{libname}-plug-ldapdb
 Summary:	SASL ldapdb auxprop plugin
 Group:		System/Libraries
@@ -279,7 +280,6 @@ Requires:	%{name} = %{version}
 
 %description -n %{libname}-plug-ldapdb
 This plugin implements the LDAP auxprop authentication method.
-%endif
 
 %prep
 %setup -q
@@ -289,10 +289,10 @@ install -m 0644 %{SOURCE4} .
 cp %{SOURCE7} sasl-mechlist.c
 cp %{SOURCE8} sasl-checkpass.c
 
-export CC=%{__cc}
-export CXX=%{__cxx}
-export ac_ct_CC_FOR_BUILD=%{__cc}
-export ac_ct_CC=%{__cc}
+export CC="%{__cc}"
+export CXX="%{__cxx}"
+export ac_ct_CC_FOR_BUILD=cc
+export ac_ct_CC="%{__cc}"
 
 rm -f config/config.guess config/config.sub
 rm -f config/ltconfig config/ltmain.sh config/libtool.m4 configure
@@ -304,9 +304,9 @@ autoconf
 automake -a -c
 
 %build
-export ac_cv_prog_ac_ct_CC_FOR_BUILD=%{__cc}
-export ac_ct_CC_FOR_BUILD=%{__cc}
-export ac_ct_CC=%{__cc}
+export ac_cv_prog_ac_ct_CC_FOR_BUILD=cc
+export ac_ct_CC_FOR_BUILD=cc
+export ac_ct_CC="%{__cc}"
 
 %serverbuild
 %configure \
@@ -467,8 +467,9 @@ fi
 %{_sbindir}/dbconverter-2
 %{_sbindir}/pluginviewer
 %{_sbindir}/saslauthd
-%{_sbindir}/sasldblistusers2
-%{_sbindir}/saslpasswd2
+# These 2 exist if and only if database support is enabled
+%optional %{_sbindir}/sasldblistusers2
+%optional %{_sbindir}/saslpasswd2
 %{_sbindir}/testsaslauthd
 %{_unitdir}/saslauthd.service
 %doc %{_mandir}/man8/*
@@ -490,9 +491,11 @@ fi
 %files -n %{libname}-plug-crammd5
 %{_libdir}/sasl2/libcrammd5.so*
 
+%if %{with mysql} || %{with pgsql}
 %files -n %{libname}-plug-sasldb
 %doc README.OpenMandriva.sasldb
 %{_libdir}/sasl2/libsasldb.so*
+%endif
 
 %if %{with krb5}
 %files -n %{libname}-plug-gssapi
@@ -517,7 +520,7 @@ fi
 %files -n %{libname}-plug-ntlm
 %{_libdir}/sasl2/libntlm.so*
 
-%if %{with mysql}
+%if %{with mysql} || %{with pgsql} || %{with sqlite3}
 %files -n %{libname}-plug-sql
 %{_libdir}/sasl2/libsql.so*
 %endif
