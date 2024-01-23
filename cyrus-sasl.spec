@@ -491,11 +491,9 @@ fi
 %files -n %{libname}-plug-crammd5
 %{_libdir}/sasl2/libcrammd5.so*
 
-%if %{with mysql} || %{with pgsql}
 %files -n %{libname}-plug-sasldb
 %doc README.OpenMandriva.sasldb
 %{_libdir}/sasl2/libsasldb.so*
-%endif
 
 %if %{with krb5}
 %files -n %{libname}-plug-gssapi
