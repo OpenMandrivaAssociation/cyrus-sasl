@@ -36,7 +36,7 @@ Version:	2.1.28
 Release:	4
 License:	BSD-style
 Group:		System/Libraries
-Url:		http://cyrusimap.org/
+Url:		https://cyrusimap.org/
 # git clone https://github.com/cyrusimap/cyrus-sasl.git
 # git archive --format=tar --prefix cyrus-sasl-2.1.27-$(date +%Y%m%d)/ HEAD | xz -vf9 > cyrus-sasl-2.1.27-$(date +%Y%m%d).tar.xz
 Source0:	https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-%{version}/cyrus-sasl-%{version}.tar.gz
