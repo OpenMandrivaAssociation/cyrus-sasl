@@ -73,6 +73,11 @@ Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
 # Make it build with newer toolchains
 Patch53:	cyrus-sasl-2.1.28-missing-includes.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	groff
 BuildRequires:	libtool
 BuildRequires:	m4
