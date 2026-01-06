@@ -33,7 +33,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	4
+Release:	5
 License:	BSD-style
 Group:		System/Libraries
 Url:		https://cyrusimap.org/
@@ -65,6 +65,12 @@ Patch24:	0027-properly-create-libsasl2.pc.patch
 Patch25:	0032-Add-with_pgsql-include-postgresql-to-include-path.patch
 #Patch26:	0017-Just-completely-remove-libobj-from-autotools-files.patch
 #Patch27:	0018-We-need-to-look-for-compat-crypto.h-in-top_srcdir-as.patch
+
+# patches from Fedora
+Patch30:	https://src.fedoraproject.org/rpms/cyrus-sasl/raw/rawhide/f/cyrus-sasl-2.1.28-gcc15.patch
+# Based on https://src.fedoraproject.org/rpms/cyrus-sasl/raw/rawhide/f/cyrus-sasl-2.1.28-fedora-c99.patch
+# Modified to work with our modifications
+Patch31:	cyrus-sasl-2.1.28-c99.patch
 
 # (tpg) OpenMandriva patches
 #Patch50:	cyrus-sasl-2.1.15-lib64.patch
