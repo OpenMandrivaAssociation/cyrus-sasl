@@ -1,13 +1,28 @@
 [Unit]
 Description=SASL authentication daemon.
 Before=postfix.service
+After=network.target
 
 [Service]
 Type=forking
 PIDFile=/run/saslauthd/saslauthd.pid
 Environment=SASL_AUTHMECH=pam
-EnvironmentFile=/etc/sysconfig/saslauthd
-ExecStart=/usr/sbin/saslauthd -m /run/saslauthd -a $SASL_AUTHMECH $SASLAUTHD_OPTS
+EnvironmentFile=-/etc/sysconfig/saslauthd
+ExecStart=/usr/sbin/saslauthd -m /run/saslauthd -a $SASL_AUTHMECH $SASL_MECH_OPTIONS $SASLAUTHD_OPTS
+
+# --- Hardening ---
+# Create the volatile directory automatically with correct permissions
+RuntimeDirectory=saslauthd
+RuntimeDirectoryMode=0750
+Group=sasl
+
+# Security Sandbox
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=CAP_SETGID CAP_SETUID CAP_DAC_OVERRIDE
+# DAC_OVERRIDE is often needed to read /etc/shadow or talk to PAM
 
 [Install]
 WantedBy=multi-user.target

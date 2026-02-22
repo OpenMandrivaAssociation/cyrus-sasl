@@ -33,7 +33,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	6
+Release:	7
 License:	BSD-style
 Group:		System/Libraries
 Url:		https://cyrusimap.org/
@@ -81,11 +81,9 @@ Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
 Patch53:	cyrus-sasl-2.1.28-missing-includes.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
 BuildRequires:	groff
-BuildRequires:	libtool
 BuildRequires:	m4
 BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
@@ -308,7 +306,7 @@ export ac_ct_CC="%{__cc}"
 rm -f config/config.guess config/config.sub
 rm -f config/ltconfig config/ltmain.sh config/libtool.m4 configure
 rm -fr autom4te.cache
-libtoolize -c -f -i
+slibtoolize -c -f -i
 aclocal -I config
 autoheader
 autoconf
@@ -370,8 +368,8 @@ export ac_ct_CC="%{__cc}"
 	--enable-ldapdb \
 %endif
 	--disable-macos-framework \
-	--with-saslauthd=/var/run/saslauthd \
-	--with-authdaemond=/var/run/authdaemon.courier-imap/socket \
+	--with-saslauthd=/run/saslauthd \
+	--with-authdaemond=/run/authdaemon.courier-imap/socket \
 	--with-devrandom=/dev/urandom
 
 %make_build
@@ -381,9 +379,9 @@ install saslauthd/LDAP_SASLAUTHD README.ldap
 
 # Build a small program to list the available mechanisms, because I need it.
 pushd lib
-    ../libtool --mode=link %{__cc} -o sasl2-shared-mechlist \
+    slibtool --mode=link %{__cc} -o sasl2-shared-mechlist \
 	-I../include $CFLAGS ../sasl-mechlist.c $LDFLAGS ./libsasl2.la
-    ../libtool --mode=link %{__cc} -o sasl2-shared-checkpass \
+    slibtool --mode=link %{__cc} -o sasl2-shared-checkpass \
 	-I../include $CFLAGS -DSASL2 ../sasl-checkpass.c $LDFLAGS ./libsasl2.la
 popd
 
@@ -403,7 +401,7 @@ install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 # dbconverter-2 isn't installed by make install
 
 cd utils
-/bin/sh ../libtool --mode=install /usr/bin/install -c dbconverter-2 \
+slibtool --mode=install /usr/bin/install -c dbconverter-2 \
   %{buildroot}/%{_sbindir}/dbconverter-2
 
 cd ..
@@ -437,36 +435,24 @@ EOF
 # This is just to "close" vim's syntax misinterpretation.. ;p
 
 # Provide an easy way to query the list of available mechanisms.
-./libtool --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
-./libtool --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
+slibtool --mode=install install -m0755 lib/sasl2-shared-mechlist %{buildroot}%{_sbindir}/
+slibtool --mode=install install -m0755 lib/sasl2-shared-checkpass %{buildroot}%{_sbindir}/
 
-%pre -n %{libname}-plug-sasldb
-%_pre_groupadd sasl
+mkdir -p %{buildroot}%{_sysusersdir} \
+	%{buildroot}%{_tmpfilesdir}
+cat >%{buildroot}%{_tmpfilesdir}/saslauthd.conf <<EOF
+d /run/saslauthd 0750 root sasl - -
+EOF
+cat >%{buildroot}%{_sysusersdir}/sasl.conf <<EOF
+g sasl - - - -
+EOF
 
 %post -n %{libname}-plug-sasldb
-#convert old sasldb
-# XXX - what about berkeley db versions? - andreas
-if [ -f /var/lib/sasl/sasl.db -a ! -f %{sasl2_db_filename} ]; then
-    echo "" | /usr/sbin/dbconverter-2 /var/lib/sasl/sasl.db %{sasl2_db_filename}
-    if [ -f %{sasl2_db_filename} ]; then
-# conversion was successfull
-	chmod 0640 %{sasl2_db_filename}
-	chown root:sasl %{sasl2_db_filename}
-    fi
-fi
-if [ -f /var/lib/sasl/sasl.db.rpmsave -a ! -f %{sasl2_db_filename} ]; then
-    echo "" | /usr/sbin/dbconverter-2 /var/lib/sasl/sasl.db.rpmsave %{sasl2_db_filename}
-    if [ -f %{sasl2_db_filename} ]; then
-# conversion was successfull
-	chmod 0640 %{sasl2_db_filename}
-	chown root:sasl %{sasl2_db_filename}
-    fi
-fi
 if [ ! -f %{sasl2_db_filename} ]; then
-# the file was never created before nor converted from sasl1
-    touch %{sasl2_db_filename}
-    chmod 0640 %{sasl2_db_filename}
-    chown root:sasl %{sasl2_db_filename}
+	# the file was never created before nor converted from sasl1
+	touch %{sasl2_db_filename}
+	chmod 0640 %{sasl2_db_filename}
+	chown root:sasl %{sasl2_db_filename}
 fi
 
 %files
@@ -475,6 +461,8 @@ fi
 %dir /var/run/saslauthd
 %dir %{_sysconfdir}/sasl2
 %attr (644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/saslauthd
+%{_tmpfilesdir}/*
+%{_sysusersdir}/*
 %{_sbindir}/dbconverter-2
 %{_sbindir}/pluginviewer
 %{_sbindir}/saslauthd
