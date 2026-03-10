@@ -33,7 +33,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	7
+Release:	8
 License:	BSD-style
 Group:		System/Libraries
 Url:		https://cyrusimap.org/
@@ -401,11 +401,11 @@ install -m644 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/sysconfig/saslauthd
 # dbconverter-2 isn't installed by make install
 
 cd utils
-slibtool --mode=install /usr/bin/install -c dbconverter-2 \
+slibtool --mode=install %{_bindir}/install -c dbconverter-2 \
   %{buildroot}/%{_sbindir}/dbconverter-2
 
 cd ..
-cp saslauthd/testsaslauthd %{buildroot}%{_sbindir}
+slibtool --mode=install %{_bindir}/install -c saslauthd/testsaslauthd %{buildroot}%{_sbindir}/
 
 # quick README about the sasl.db file permissions
 cat > README.OpenMandriva.sasldb <<EOF
