@@ -33,7 +33,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	8
+Release:	9
 License:	BSD-style
 Group:		System/Libraries
 Url:		https://cyrusimap.org/
