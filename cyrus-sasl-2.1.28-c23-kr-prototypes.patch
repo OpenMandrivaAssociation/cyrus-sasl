@@ -1,0 +1,107 @@
+diff -urN cyrus-sasl-2.1.28.orig/lib/getsubopt.c cyrus-sasl-2.1.28/lib/getsubopt.c
+--- cyrus-sasl-2.1.28.orig/lib/getsubopt.c	2022-02-18 22:50:42.000000000 +0100
++++ cyrus-sasl-2.1.28/lib/getsubopt.c	2026-07-12 22:39:46.076987947 +0200
+@@ -62,9 +62,7 @@
+ char *suboptarg;
+ 
+ int
+-getsubopt(optionp, tokens, valuep)
+-	char **optionp, **valuep;
+-	char * const *tokens;
++getsubopt(char **optionp, char * const *tokens, char **valuep)
+ {
+ 	int cnt;
+ 	char *p;
+diff -urN cyrus-sasl-2.1.28.orig/lib/md5.c cyrus-sasl-2.1.28/lib/md5.c
+--- cyrus-sasl-2.1.28.orig/lib/md5.c	2026-07-12 22:39:46.026611249 +0200
++++ cyrus-sasl-2.1.28/lib/md5.c	2026-07-12 22:39:46.076716913 +0200
+@@ -430,12 +430,9 @@
+ }
+ 
+ 
+-void _sasl_hmac_md5(text, text_len, key, key_len, digest)
+-const unsigned char* text; /* pointer to data stream */
+-int text_len; /* length of data stream */
+-const unsigned char* key; /* pointer to authentication key */
+-int key_len; /* length of authentication key */
+-unsigned char *digest; /* caller digest to be filled in */
++void _sasl_hmac_md5(const unsigned char* text, int text_len,
++                     const unsigned char* key, int key_len,
++                     unsigned char *digest)
+ {
+   MD5_CTX context; 
+ 
+diff -urN cyrus-sasl-2.1.28.orig/pwcheck/pwcheck_getpwnam.c cyrus-sasl-2.1.28/pwcheck/pwcheck_getpwnam.c
+--- cyrus-sasl-2.1.28.orig/pwcheck/pwcheck_getpwnam.c	2022-02-18 22:50:42.000000000 +0100
++++ cyrus-sasl-2.1.28/pwcheck/pwcheck_getpwnam.c	2026-07-12 22:39:46.077094779 +0200
+@@ -45,9 +45,7 @@
+ 
+ extern char *crypt();
+ 
+-char *pwcheck(userid, password)
+-char *userid;
+-char *password;
++char *pwcheck(char *userid, char *password)
+ {
+     char* r;
+     char* crpt_passwd;
+diff -urN cyrus-sasl-2.1.28.orig/pwcheck/pwcheck_getspnam.c cyrus-sasl-2.1.28/pwcheck/pwcheck_getspnam.c
+--- cyrus-sasl-2.1.28.orig/pwcheck/pwcheck_getspnam.c	2022-02-18 22:50:42.000000000 +0100
++++ cyrus-sasl-2.1.28/pwcheck/pwcheck_getspnam.c	2026-07-12 22:39:46.077146639 +0200
+@@ -46,9 +46,7 @@
+ 
+ extern char *crypt();
+ 
+-char *pwcheck(userid, password)
+-char *userid;
+-char *password;
++char *pwcheck(char *userid, char *password)
+ {
+     struct spwd *pwd;
+     char *crpt_passwd;
+diff -urN cyrus-sasl-2.1.28.orig/sample/server.c cyrus-sasl-2.1.28/sample/server.c
+--- cyrus-sasl-2.1.28.orig/sample/server.c	2026-07-12 22:39:46.030832182 +0200
++++ cyrus-sasl-2.1.28/sample/server.c	2026-07-12 22:39:46.076852675 +0200
+@@ -508,10 +508,7 @@
+ }
+ 
+ #ifdef HAVE_GSS_GET_NAME_ATTRIBUTE
+-static void displayStatus_1(m, code, type)
+-    char *m;
+-    OM_uint32 code;
+-    int type;
++static void displayStatus_1(char *m, OM_uint32 code, int type)
+ {
+     OM_uint32 maj_stat, min_stat;
+     gss_buffer_desc msg;
+@@ -530,10 +527,7 @@
+     }
+ }
+ 
+-static void displayStatus(msg, maj_stat, min_stat)
+-    char *msg;
+-    OM_uint32 maj_stat;
+-    OM_uint32 min_stat;
++static void displayStatus(char *msg, OM_uint32 maj_stat, OM_uint32 min_stat)
+ {
+     displayStatus_1(msg, maj_stat, GSS_C_GSS_CODE);
+     displayStatus_1(msg, min_stat, GSS_C_MECH_CODE);
+diff -urN cyrus-sasl-2.1.28.orig/saslauthd/md5.c cyrus-sasl-2.1.28/saslauthd/md5.c
+--- cyrus-sasl-2.1.28.orig/saslauthd/md5.c	2026-07-12 22:39:46.026938204 +0200
++++ cyrus-sasl-2.1.28/saslauthd/md5.c	2026-07-12 22:39:46.076788154 +0200
+@@ -430,12 +430,9 @@
+ }
+ 
+ 
+-void _saslauthd_hmac_md5(text, text_len, key, key_len, digest)
+-const unsigned char* text; /* pointer to data stream */
+-int text_len; /* length of data stream */
+-const unsigned char* key; /* pointer to authentication key */
+-int key_len; /* length of authentication key */
+-unsigned char *digest; /* caller digest to be filled in */
++void _saslauthd_hmac_md5(const unsigned char* text, int text_len,
++                     const unsigned char* key, int key_len,
++                     unsigned char *digest)
+ {
+   MD5_CTX context; 
+ 

@@ -33,7 +33,7 @@
 Summary:	The Simple Authentication and Security Layer
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	9
+Release:	10
 License:	BSD-style
 Group:		System/Libraries
 Url:		https://cyrusimap.org/
@@ -79,6 +79,10 @@ Patch31:	cyrus-sasl-2.1.28-c99.patch
 Patch52:	cyrus-sasl-2.1.27-dprintf_clash.patch
 # Make it build with newer toolchains
 Patch53:	cyrus-sasl-2.1.28-missing-includes.patch
+# Complete C23 conversion of leftover K&R function definitions that
+# the gcc15 patch missed (md5 HMAC helpers, sample server, getsubopt, pwcheck).
+# These fail under -std=gnu23 (default on current toolchains).
+Patch54:	cyrus-sasl-2.1.28-c23-kr-prototypes.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	slibtool
